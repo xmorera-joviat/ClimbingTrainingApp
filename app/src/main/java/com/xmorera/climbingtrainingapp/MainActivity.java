@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,9 +28,14 @@ public class MainActivity extends AppCompatActivity {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     Button btnV, btnVplus, btn6a, btn6b, btn6c, btn7a, btn7b, btn7c;
     Button btnVPlus, btn6aPlus, btn6bPlus, btn6cPlus, btn7aPlus, btn7bPlus, btn7cPlus;
-    CheckBox chkBIntent;
+    CheckBox chkIntent;
     Button btnAutos, btnCorda, btnShinyWall, btnBloc;
-
+    String via;
+    String paret;
+    int intent = 0;
+    Date data;
+    TextView dadesTextView;
+    DatabaseHelper databaseHelper;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -41,14 +49,16 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         dateTextView = findViewById(R.id.dateTextView);
+        //data actual
         updateDateTextView();
-
+        //selecció d'una data
         dateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker();
             }
         });
+
         infoTextView = findViewById(R.id.infoTextView);
 
         btnV = findViewById(R.id.btnV);
@@ -67,22 +77,37 @@ public class MainActivity extends AppCompatActivity {
         btn7cPlus = findViewById(R.id.btn7cPlus);
 
         //establiment dels listeners
-        setButtonListener(btnV);
-        setButtonListener(btnVPlus);
-        setButtonListener(btn6a);
-        setButtonListener(btn6aPlus);
-        setButtonListener(btn6b);
-        setButtonListener(btn6bPlus);
-        setButtonListener(btn6c);
-        setButtonListener(btn6cPlus);
-        setButtonListener(btn7a);
-        setButtonListener(btn7aPlus);
-        setButtonListener(btn7b);
-        setButtonListener(btn7bPlus);
-        setButtonListener(btn7c);
-        setButtonListener(btn7cPlus);
+        setGrauListener(btnV);
+        setGrauListener(btnVPlus);
+        setGrauListener(btn6a);
+        setGrauListener(btn6aPlus);
+        setGrauListener(btn6b);
+        setGrauListener(btn6bPlus);
+        setGrauListener(btn6c);
+        setGrauListener(btn6cPlus);
+        setGrauListener(btn7a);
+        setGrauListener(btn7aPlus);
+        setGrauListener(btn7b);
+        setGrauListener(btn7bPlus);
+        setGrauListener(btn7c);
+        setGrauListener(btn7cPlus);
 
+        btnAutos = findViewById(R.id.btnAutos);
+        btnCorda = findViewById(R.id.btnCorda);
+        btnShinyWall = findViewById(R.id.btnShinyWall);
+        btnBloc = findViewById(R.id.btnBloc);
 
+        //listeners pels botons de climbing
+        setWallListener(btnAutos);
+        setWallListener(btnCorda);
+        setWallListener(btnShinyWall);
+        setWallListener(btnBloc);
+
+        chkIntent = findViewById(R.id.chkIntent);
+
+        dadesTextView = findViewById(R.id.dadesTextView);
+
+        databaseHelper = new DatabaseHelper(this);
     }
 
     private void updateDateTextView() {
@@ -111,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setButtonListener(Button button){
+    private void setGrauListener(Button button){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,4 +145,37 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    private void setWallListener(Button button) {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(infoTextView.getText().toString().equals("")){
+                    //si no s'ha introduit una via no fer res
+                }else {
+
+                    //dades per guardar a sqlite
+                    String dia = dateTextView.getText().toString().split("/")[0];
+                    String mes = dateTextView.getText().toString().split("/")[1];
+                    String any = dateTextView.getText().toString().split("/")[2];
+                    via = infoTextView.getText().toString();
+                    paret = button.getText().toString();
+                    if (chkIntent.isChecked()) {
+                        intent = 1;
+                    }
+                    //introducció de dades a la base de dades
+                    boolean insertSuccess = databaseHelper.insertData(dia + "/" + mes + "/" + any, via, paret, intent);
+                    if (insertSuccess) {
+                        Toast.makeText(MainActivity.this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Error en guardar la via", Toast.LENGTH_SHORT).show();
+                    }
+                    //reset
+                    infoTextView.setText("");
+                    chkIntent.setChecked(false);
+                    intent = 0;
+                }
+            }
+        });
+    }
 }

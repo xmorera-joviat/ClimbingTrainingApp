@@ -17,7 +17,7 @@
             android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current Date"
+            android:text=""
             android:textSize="18sp" />
 
         <TextView
@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -168,7 +169,7 @@
             android:orientation="vertical">
 
             <CheckBox
-                android:id="@+id/chkBIntent"
+                android:id="@+id/chkIntent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="intent" />
@@ -198,5 +199,11 @@
                 android:text="Bloc" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/dadesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
 
 </LinearLayout>
