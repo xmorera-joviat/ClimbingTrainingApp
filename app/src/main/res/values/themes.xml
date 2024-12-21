@@ -5,5 +5,23 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.ClimbingTrainingApp" parent="Base.Theme.ClimbingTrainingApp" />
+    <!-- Estil per als botons del grup 1 (marró) -->
+    <style name="RoundBrownButton">
+        <item name="android:background">@drawable/round_brown_button</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Estil per als botons del grup 2 (verd) -->
+    <style name="RoundGreenButton">
+        <item name="android:background">@drawable/round_green_button</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Estil per als botons del grup 3 (vermell) -->
+    <style name="RoundRedButton">
+        <item name="android:background">@drawable/round_red_button</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
 </resources>

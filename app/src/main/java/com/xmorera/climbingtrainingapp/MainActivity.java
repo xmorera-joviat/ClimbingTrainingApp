@@ -1,5 +1,6 @@
 package com.xmorera.climbingtrainingapp;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -17,10 +18,11 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView dateTextView;
+    TextView dateTextView, infoTextView;
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 showDatePicker();
             }
         });
+        infoTextView = findViewById(R.id.infoTextView);
 
     }
 
