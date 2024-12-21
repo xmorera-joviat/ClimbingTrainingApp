@@ -2,6 +2,7 @@ package com.xmorera.climbingtrainingapp;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -177,5 +178,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void displayData(){
+        Cursor cursor = databaseHelper.getAllData();
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "No s'han trobat dades", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        while (cursor.moveToNext()) {
+            stringBuilder.append("Date: ").append(cursor.getString(1)).append("\n");
+            stringBuilder.append("Via: ").append(cursor.getString(2)).append("\n");
+            stringBuilder.append("Paret: ").append(cursor.getString(3)).append("\n");
+            stringBuilder.append("Intent: ").append(cursor.getInt(4)).append("\n\n");
+        }
+        cursor.close();
+        dadesTextView.setText(stringBuilder.toString());
+
     }
 }
