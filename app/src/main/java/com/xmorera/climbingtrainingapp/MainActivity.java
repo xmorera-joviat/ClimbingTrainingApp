@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         dadesTextView = findViewById(R.id.dadesTextView);
 
         databaseHelper = new DatabaseHelper(this);
+        displayData();
     }
 
     private void updateDateTextView() {
@@ -175,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     infoTextView.setText("");
                     chkIntent.setChecked(false);
                     intent = 0;
+                    displayData();
                 }
             }
         });
@@ -188,10 +190,10 @@ public class MainActivity extends AppCompatActivity {
         }
         StringBuilder stringBuilder = new StringBuilder();
         while (cursor.moveToNext()) {
-            stringBuilder.append("Date: ").append(cursor.getString(1)).append("\n");
-            stringBuilder.append("Via: ").append(cursor.getString(2)).append("\n");
-            stringBuilder.append("Paret: ").append(cursor.getString(3)).append("\n");
-            stringBuilder.append("Intent: ").append(cursor.getInt(4)).append("\n\n");
+            stringBuilder.append("Data: ").append(cursor.getString(1)).append(" ");
+            stringBuilder.append("Via: ").append(cursor.getString(2)).append(" ");
+            stringBuilder.append("Paret: ").append(cursor.getString(3)).append(" ");
+            stringBuilder.append("Intent: ").append(cursor.getInt(4)).append("\n");
         }
         cursor.close();
         dadesTextView.setText(stringBuilder.toString());
