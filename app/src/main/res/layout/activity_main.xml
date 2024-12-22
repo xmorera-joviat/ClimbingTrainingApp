@@ -104,20 +104,6 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btn7a"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="7a" />
-
-                <Button
-                    android:id="@+id/btn7aPlus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="7a+" />
-
-                <Button
                     android:id="@+id/btn6c"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,6 +116,20 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="6c+" />
+
+                <Button
+                    android:id="@+id/btn7a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="7a" />
+
+                <Button
+                    android:id="@+id/btn7aPlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="7a+" />
 
             </LinearLayout>
 
@@ -185,9 +185,7 @@
                 android:id="@+id/chkIntent"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp
-    "
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="20dp"
                 android:text="intent" />
 
             <LinearLayout
@@ -204,6 +202,8 @@
                         android:id="@+id/btnAutos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
                         android:text="Autos" />
 
@@ -211,6 +211,8 @@
                         android:id="@+id/btnCorda"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
                         android:text="Corda" />
                 </LinearLayout>
@@ -225,6 +227,8 @@
                         android:id="@+id/btnShinyWall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
                         android:text="ShinyWall" />
 
@@ -232,6 +236,8 @@
                         android:id="@+id/btnBloc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
                         android:text="Bloc" />
                 </LinearLayout>

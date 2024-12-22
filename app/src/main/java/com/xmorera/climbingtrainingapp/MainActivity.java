@@ -91,14 +91,17 @@ public class MainActivity extends AppCompatActivity {
         btnEntradaManual = findViewById(R.id.btnEntradaManual);
         dadesManualsLayout = findViewById(R.id.dadesManualsLayout);
         dadesManualsLayout.setVisibility(View.GONE);
+        viaTextView.setVisibility(View.GONE);
         btnEntradaManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resetInput();
                 if (dadesManualsLayout.getVisibility() == View.GONE) {
                     dadesManualsLayout.setVisibility(View.VISIBLE);
+                    viaTextView.setVisibility(View.VISIBLE);
                 } else {
                     dadesManualsLayout.setVisibility(View.GONE);
+                    viaTextView.setVisibility(View.GONE);
                 }
             }
         });

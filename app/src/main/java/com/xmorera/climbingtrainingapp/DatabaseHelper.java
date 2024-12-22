@@ -45,12 +45,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_PARET, paret);
         contentValues.put(COL_INTENT, intent);
         long result = db.insert(TABLE_NAME, null, contentValues);
+        db.close();
         return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+    }
+
+    public void closeDatabase(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
+    }
+
+    public boolean updateData(int id, String date, String via, String paret, int intent){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_DATE, date);
+        contentValues.put(COL_VIA, via);
+        contentValues.put(COL_PARET, paret);
+        contentValues.put(COL_INTENT, intent);
+        int result = db.update(TABLE_NAME, contentValues, COL_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return result > 0; //retorna True si la actualització s'ha realitzat correctament
+    }
+
+    public Integer deleteData(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME, COL_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    public Cursor getDataByDate(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ?";
+        return db.rawQuery(query, new String[]{date});
+    }
+
+    public Cursor getDataBetweenDates(String startDate, String endDate){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " BETWEEN ? AND ?";
+        return db.rawQuery(query, new String[]{startDate, endDate});
     }
 
 }
