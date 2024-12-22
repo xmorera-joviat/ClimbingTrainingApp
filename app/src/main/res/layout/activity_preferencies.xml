@@ -11,9 +11,10 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
         android:columnCount="8"
-        android:rowCount="1"
-        android:layout_marginBottom="16dp">
+        android:rowCount="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,13 +31,13 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:text="10"
+            android:textAlignment="center"
             android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="6a+:"
-            />
+            android:text="6a+:" />
 
         <EditText
             android:id="@+id/editText6aPlus"
@@ -44,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -61,6 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -78,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -95,6 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -110,13 +115,14 @@
             android:id="@+id/editText6cPlus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:text="10"
-            android:textSize="14sp"
-            android:layout_marginEnd="15dp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -129,6 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -138,8 +145,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="7a+:"
-            />
+            android:text="7a+:" />
 
         <EditText
             android:id="@+id/editText7aPlus"
@@ -147,6 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -164,6 +171,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -181,6 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -198,6 +207,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -213,13 +223,14 @@
             android:id="@+id/editText7cPlus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
             android:layout_weight="1"
+            android:textAlignment="center"
+            android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:inputType="number"
             android:text="10"
-            android:textSize="14sp"
-            android:layout_marginEnd="15dp"/>
+            android:textSize="14sp" />
 
 
     </GridLayout>
@@ -241,6 +252,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -257,6 +269,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -273,6 +286,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -289,6 +303,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAlignment="center"
             android:inputType="number"
             android:minWidth="48dp"
             android:minHeight="48dp"
@@ -302,6 +317,6 @@
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Guardar Valors" />
+        android:text="Guardar / Sortir" />
 
 </LinearLayout>

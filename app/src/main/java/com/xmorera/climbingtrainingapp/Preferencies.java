@@ -75,7 +75,7 @@ public class Preferencies extends AppCompatActivity {
         editTextAutos.setText(preferencesGZero.getString("Autos", "10,0"));
         editTextCorda.setText(preferencesGZero.getString("Corda", "12,0"));
         editTextShiny.setText(preferencesGZero.getString("Shinywall", "12,0"));
-        editTextBloc.setText(preferencesGZero.getString("Bloc", "5,0"));
+        editTextBloc.setText(preferencesGZero.getString("Bloc", "4,0"));
     }
 
     private void savePreferences() {
@@ -97,6 +97,7 @@ public class Preferencies extends AppCompatActivity {
         editor.putString("Shinywall", editTextShiny.getText().toString());
         editor.putString("Bloc", editTextBloc.getText().toString());
         editor.apply(); // Aplica els canvis
+        finish();
     }
 }
 

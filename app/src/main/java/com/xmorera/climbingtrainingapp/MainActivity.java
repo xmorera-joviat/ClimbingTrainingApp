@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Layout;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;//auxiliar de la base de dades
     Button btnSpeak;//botó per entrar les comandes de veu
     Button btnEntradaManual;
+
 
     //Definició de l'ActivityResultLauncher per tractar el reconeixement de veu
     private final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
@@ -150,10 +154,24 @@ public class MainActivity extends AppCompatActivity {
         displayData(); //mostrar totes les dades de la bd
         mostrarDadesTextView = findViewById(R.id.mostrarDadesTextView);//camp temporal a substituir per un RecyclerView
 
-
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //Gestió dels botons de menú
+        int id = item.getItemId();
+        if (id == R.id.menu_settings) {
+            startActivity(new Intent(this, Preferencies.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void updateDateTextView() {
         String currentDate = dateFormat.format(calendar.getTime());
