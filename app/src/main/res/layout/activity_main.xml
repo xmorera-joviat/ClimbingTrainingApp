@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -29,40 +29,33 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnSpeak"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="10dp"
+        android:text="Entrada de veu!" />
+
+    <Button
+        android:id="@+id/btnBotons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Entrada manual" />
+
     <LinearLayout
+        android:id="@+id/viesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="10dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btnV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="V" />
-
-            <Button
-                android:id="@+id/btnVPlus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="V+" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -70,50 +63,37 @@
                 android:id="@+id/btn6a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:text="6a" />
 
             <Button
                 android:id="@+id/btn6aPlus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:text="6a+" />
 
             <Button
                 android:id="@+id/btn6b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:text="6b" />
 
             <Button
                 android:id="@+id/btn6bPlus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:text="6b+" />
 
-            <Button
-                android:id="@+id/btn6c"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="6c" />
-
-            <Button
-                android:id="@+id/btn6cPlus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="6c+" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -121,96 +101,144 @@
                 android:id="@+id/btn7a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:text="7a" />
 
             <Button
                 android:id="@+id/btn7aPlus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:text="7a+" />
 
             <Button
-                android:id="@+id/btn7b"
+                android:id="@+id/btn6c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="7b" />
+                android:layout_margin="4dp"
+                android:text="6c" />
 
             <Button
-                android:id="@+id/btn7bPlus"
+                android:id="@+id/btn6cPlus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="7b+" />
-
-            <Button
-                android:id="@+id/btn7c"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="7c" />
-
-            <Button
-                android:id="@+id/btn7cPlus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="7c+" />
+                android:layout_margin="4dp"
+                android:text="6c+" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/chkIntent"
+
+            <Button
+                android:id="@+id/btn7b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="intent" />
+                android:layout_margin="4dp"
+                android:text="7b" />
 
             <Button
-                android:id="@+id/btnAutos"
-                android:layout_width="match_parent"
+                android:id="@+id/btn7bPlus"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Autos" />
+                android:layout_margin="4dp"
+                android:text="7b+" />
 
             <Button
-                android:id="@+id/btnCorda"
-                android:layout_width="match_parent"
+                android:id="@+id/btn7c"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Corda" />
+                android:layout_margin="4dp"
+                android:text="7c" />
 
             <Button
-                android:id="@+id/btnShinyWall"
-                android:layout_width="match_parent"
+                android:id="@+id/btn7cPlus"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ShinyWall" />
+                android:layout_margin="4dp"
+                android:text="7c+" />
 
-            <Button
-                android:id="@+id/btnBloc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Bloc" />
-
-            <Button
-                android:id="@+id/btnSpeak"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="30dp"
-                android:text="Parla!" />
         </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/paretsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/chkIntent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:text="intent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnAutos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Autos" />
+
+                <Button
+                    android:id="@+id/btnCorda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Corda" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/btnShinyWall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ShinyWall" />
+
+                <Button
+                    android:id="@+id/btnBloc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Bloc" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/mostrarDadesTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

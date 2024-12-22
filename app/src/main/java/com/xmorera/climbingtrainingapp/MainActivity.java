@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
     TextView dateTextView, infoTextView; //mostrar la data i mostrar la via seleccionada
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    Button btnV, btn6a, btn6b, btn6c, btn7a, btn7b, btn7c;
-    Button btnVPlus, btn6aPlus, btn6bPlus, btn6cPlus, btn7aPlus, btn7bPlus, btn7cPlus;
+    Button btn6a, btn6b, btn6c, btn7a, btn7b, btn7c;
+    Button btn6aPlus, btn6bPlus, btn6cPlus, btn7aPlus, btn7bPlus, btn7cPlus;
     CheckBox chkIntent;
     Button btnAutos, btnCorda, btnShinyWall, btnBloc;//tipus de via
     //variables per a entrar les dades a la base de dades
@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         infoTextView = findViewById(R.id.infoTextView);
 
-        btnV = findViewById(R.id.btnV);
-        btnVPlus = findViewById(R.id.btnVPlus);
         btn6a = findViewById(R.id.btn6a);
         btn6aPlus = findViewById(R.id.btn6aPlus);
         btn6b = findViewById(R.id.btn6b);
@@ -98,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
         btn7cPlus = findViewById(R.id.btn7cPlus);
 
         //establiment dels listeners
-        setGrauListener(btnV);
-        setGrauListener(btnVPlus);
         setGrauListener(btn6a);
         setGrauListener(btn6aPlus);
         setGrauListener(btn6b);
