@@ -197,11 +197,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Bloc" />
+
+            <Button
+                android:id="@+id/btnSpeak"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="30dp"
+                android:text="Parla!" />
         </LinearLayout>
     </LinearLayout>
 
     <TextView
-        android:id="@+id/dadesTextView"
+        android:id="@+id/mostrarDadesTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp" />

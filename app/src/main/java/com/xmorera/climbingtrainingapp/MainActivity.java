@@ -2,8 +2,11 @@ package com.xmorera.climbingtrainingapp;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,31 +15,47 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView dateTextView, infoTextView;
+    TextView dateTextView, infoTextView; //mostrar la data i mostrar la via seleccionada
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    Button btnV, btnVplus, btn6a, btn6b, btn6c, btn7a, btn7b, btn7c;
+    Button btnV, btn6a, btn6b, btn6c, btn7a, btn7b, btn7c;
     Button btnVPlus, btn6aPlus, btn6bPlus, btn6cPlus, btn7aPlus, btn7bPlus, btn7cPlus;
     CheckBox chkIntent;
-    Button btnAutos, btnCorda, btnShinyWall, btnBloc;
+    Button btnAutos, btnCorda, btnShinyWall, btnBloc;//tipus de via
+    //variables per a entrar les dades a la base de dades
     String via;
     String paret;
     int intent = 0;
-    Date data;
-    TextView dadesTextView;
-    DatabaseHelper databaseHelper;
+    TextView mostrarDadesTextView; //camp  temporal per mostrar dades de la base de dades s'ha de fer amb un recyclerView
+    DatabaseHelper databaseHelper;//auxiliar de la base de dades
+    Button btnSpeak;//botó per entrar les conamdes de veu
+
+    //Definició de l'ActivityResultLauncher per tractar el reconeixement de veu
+    private final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    ArrayList<String> results = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    if (results != null && !results.isEmpty()) {
+                        String command = results.get(0);
+                        Toast.makeText(this, "Command: " + command, Toast.LENGTH_SHORT).show();
+                        //afegir les dades reconegudes a la bd
+                    }
+                }
+            });
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         dateTextView = findViewById(R.id.dateTextView);
-        //data actual
+        //data actual, la posem a l'inici de l'aplicació
         updateDateTextView();
         //selecció d'una data
         dateTextView.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         btnShinyWall = findViewById(R.id.btnShinyWall);
         btnBloc = findViewById(R.id.btnBloc);
 
-        //listeners pels botons de climbing
+        //listeners pels botons de paret
         setWallListener(btnAutos);
         setWallListener(btnCorda);
         setWallListener(btnShinyWall);
@@ -106,11 +126,15 @@ public class MainActivity extends AppCompatActivity {
 
         chkIntent = findViewById(R.id.chkIntent);
 
-        dadesTextView = findViewById(R.id.dadesTextView);
-
         databaseHelper = new DatabaseHelper(this);
-        displayData();
+        displayData(); //mostrar totes les dades de la bd
+        mostrarDadesTextView = findViewById(R.id.mostrarDadesTextView);//camp temporal a substituir per un RecyclerView
+
+        btnSpeak = findViewById(R.id.btnSpeak);
+        btnSpeak.setOnClickListener(view -> startVoiceInput());
     }
+
+
 
     private void updateDateTextView() {
         String currentDate = dateFormat.format(calendar.getTime());
@@ -172,14 +196,18 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(MainActivity.this, "Error en guardar la via", Toast.LENGTH_SHORT).show();
                     }
-                    //reset
-                    infoTextView.setText("");
-                    chkIntent.setChecked(false);
-                    intent = 0;
-                    displayData();
+                    resetInput();
+                    displayData(); //mostrar totes les dades emmagatzemades a la bd
                 }
             }
         });
+    }
+
+    private void resetInput() {
+        //reset pantalla introducció de dades
+        infoTextView.setText("");
+        chkIntent.setChecked(false);
+        intent = 0;
     }
 
     private void displayData(){
@@ -196,7 +224,20 @@ public class MainActivity extends AppCompatActivity {
             stringBuilder.append("Intent: ").append(cursor.getInt(4)).append("\n");
         }
         cursor.close();
-        dadesTextView.setText(stringBuilder.toString());
+        mostrarDadesTextView.setText(stringBuilder.toString());
 
+    }
+
+    private void startVoiceInput() {
+        resetInput();
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ca-ES");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Digues el grau, la paret (i si és intent...)");
+        try {
+            voiceInputLauncher.launch(intent);
+        } catch (ActivityNotFoundException a){
+            Toast.makeText(this, "Ho sento, el reconeixement de veu no és compatible en aquest dispositiu", Toast.LENGTH_SHORT).show();
+        }
     }
 }
