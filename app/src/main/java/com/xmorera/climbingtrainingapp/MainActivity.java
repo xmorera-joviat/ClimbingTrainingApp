@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +29,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-
-    TextView dateTextView, infoTextView; //mostrar la data i mostrar la via seleccionada
+    LinearLayout dadesManualsLayout;
+    TextView dateTextView, viaTextView; //mostrar la data i mostrar la via seleccionada
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     Button btn6a, btn6b, btn6c, btn7a, btn7b, btn7c;
@@ -41,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
     int intent = 0;
     TextView mostrarDadesTextView; //camp  temporal per mostrar dades de la base de dades s'ha de fer amb un recyclerView
     DatabaseHelper databaseHelper;//auxiliar de la base de dades
-    Button btnSpeak;//botó per entrar les conamdes de veu
+    Button btnSpeak;//botó per entrar les comandes de veu
+    Button btnEntradaManual;
 
     //Definició de l'ActivityResultLauncher per tractar el reconeixement de veu
     private final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +83,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        infoTextView = findViewById(R.id.infoTextView);
+        viaTextView = findViewById(R.id.viaTextView);
+
+        btnSpeak = findViewById(R.id.btnSpeak);
+        btnSpeak.setOnClickListener(view -> startVoiceInput());
+
+        btnEntradaManual = findViewById(R.id.btnEntradaManual);
+        dadesManualsLayout = findViewById(R.id.dadesManualsLayout);
+        dadesManualsLayout.setVisibility(View.GONE);
+        btnEntradaManual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resetInput();
+                if (dadesManualsLayout.getVisibility() == View.GONE) {
+                    dadesManualsLayout.setVisibility(View.VISIBLE);
+                } else {
+                    dadesManualsLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
 
         btn6a = findViewById(R.id.btn6a);
         btn6aPlus = findViewById(R.id.btn6aPlus);
@@ -94,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         btn7bPlus = findViewById(R.id.btn7bPlus);
         btn7c = findViewById(R.id.btn7c);
         btn7cPlus = findViewById(R.id.btn7cPlus);
-
         //establiment dels listeners
         setGrauListener(btn6a);
         setGrauListener(btn6aPlus);
@@ -109,25 +131,23 @@ public class MainActivity extends AppCompatActivity {
         setGrauListener(btn7c);
         setGrauListener(btn7cPlus);
 
+        chkIntent = findViewById(R.id.chkIntent);
+
         btnAutos = findViewById(R.id.btnAutos);
         btnCorda = findViewById(R.id.btnCorda);
         btnShinyWall = findViewById(R.id.btnShinyWall);
         btnBloc = findViewById(R.id.btnBloc);
-
         //listeners pels botons de paret
         setWallListener(btnAutos);
         setWallListener(btnCorda);
         setWallListener(btnShinyWall);
         setWallListener(btnBloc);
 
-        chkIntent = findViewById(R.id.chkIntent);
-
         databaseHelper = new DatabaseHelper(this);
         displayData(); //mostrar totes les dades de la bd
         mostrarDadesTextView = findViewById(R.id.mostrarDadesTextView);//camp temporal a substituir per un RecyclerView
 
-        btnSpeak = findViewById(R.id.btnSpeak);
-        btnSpeak.setOnClickListener(view -> startVoiceInput());
+
     }
 
 
@@ -162,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                infoTextView.setText(button.getText());
+                viaTextView.setText(button.getText());
             }
         });
     }
@@ -172,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(infoTextView.getText().toString().equals("")){
+                if(viaTextView.getText().toString().equals("")){
                     //si no s'ha introduit una via no fer res
                 }else {
 
@@ -180,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     String dia = dateTextView.getText().toString().split("/")[0];
                     String mes = dateTextView.getText().toString().split("/")[1];
                     String any = dateTextView.getText().toString().split("/")[2];
-                    via = infoTextView.getText().toString();
+                    via = viaTextView.getText().toString();
                     paret = button.getText().toString();
                     if (chkIntent.isChecked()) {
                         intent = 1;
@@ -201,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetInput() {
         //reset pantalla introducció de dades
-        infoTextView.setText("");
+        viaTextView.setText("");
         chkIntent.setChecked(false);
         intent = 0;
     }
