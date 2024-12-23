@@ -32,7 +32,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
+/**
+ * Classe principal de l'aplicació Climbing Training App.
+ * l'objectiu d'aquesta aplicació es registrar l'entrenament en rocòdrom donant una puntuació
+ * a les vies realitzades en funció de la seva dificultat i llargada
+ *
+ * @author Xavier Morera
+ * */
 public class MainActivity extends AppCompatActivity {
     LinearLayout dadesManualsLayout;
     TextView dateTextView, viaTextView; //mostrar la data i mostrar la via seleccionada
@@ -54,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
     List<ClimbingData> climbingDataList;
 
 
-    //Definició de l'ActivityResultLauncher per tractar el reconeixement de veu
+    /*
+     * Implementació de l'ActivityResultLauncher per tractar el reconeixement de veu
+     */
     private final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -68,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+    /**
+     * onCretate
+     *
+     * mapeix dels elements de la pantalla a variables,
+     * inicialitza els listeners dels botons de dificultat, zona i intent,
+     * insereix la data actual al TextView de la data
+     * implementa el listener de la data per selecionar una data qualsevol
+     * carrega i mostra en un recyclerView totes les dades de la base de dades ordenades per data en ordre descendent
+     * */
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         dateTextView = findViewById(R.id.dateTextView);
         //data actual, la posem a l'inici de l'aplicació
         updateDateTextView();
-        //selecció d'una data
+        //selecció d'una data mitjançant el calendari en pantalla
         dateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         btn6a = findViewById(R.id.btn6a);
         btn6aPlus = findViewById(R.id.btn6aPlus);
         btn6b = findViewById(R.id.btn6b);
@@ -128,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         btn7bPlus = findViewById(R.id.btn7bPlus);
         btn7c = findViewById(R.id.btn7c);
         btn7cPlus = findViewById(R.id.btn7cPlus);
-        //establiment dels listeners
+        //establiment dels listeners pels botons de via
         setGrauListener(btn6a);
         setGrauListener(btn6aPlus);
         setGrauListener(btn6b);
@@ -148,11 +163,11 @@ public class MainActivity extends AppCompatActivity {
         btnCorda = findViewById(R.id.btnCorda);
         btnShinyWall = findViewById(R.id.btnShinyWall);
         btnBloc = findViewById(R.id.btnBloc);
-        //listeners pels botons de paret
-        setWallListener(btnAutos);
-        setWallListener(btnCorda);
-        setWallListener(btnShinyWall);
-        setWallListener(btnBloc);
+        //listeners pels botons de zona
+        setZoneListener(btnAutos);
+        setZoneListener(btnCorda);
+        setZoneListener(btnShinyWall);
+        setZoneListener(btnBloc);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -166,16 +181,25 @@ public class MainActivity extends AppCompatActivity {
         loadData(); //mostrar totes les dades de la bd
     }
 
+    /**
+     * onCreateOptionsMenu
+     *
+     * mostra el menú de la part superiot dreta (tres puntets)
+     * */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    /**
+     * onOptionsItemSelected
+     * gestió dels botons de menu
+     * */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //Gestió dels botons de menú
         int id = item.getItemId();
+        // si hi ha més elements s'ha de fer amb switch
         if (id == R.id.menu_settings) {
             startActivity(new Intent(this, Preferencies.class));
             return true;
@@ -183,11 +207,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * updateDateTextView
+     * actualització a la data actual en TextView de la data
+     * */
     private void updateDateTextView() {
         String currentDate = dateFormat.format(calendar.getTime());
         dateTextView.setText(currentDate);
     }
 
+    /**
+     * showDatePicker
+     * mostra el calendari per seleccionar una data i la insereix en el TextView de la data
+     * */
     private void showDatePicker(){
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -205,10 +237,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }, year, month, day);
         datePickerDialog.show();
-
-
     }
 
+    /**
+     * setGrauListener
+     * listener dels botons de dificultat en la seleccio de via manual
+     * quan es clica un botó de dificultat de la via insereix el seu text a la TextView de la via
+     * */
     private void setGrauListener(Button button){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,8 +253,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    private void setWallListener(Button button) {
+    /**
+     * setZoneListener
+     * listener dels botons de zona en la selecció manual
+     * quan es clica in botó de zona comprova que hi hagi una via seleccionada i
+     * formateja la data per fer la inserció a la base de dades
+     * */
+    private void setZoneListener(Button button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,6 +285,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * insertData
+     *
+     * insereix les dades a la base de dades
+     *
+     * @param -String date, String via, String zona, int intent
+     * */
     private void insertData(String date, String via, String zona, int intent){
         boolean insertSuccess = databaseHelper.insertData(date, via, zona, intent);
         if (insertSuccess) {
@@ -255,6 +302,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * resetInput
+     *
+     * resteja l'elecció de la via i el checkbox de l'intent
+     */
     private void resetInput() {
         //reset pantalla introducció de dades
         viaTextView.setText("");
@@ -262,6 +314,11 @@ public class MainActivity extends AppCompatActivity {
         intent = 0;
     }
 
+    /**
+     * loadData
+     *
+     * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
+     */
     private void loadData(){
         climbingDataList.clear();
         Cursor cursor = databaseHelper.getAllData();
@@ -278,16 +335,23 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
     }
 
+    /**
+     * startVoiceInput
+     *
+     * inicia el reconeixement de veu i mostra els resultats en un Toast
+     */
     private void startVoiceInput() {
         resetInput();
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ca-ES");
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Digues el grau, la paret (i si és intent...)");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Digues el grau, la zona (i si és intent...)");
         try {
             voiceInputLauncher.launch(intent);
         } catch (ActivityNotFoundException a){
             Toast.makeText(this, "Ho sento, el reconeixement de veu no és compatible en aquest dispositiu", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

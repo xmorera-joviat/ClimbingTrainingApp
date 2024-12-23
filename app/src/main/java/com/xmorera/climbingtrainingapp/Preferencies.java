@@ -15,6 +15,7 @@ public class Preferencies extends AppCompatActivity {
 
     private EditText editText6a, editText6aPlus, editText6b, editText6bPlus, editText6c, editText6cPlus;
     private EditText editText7a, editText7aPlus, editText7b, editText7bPlus, editText7c, editText7cPlus;
+    private EditText editTextIntent;
     private EditText editTextAutos, editTextCorda, editTextShiny, editTextBloc;
     private Button btnSave;
 
@@ -45,6 +46,7 @@ public class Preferencies extends AppCompatActivity {
         editText7bPlus = findViewById(R.id.editText7bPlus);
         editText7c = findViewById(R.id.editText7c);
         editText7cPlus = findViewById(R.id.editText7cPlus);
+        editTextIntent = findViewById(R.id.editTextIntent);
         editTextAutos = findViewById(R.id.editTextAutos);
         editTextCorda = findViewById(R.id.editTextCorda);
         editTextShiny = findViewById(R.id.editTextShiny);
@@ -72,6 +74,7 @@ public class Preferencies extends AppCompatActivity {
         editText7bPlus.setText(preferencesGZero.getString("7bPlus", "38,4"));
         editText7c.setText(preferencesGZero.getString("7c", "57,7"));
         editText7cPlus.setText(preferencesGZero.getString("7cPlus", "86,6"));
+        editTextIntent.setText(preferencesGZero.getString("Intent", "0,25"));
         editTextAutos.setText(preferencesGZero.getString("Autos", "10,0"));
         editTextCorda.setText(preferencesGZero.getString("Corda", "12,0"));
         editTextShiny.setText(preferencesGZero.getString("Shinywall", "12,0"));
@@ -92,6 +95,7 @@ public class Preferencies extends AppCompatActivity {
         editor.putString("7bPlus", editText7bPlus.getText().toString());
         editor.putString("7c", editText7c.getText().toString());
         editor.putString("7cPlus", editText7cPlus.getText().toString());
+        editor.putString("Intent", editTextIntent.getText().toString());
         editor.putString("Autos", editTextAutos.getText().toString());
         editor.putString("Corda", editTextCorda.getText().toString());
         editor.putString("Shinywall", editTextShiny.getText().toString());
