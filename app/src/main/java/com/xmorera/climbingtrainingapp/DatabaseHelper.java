@@ -13,7 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_ID = "ID";
     private static final String COL_DATE = "DATE";
     private static final String COL_VIA = "VIA";
-    private static final String COL_PARET = "PARET";
+    private static final String COL_ZONA = "ZONA";
     private static final String COL_INTENT = "INTENT";
 
     public DatabaseHelper(Context context) {
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_DATE + " TEXT, " +
                 COL_VIA + " TEXT, " +
-                COL_PARET + " TEXT, " +
+                COL_ZONA + " TEXT, " +
                 COL_INTENT + " INTEGER)";
         db.execSQL(createTable);
     }
@@ -37,12 +37,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String date, String via, String paret, int intent) {
+    public boolean insertData(String date, String via, String zona, int intent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_DATE, date);
         contentValues.put(COL_VIA, via);
-        contentValues.put(COL_PARET, paret);
+        contentValues.put(COL_ZONA, zona);
         contentValues.put(COL_INTENT, intent);
         long result = db.insert(TABLE_NAME, null, contentValues);
         db.close();
@@ -51,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_DATE + " DESC", new String[]{});
     }
 
     public void closeDatabase(){
@@ -61,12 +61,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateData(int id, String date, String via, String paret, int intent){
+    public boolean updateData(int id, String date, String via, String zona, int intent){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_DATE, date);
         contentValues.put(COL_VIA, via);
-        contentValues.put(COL_PARET, paret);
+        contentValues.put(COL_ZONA, zona);
         contentValues.put(COL_INTENT, intent);
         int result = db.update(TABLE_NAME, contentValues, COL_ID + " = ?", new String[]{String.valueOf(id)});
         db.close();

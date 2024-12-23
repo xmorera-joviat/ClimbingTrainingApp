@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,10 +25,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout dadesManualsLayout;
@@ -42,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
     Button btnAutos, btnCorda, btnShinyWall, btnBloc;//tipus de via
     //variables per a entrar les dades a la base de dades
     String via;
-    String paret;
+    String zona;
     int intent = 0;
-    TextView mostrarDadesTextView; //camp  temporal per mostrar dades de la base de dades s'ha de fer amb un recyclerView
     DatabaseHelper databaseHelper;//auxiliar de la base de dades
     Button btnSpeak;//botó per entrar les comandes de veu
     Button btnEntradaManual;
+    RecyclerView recyclerView;
+    ClimbingDataAdapter adapter;
+    List<ClimbingData> climbingDataList;
 
 
     //Definició de l'ActivityResultLauncher per tractar el reconeixement de veu
@@ -150,10 +154,16 @@ public class MainActivity extends AppCompatActivity {
         setWallListener(btnShinyWall);
         setWallListener(btnBloc);
 
-        databaseHelper = new DatabaseHelper(this);
-        displayData(); //mostrar totes les dades de la bd
-        mostrarDadesTextView = findViewById(R.id.mostrarDadesTextView);//camp temporal a substituir per un RecyclerView
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        climbingDataList = new ArrayList<>();
+        databaseHelper = new DatabaseHelper(this);
+
+        adapter = new ClimbingDataAdapter(climbingDataList);
+        recyclerView.setAdapter(adapter);
+
+        loadData(); //mostrar totes les dades de la bd
     }
 
     @Override
@@ -216,28 +226,33 @@ public class MainActivity extends AppCompatActivity {
                 if(viaTextView.getText().toString().equals("")){
                     //si no s'ha introduit una via no fer res
                 }else {
-
                     //dades per guardar a sqlite
                     String dia = dateTextView.getText().toString().split("/")[0];
                     String mes = dateTextView.getText().toString().split("/")[1];
                     String any = dateTextView.getText().toString().split("/")[2];
+                    String date = dia + "/" + mes + "/" + any;
                     via = viaTextView.getText().toString();
-                    paret = button.getText().toString();
+                    zona = button.getText().toString();
                     if (chkIntent.isChecked()) {
                         intent = 1;
                     }
                     //introducció de dades a la base de dades
-                    boolean insertSuccess = databaseHelper.insertData(dia + "/" + mes + "/" + any, via, paret, intent);
-                    if (insertSuccess) {
-                        Toast.makeText(MainActivity.this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Error en guardar la via", Toast.LENGTH_SHORT).show();
-                    }
+                    insertData(date, via, zona, intent);
                     resetInput();
-                    displayData(); //mostrar totes les dades emmagatzemades a la bd
+
                 }
             }
         });
+    }
+
+    private void insertData(String date, String via, String zona, int intent){
+        boolean insertSuccess = databaseHelper.insertData(date, via, zona, intent);
+        if (insertSuccess) {
+            Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
+            loadData();
+        } else {
+            Toast.makeText(MainActivity.this, "Error en guardar la via", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void resetInput() {
@@ -247,22 +262,20 @@ public class MainActivity extends AppCompatActivity {
         intent = 0;
     }
 
-    private void displayData(){
+    private void loadData(){
+        climbingDataList.clear();
         Cursor cursor = databaseHelper.getAllData();
-        if (cursor.getCount() == 0) {
-            Toast.makeText(this, "No s'han trobat dades", Toast.LENGTH_SHORT).show();
-            return;
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
+                String via = cursor.getString(cursor.getColumnIndexOrThrow("VIA"));
+                String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
+                int intent = cursor.getInt(cursor.getColumnIndexOrThrow("INTENT"));
+                climbingDataList.add(new ClimbingData(date, via, zona, intent));
+            }
+            cursor.close();
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        while (cursor.moveToNext()) {
-            stringBuilder.append("Data: ").append(cursor.getString(1)).append(" ");
-            stringBuilder.append("Via: ").append(cursor.getString(2)).append(" ");
-            stringBuilder.append("Paret: ").append(cursor.getString(3)).append(" ");
-            stringBuilder.append("Intent: ").append(cursor.getInt(4)).append("\n");
-        }
-        cursor.close();
-        mostrarDadesTextView.setText(stringBuilder.toString());
-
+        adapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
     }
 
     private void startVoiceInput() {
