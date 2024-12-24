@@ -13,9 +13,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Preferencies extends AppCompatActivity {
 
-    private EditText editText6a, editText6aPlus, editText6b, editText6bPlus, editText6c, editText6cPlus;
-    private EditText editText7a, editText7aPlus, editText7b, editText7bPlus, editText7c, editText7cPlus;
-    private EditText editTextIntent;
+    private EditText editTextIV, editTextV, editTextVPlus,
+            editText6a, editText6aPlus, editText6b, editText6bPlus, editText6c, editText6cPlus,
+            editText7a, editText7aPlus, editText7b, editText7bPlus, editText7c, editText7cPlus,
+            editText8a, editText8aPlus, editText8b, editText8bPlus, editText8c;
+    private EditText editTextIntentCoeficient, editTextShinyCoeficient, editTextCordaCoeficient, editTextBlocCoeficient;
     private EditText editTextAutos, editTextCorda, editTextShiny, editTextBloc;
     private Button btnSave;
 
@@ -34,6 +36,9 @@ public class Preferencies extends AppCompatActivity {
 
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
 
+        editTextIV = findViewById(R.id.editTextIV);
+        editTextV = findViewById(R.id.editTextV);
+        editTextVPlus = findViewById(R.id.editTextVPlus);
         editText6a = findViewById(R.id.editText6a);
         editText6aPlus = findViewById(R.id.editText6aPlus);
         editText6b = findViewById(R.id.editText6b);
@@ -46,7 +51,15 @@ public class Preferencies extends AppCompatActivity {
         editText7bPlus = findViewById(R.id.editText7bPlus);
         editText7c = findViewById(R.id.editText7c);
         editText7cPlus = findViewById(R.id.editText7cPlus);
-        editTextIntent = findViewById(R.id.editTextIntent);
+        editText8a = findViewById(R.id.editText8a);
+        editText8aPlus = findViewById(R.id.editText8aPlus);
+        editText8b = findViewById(R.id.editText8b);
+        editText8bPlus = findViewById(R.id.editText8bPlus);
+        editText8c = findViewById(R.id.editText8c);
+        editTextIntentCoeficient = findViewById(R.id.editTextIntentCoeficient);
+        editTextShinyCoeficient = findViewById(R.id.editTextShinyCoeficient);
+        editTextCordaCoeficient = findViewById(R.id.editTextCordaCoeficient);
+        editTextBlocCoeficient = findViewById(R.id.editTextBlocCoeficient);
         editTextAutos = findViewById(R.id.editTextAutos);
         editTextCorda = findViewById(R.id.editTextCorda);
         editTextShiny = findViewById(R.id.editTextShiny);
@@ -62,19 +75,30 @@ public class Preferencies extends AppCompatActivity {
 
     private void loadPreferences() {
         // Carrega els valors de SharedPreferences
-        editText6a.setText(preferencesGZero.getString("6a", "1,0"));
-        editText6aPlus.setText(preferencesGZero.getString("6a+", "1,5"));
-        editText6b.setText(preferencesGZero.getString("6b", "2,3"));
-        editText6bPlus.setText(preferencesGZero.getString("6b+", "3,4"));
-        editText6c.setText(preferencesGZero.getString("6c", "5,1"));
-        editText6cPlus.setText(preferencesGZero.getString("6c+", "7,6"));
-        editText7a.setText(preferencesGZero.getString("7a", "11,4"));
-        editText7aPlus.setText(preferencesGZero.getString("7a+", "17,1"));
-        editText7b.setText(preferencesGZero.getString("7b", "25,6"));
-        editText7bPlus.setText(preferencesGZero.getString("7b+", "38,4"));
-        editText7c.setText(preferencesGZero.getString("7c", "57,7"));
-        editText7cPlus.setText(preferencesGZero.getString("7c+", "86,6"));
-        editTextIntent.setText(preferencesGZero.getString("Intent", "0,25"));
+        editTextIV.setText(preferencesGZero.getString("IV", "1,0"));
+        editTextV.setText(preferencesGZero.getString("V", "1,4"));
+        editTextVPlus.setText(preferencesGZero.getString("V+", "2,0"));
+        editText6a.setText(preferencesGZero.getString("6a", "2,8"));
+        editText6aPlus.setText(preferencesGZero.getString("6a+", "3,9"));
+        editText6b.setText(preferencesGZero.getString("6b", "5,4"));
+        editText6bPlus.setText(preferencesGZero.getString("6b+", "7,5"));
+        editText6c.setText(preferencesGZero.getString("6c", "10,6"));
+        editText6cPlus.setText(preferencesGZero.getString("6c+", "14,8"));
+        editText7a.setText(preferencesGZero.getString("7a", "20,7"));
+        editText7aPlus.setText(preferencesGZero.getString("7a+", "28,9"));
+        editText7b.setText(preferencesGZero.getString("7b", "40,5"));
+        editText7bPlus.setText(preferencesGZero.getString("7b+", "56,7"));
+        editText7c.setText(preferencesGZero.getString("7c", "79,4"));
+        editText7cPlus.setText(preferencesGZero.getString("7c+", "111,1"));
+        editText8a.setText(preferencesGZero.getString("8a", "155,6"));
+        editText8aPlus.setText(preferencesGZero.getString("8a+", "217,8"));
+        editText8b.setText(preferencesGZero.getString("8b", "304,9"));
+        editText8bPlus.setText(preferencesGZero.getString("8b+", "426,9"));
+        editText8c.setText(preferencesGZero.getString("8c", "597,6"));
+        editTextIntentCoeficient.setText(preferencesGZero.getString("IntentCoeficient", "0,10"));
+        editTextShinyCoeficient.setText(preferencesGZero.getString("ShinyCoeficient", "1,10"));
+        editTextCordaCoeficient.setText(preferencesGZero.getString("CordaCoeficient", "1,20"));
+        editTextBlocCoeficient.setText(preferencesGZero.getString("BlocCoeficient", "1,30"));
         editTextAutos.setText(preferencesGZero.getString("Autos", "10,0"));
         editTextCorda.setText(preferencesGZero.getString("Corda", "12,0"));
         editTextShiny.setText(preferencesGZero.getString("ShinyWall", "12,0"));
@@ -83,6 +107,10 @@ public class Preferencies extends AppCompatActivity {
 
     private void savePreferences() {
         SharedPreferences.Editor editor = preferencesGZero.edit();
+        //editor.putString("IV", "1.0");
+        editor.putString("IV", editTextIV.getText().toString());
+        editor.putString("V", editTextV.getText().toString());
+        editor.putString("V+", editTextVPlus.getText().toString());
         editor.putString("6a", editText6a.getText().toString());
         editor.putString("6a+", editText6aPlus.getText().toString());
         editor.putString("6b", editText6b.getText().toString());
@@ -95,7 +123,15 @@ public class Preferencies extends AppCompatActivity {
         editor.putString("7b+", editText7bPlus.getText().toString());
         editor.putString("7c", editText7c.getText().toString());
         editor.putString("7c+", editText7cPlus.getText().toString());
-        editor.putString("Intent", editTextIntent.getText().toString());
+        editor.putString("8a", editText8a.getText().toString());
+        editor.putString("8a+", editText8aPlus.getText().toString());
+        editor.putString("8b", editText8b.getText().toString());
+        editor.putString("8b+", editText8bPlus.getText().toString());
+        editor.putString("8c", editText8c.getText().toString());
+        editor.putString("IntentCoeficient", editTextIntentCoeficient.getText().toString());
+        editor.putString("CordaCoeficient", editTextCordaCoeficient.getText().toString());
+        editor.putString("ShinyCoeficient", editTextShinyCoeficient.getText().toString());
+        editor.putString("BlocCoeficient", editTextBlocCoeficient.getText().toString());
         editor.putString("Autos", editTextAutos.getText().toString());
         editor.putString("Corda", editTextCorda.getText().toString());
         editor.putString("ShinyWall", editTextShiny.getText().toString());
