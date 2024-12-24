@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ClimbingDataAdapter adapter;
     List<ClimbingData> climbingDataList;
+    SharedPreferences preferencesGZero;
 
 
     /*
@@ -178,7 +180,16 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ClimbingDataAdapter(climbingDataList);
         recyclerView.setAdapter(adapter);
 
+        //inicialitzar les sharedPreferences
+        preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
+
         loadData(); //mostrar totes les dades de la bd
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
     }
 
     /**
@@ -328,11 +339,37 @@ public class MainActivity extends AppCompatActivity {
                 String via = cursor.getString(cursor.getColumnIndexOrThrow("VIA"));
                 String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
                 int intent = cursor.getInt(cursor.getColumnIndexOrThrow("INTENT"));
-                climbingDataList.add(new ClimbingData(date, via, zona, intent));
+
+                String puntuacio = puntuacioVia(via, zona, intent);
+
+                climbingDataList.add(new ClimbingData(date, via, zona, intent, puntuacio));
             }
             cursor.close();
         }
         adapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
+    }
+
+    /**
+     * puntuacioVia
+     *
+     * s'encarrega de fer els càlculs depenent de la dificultat de la via, de la llargada i de l'intent
+     * @param -String via, String zona, int intent
+     * @return String corresponent a la puntuació de la via
+     * */
+    private String puntuacioVia(String via, String zona, int intent) {
+        // activació de les preferencies,
+        // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
+        if (preferencesGZero.getString(via, "error").equals("error")) {
+            startActivity(new Intent(this, Preferencies.class));
+        }
+        String viaValor = preferencesGZero.getString(via, "0,0").replace(",",".");
+        String zonaMetres= preferencesGZero.getString(zona, "0,0").replace(",",".");
+        double puntsVia = Double.parseDouble(viaValor)*Double.parseDouble(zonaMetres);
+        if(intent == 1){
+            puntsVia *= Double.parseDouble(preferencesGZero.getString("Intent", "0,0").replace(",","."));
+        }
+
+        return String.format("%.1f", puntsVia).replace(".", ",");
     }
 
     /**
