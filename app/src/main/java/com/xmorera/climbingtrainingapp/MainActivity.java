@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     ClimbingDataAdapter adapter;
     List<ClimbingData> climbingDataList;
     SharedPreferences preferencesGZero;
+    String diaAnterior;
+    double puntsDia;
 
 
     /*
@@ -331,6 +333,8 @@ public class MainActivity extends AppCompatActivity {
      * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
      */
     private void loadData(){
+        diaAnterior ="";
+        puntsDia = 0;
         climbingDataList.clear();
         Cursor cursor = databaseHelper.getAllData();
         if (cursor != null) {
@@ -340,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                 String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
                 int intent = cursor.getInt(cursor.getColumnIndexOrThrow("INTENT"));
 
-                String puntuacio = puntuacioVia(via, zona, intent);
+                String puntuacio = puntuacioVia(date, via, zona, intent);
 
                 climbingDataList.add(new ClimbingData(date, via, zona, intent, puntuacio));
             }
@@ -356,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
      * @param -String via, String zona, int intent
      * @return String corresponent a la puntuació de la via
      * */
-    private String puntuacioVia(String via, String zona, int intent) {
+    private String puntuacioVia(String date, String via, String zona, int intent) {
         // activació de les preferencies,
         // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
         if (preferencesGZero.getString(via, "error").equals("error")) {
@@ -369,8 +373,10 @@ public class MainActivity extends AppCompatActivity {
             puntsVia *= Double.parseDouble(preferencesGZero.getString("Intent", "0,0").replace(",","."));
         }
 
+
         return String.format("%.1f", puntsVia).replace(".", ",");
     }
+
 
     /**
      * startVoiceInput
