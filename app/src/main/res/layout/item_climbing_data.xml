@@ -3,29 +3,65 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
-
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/viaTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24/12/2024"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/zonaTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/viaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6a+"
+                android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/intentTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/zonaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Autos"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/intentTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="neta"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/puntuacioTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="50.0"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="3"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray" />
+
+
 </LinearLayout>
+

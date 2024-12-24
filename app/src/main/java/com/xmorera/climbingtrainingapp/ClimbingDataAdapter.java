@@ -32,6 +32,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
         holder.viaTextView.setText(data.getVia());
         holder.zonaTextView.setText(data.getZona());
         holder.intentTextView.setText(data.getIntent() == 1 ? "Intent" : "Neta");
+        holder.puntuacioTextView.setText(String.valueOf(data.getPuntuacio()));
     }
 
     @Override
@@ -44,6 +45,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
         TextView viaTextView;
         TextView zonaTextView;
         TextView intentTextView;
+        TextView puntuacioTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -51,6 +53,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
             viaTextView = itemView.findViewById(R.id.viaTextView);
             zonaTextView = itemView.findViewById(R.id.zonaTextView);
             intentTextView = itemView.findViewById(R.id.intentTextView);
+            puntuacioTextView = itemView.findViewById(R.id.puntuacioTextView);
         }
     }
 }
