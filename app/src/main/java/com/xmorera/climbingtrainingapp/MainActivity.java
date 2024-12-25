@@ -369,11 +369,11 @@ public class MainActivity extends AppCompatActivity {
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
                 String dificultat = cursor.getString(cursor.getColumnIndexOrThrow("DIFICULTAT"));
                 String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
-                int intent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
+                int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
 
-                String puntuacio = puntuacioVia(date, dificultat, zona, intent);
+                String puntuacio = puntuacioVia(date, dificultat, zona, ifIntent);
 
-                climbingDataList.add(new ClimbingData(date, dificultat, zona, intent, puntuacio));
+                climbingDataList.add(new ClimbingData( id, date, dificultat, zona, ifIntent, puntuacio));
             }
             cursor.close();
         }

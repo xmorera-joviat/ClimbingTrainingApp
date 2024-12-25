@@ -43,6 +43,14 @@
                 android:text="neta"
                 android:textSize="14sp" />
 
+            <TextView
+                android:id="@+id/idTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
         </LinearLayout>
         <TextView
             android:id="@+id/puntuacioTextView"

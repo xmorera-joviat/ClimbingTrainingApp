@@ -28,6 +28,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
     @Override
     public void onBindViewHolder(@NonNull ClimbingDataAdapter.ViewHolder holder, int position) {
         ClimbingData data = climbingDataList.get(position);
+        holder.idTextView.setText(data.getId());
         holder.dateTextView.setText(data.getDate());
         holder.dificultatTextView.setText(data.getDificultat());
         holder.zonaTextView.setText(data.getZona());
@@ -41,6 +42,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView idTextView;
         TextView dateTextView;
         TextView dificultatTextView;
         TextView zonaTextView;
@@ -49,6 +51,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            idTextView = itemView.findViewById(R.id.idTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             dificultatTextView = itemView.findViewById(R.id.dificultatTextView);
             zonaTextView = itemView.findViewById(R.id.zonaTextView);
