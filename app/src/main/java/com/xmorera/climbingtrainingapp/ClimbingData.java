@@ -1,6 +1,7 @@
 package com.xmorera.climbingtrainingapp;
 
 public class ClimbingData {
+    private int id;
     private String date;
     private String dificultat;
     private String zona;

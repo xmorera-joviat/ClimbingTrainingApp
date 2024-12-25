@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
     ClimbingDataAdapter adapter;
     List<ClimbingData> climbingDataList;
     SharedPreferences preferencesGZero;
-    String diaAnterior;
-    double puntsDia;
+    double puntuacioDia;
 
 
     /*
@@ -116,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         dificultatTextView = findViewById(R.id.dificultatTextView);
-
         btnSpeak = findViewById(R.id.btnSpeak);
         btnSpeak.setOnClickListener(view -> startVoiceInput());
 
@@ -203,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         //inicialitzar les sharedPreferences
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
 
-        loadData(); //mostrar totes les dades de la bd
+        loadDayData(); //mostrar totes les dades de la bd
     }
 
     /**
@@ -220,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadData();
+        loadDayData();
     }
 
     /**
@@ -276,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
                         calendar.set(Calendar.MONTH, month);
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         updateDateTextView(); // Update TextView with new date
+                        loadDayData(); // Reload data for the selected date
                     }
                 }, year, month, day);
         datePickerDialog.show();
@@ -310,10 +309,7 @@ public class MainActivity extends AppCompatActivity {
                     //si no s'ha introduit una via no fer res
                 }else {
                     //dades per guardar a sqlite
-                    String dia = dateTextView.getText().toString().split("/")[0];
-                    String mes = dateTextView.getText().toString().split("/")[1];
-                    String any = dateTextView.getText().toString().split("/")[2];
-                    String date = dia + "/" + mes + "/" + any;
+                    String date = dateTextView.getText().toString();
                     dificultat = dificultatTextView.getText().toString();
                     zona = button.getText().toString();
                     if (chkIntent.isChecked()) {
@@ -339,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
         boolean insertSuccess = databaseHelper.insertData(date, dificultat, zona, ifIntent);
         if (insertSuccess) {
             Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
-            loadData();
+            loadDayData();
         } else {
             Toast.makeText(MainActivity.this, "Error en guardar la via", Toast.LENGTH_SHORT).show();
         }
@@ -358,17 +354,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * loadData
+     * loadDayData
      *
      * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
      */
-    private void loadData(){
-        diaAnterior ="";
-        puntsDia = 0;
+    private void loadDayData(){
+        puntuacioDia = 0;
         climbingDataList.clear();
-        Cursor cursor = databaseHelper.getAllData();
+        Cursor cursor = databaseHelper.getDayData(dateTextView.getText().toString());
         if (cursor != null) {
             while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndexOrThrow("ID"));
+                Log.d("IDData", id);
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
                 String dificultat = cursor.getString(cursor.getColumnIndexOrThrow("DIFICULTAT"));
                 String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
@@ -398,10 +395,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String viaValor = preferencesGZero.getString(dificultat, "0,0").replace(",",".");
         String zonaMetres= preferencesGZero.getString(zona, "0,0").replace(",",".");
-        Log.d("zona", zona +": "+zonaMetres+" metres");
         String coeficientZona = preferencesGZero.getString(zona+"Coeficient", "1,0").replace(",",".");
-        Log.d("zona", "coeficient "+"nom: "+zona+"Coeficient: "+coeficientZona);
-        Log.d("zona", "coeficient "+zona +": "+coeficientZona);
         double puntsVia = Double.parseDouble(viaValor)*Double.parseDouble(zonaMetres)*Double.parseDouble(coeficientZona);
         if(ifIntent == 1){
             puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
