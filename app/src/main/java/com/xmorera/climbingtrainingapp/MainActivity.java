@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @author Xavier Morera
  * */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     LinearLayout dadesManualsLayout;
     TextView dateTextView, dificultatTextView; //mostrar la data i mostrar la via seleccionada
     Calendar calendar = Calendar.getInstance();
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         climbingDataList = new ArrayList<>();
         databaseHelper = new DatabaseHelper(this);
 
-        adapter = new ClimbingDataAdapter(climbingDataList);
+        adapter = new ClimbingDataAdapter(this, climbingDataList);
         recyclerView.setAdapter(adapter);
 
         //inicialitzar les sharedPreferences
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
      */
-    private void loadDayData(){
+    public void loadDayData(){
         puntuacioDia = 0.0;
         climbingDataList.clear();
         Cursor cursor = databaseHelper.getDayData(dateTextView.getText().toString());
@@ -426,6 +426,5 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Ho sento, el reconeixement de veu no és compatible en aquest dispositiu", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 }
