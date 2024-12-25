@@ -29,9 +29,9 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
     public void onBindViewHolder(@NonNull ClimbingDataAdapter.ViewHolder holder, int position) {
         ClimbingData data = climbingDataList.get(position);
         holder.dateTextView.setText(data.getDate());
-        holder.viaTextView.setText(data.getVia());
+        holder.dificultatTextView.setText(data.getDificultat());
         holder.zonaTextView.setText(data.getZona());
-        holder.intentTextView.setText(data.getIntent() == 1 ? "Intent" : "Neta");
+        holder.ifIntentTextView.setText(data.getIfIntent() == 1 ? "Intent" : "Neta");
         holder.puntuacioTextView.setText(String.valueOf(data.getPuntuacio()));
     }
 
@@ -42,17 +42,17 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView dateTextView;
-        TextView viaTextView;
+        TextView dificultatTextView;
         TextView zonaTextView;
-        TextView intentTextView;
+        TextView ifIntentTextView;
         TextView puntuacioTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
-            viaTextView = itemView.findViewById(R.id.viaTextView);
+            dificultatTextView = itemView.findViewById(R.id.dificultatTextView);
             zonaTextView = itemView.findViewById(R.id.zonaTextView);
-            intentTextView = itemView.findViewById(R.id.intentTextView);
+            ifIntentTextView = itemView.findViewById(R.id.intentTextView);
             puntuacioTextView = itemView.findViewById(R.id.puntuacioTextView);
         }
     }

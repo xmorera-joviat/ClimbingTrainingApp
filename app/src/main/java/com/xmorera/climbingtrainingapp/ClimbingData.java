@@ -2,16 +2,16 @@ package com.xmorera.climbingtrainingapp;
 
 public class ClimbingData {
     private String date;
-    private String via;
+    private String dificultat;
     private String zona;
-    private int intent;
+    private int ifIntent;
     private String puntuacio;
 
     public ClimbingData(String date, String via, String zona, int intent, String puntuacio) {
         this.date = date;
-        this.via = via;
+        this.dificultat = via;
         this.zona = zona;
-        this.intent = intent;
+        this.ifIntent = intent;
         this.puntuacio = puntuacio;
         }
 
@@ -19,16 +19,16 @@ public class ClimbingData {
         return date;
     }
 
-    public String getVia() {
-        return via;
+    public String getDificultat() {
+        return dificultat;
     }
 
     public String getZona() {
         return zona;
     }
 
-    public int getIntent() {
-        return intent;
+    public int getIfIntent() {
+        return ifIntent;
     }
 
     public String getPuntuacio() { return puntuacio;}

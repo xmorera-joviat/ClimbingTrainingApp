@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,17 +43,19 @@ import java.util.List;
  * */
 public class MainActivity extends AppCompatActivity {
     LinearLayout dadesManualsLayout;
-    TextView dateTextView, viaTextView; //mostrar la data i mostrar la via seleccionada
+    TextView dateTextView, dificultatTextView; //mostrar la data i mostrar la via seleccionada
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    Button btn6a, btn6b, btn6c, btn7a, btn7b, btn7c;
-    Button btn6aPlus, btn6bPlus, btn6cPlus, btn7aPlus, btn7bPlus, btn7cPlus;
+    Button btnIV, btnV, btnVPlus;
+    Button btn6a, btn6aPlus,btn6b, btn6bPlus,btn6c, btn6cPlus;
+    Button btn7a, btn7aPlus,btn7b, btn7bPlus,btn7c, btn7cPlus;
+    Button btn8a, btn8aPlus,btn8b, btn8bPlus,btn8c, btn8cPlus;
     CheckBox chkIntent;
     Button btnAutos, btnCorda, btnShinyWall, btnBloc;//tipus de via
     //variables per a entrar les dades a la base de dades
-    String via;
+    String dificultat;
     String zona;
-    int intent = 0;
+    int ifIntent = 0;
     DatabaseHelper databaseHelper;//auxiliar de la base de dades
     Button btnSpeak;//botó per entrar les comandes de veu
     Button btnEntradaManual;
@@ -112,29 +115,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        viaTextView = findViewById(R.id.viaTextView);
+        dificultatTextView = findViewById(R.id.dificultatTextView);
 
         btnSpeak = findViewById(R.id.btnSpeak);
         btnSpeak.setOnClickListener(view -> startVoiceInput());
 
         btnEntradaManual = findViewById(R.id.btnEntradaManual);
         dadesManualsLayout = findViewById(R.id.dadesManualsLayout);
-        dadesManualsLayout.setVisibility(View.GONE);
-        viaTextView.setVisibility(View.GONE);
+        visibilitatDadesManuals(View.GONE);
         btnEntradaManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resetInput();
                 if (dadesManualsLayout.getVisibility() == View.GONE) {
-                    dadesManualsLayout.setVisibility(View.VISIBLE);
-                    viaTextView.setVisibility(View.VISIBLE);
+                    visibilitatDadesManuals(View.VISIBLE);
                 } else {
-                    dadesManualsLayout.setVisibility(View.GONE);
-                    viaTextView.setVisibility(View.GONE);
+                    visibilitatDadesManuals(View.GONE);
                 }
             }
         });
-
+        btnIV = findViewById(R.id.btnIV);
+        btnV = findViewById(R.id.btnV);
+        btnVPlus = findViewById(R.id.btnVPlus);
         btn6a = findViewById(R.id.btn6a);
         btn6aPlus = findViewById(R.id.btn6aPlus);
         btn6b = findViewById(R.id.btn6b);
@@ -147,19 +149,35 @@ public class MainActivity extends AppCompatActivity {
         btn7bPlus = findViewById(R.id.btn7bPlus);
         btn7c = findViewById(R.id.btn7c);
         btn7cPlus = findViewById(R.id.btn7cPlus);
+        btn8a = findViewById(R.id.btn8a);
+        btn8aPlus = findViewById(R.id.btn8aPlus);
+        btn8b = findViewById(R.id.btn8b);
+        btn8bPlus = findViewById(R.id.btn8bPlus);
+        btn8c = findViewById(R.id.btn8c);
+        btn8cPlus = findViewById(R.id.btn8cPlus);
+
         //establiment dels listeners pels botons de via
-        setGrauListener(btn6a);
-        setGrauListener(btn6aPlus);
-        setGrauListener(btn6b);
-        setGrauListener(btn6bPlus);
-        setGrauListener(btn6c);
-        setGrauListener(btn6cPlus);
-        setGrauListener(btn7a);
-        setGrauListener(btn7aPlus);
-        setGrauListener(btn7b);
-        setGrauListener(btn7bPlus);
-        setGrauListener(btn7c);
-        setGrauListener(btn7cPlus);
+        setDificultatListener(btnIV);
+        setDificultatListener(btnV);
+        setDificultatListener(btnVPlus);
+        setDificultatListener(btn6a);
+        setDificultatListener(btn6aPlus);
+        setDificultatListener(btn6b);
+        setDificultatListener(btn6bPlus);
+        setDificultatListener(btn6c);
+        setDificultatListener(btn6cPlus);
+        setDificultatListener(btn7a);
+        setDificultatListener(btn7aPlus);
+        setDificultatListener(btn7b);
+        setDificultatListener(btn7bPlus);
+        setDificultatListener(btn7c);
+        setDificultatListener(btn7cPlus);
+        setDificultatListener(btn8a);
+        setDificultatListener(btn8aPlus);
+        setDificultatListener(btn8b);
+        setDificultatListener(btn8bPlus);
+        setDificultatListener(btn8c);
+        setDificultatListener(btn8cPlus);
 
         chkIntent = findViewById(R.id.chkIntent);
 
@@ -186,6 +204,17 @@ public class MainActivity extends AppCompatActivity {
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
 
         loadData(); //mostrar totes les dades de la bd
+    }
+
+    /**
+     * visibilitatDadesManuals
+     * amaga o mostra el panell de dades introduïdes manualment
+     * @param 'View.GONE
+     * @param 'View.VISIBLE
+     * */
+    private void visibilitatDadesManuals(int visibilitat) {
+        dadesManualsLayout.setVisibility(visibilitat);
+        dificultatTextView.setVisibility(visibilitat);
     }
 
     @Override
@@ -253,15 +282,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * setGrauListener
+     * seDificultatListener
      * listener dels botons de dificultat en la seleccio de via manual
      * quan es clica un botó de dificultat de la via insereix el seu text a la TextView de la via
      * */
-    private void setGrauListener(Button button){
+    private void setDificultatListener(Button button){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viaTextView.setText(button.getText());
+                dificultatTextView.setText(button.getText());
             }
         });
     }
@@ -271,12 +300,13 @@ public class MainActivity extends AppCompatActivity {
      * listener dels botons de zona en la selecció manual
      * quan es clica in botó de zona comprova que hi hagi una via seleccionada i
      * formateja la data per fer la inserció a la base de dades
+     * amaga el panell de selecció manual
      * */
     private void setZoneListener(Button button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(viaTextView.getText().toString().equals("")){
+                if(dificultatTextView.getText().toString().equals("")){
                     //si no s'ha introduit una via no fer res
                 }else {
                     //dades per guardar a sqlite
@@ -284,15 +314,15 @@ public class MainActivity extends AppCompatActivity {
                     String mes = dateTextView.getText().toString().split("/")[1];
                     String any = dateTextView.getText().toString().split("/")[2];
                     String date = dia + "/" + mes + "/" + any;
-                    via = viaTextView.getText().toString();
+                    dificultat = dificultatTextView.getText().toString();
                     zona = button.getText().toString();
                     if (chkIntent.isChecked()) {
-                        intent = 1;
+                        ifIntent = 1;
                     }
                     //introducció de dades a la base de dades
-                    insertData(date, via, zona, intent);
+                    insertData(date, dificultat, zona, ifIntent);
                     resetInput();
-
+                    visibilitatDadesManuals(View.GONE);
                 }
             }
         });
@@ -305,8 +335,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param -String date, String via, String zona, int intent
      * */
-    private void insertData(String date, String via, String zona, int intent){
-        boolean insertSuccess = databaseHelper.insertData(date, via, zona, intent);
+    private void insertData(String date, String dificultat, String zona, int ifIntent){
+        boolean insertSuccess = databaseHelper.insertData(date, dificultat, zona, ifIntent);
         if (insertSuccess) {
             Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
             loadData();
@@ -322,9 +352,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void resetInput() {
         //reset pantalla introducció de dades
-        viaTextView.setText("");
+        dificultatTextView.setText("");
         chkIntent.setChecked(false);
-        intent = 0;
+        ifIntent = 0;
     }
 
     /**
@@ -340,13 +370,13 @@ public class MainActivity extends AppCompatActivity {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
-                String via = cursor.getString(cursor.getColumnIndexOrThrow("VIA"));
+                String dificultat = cursor.getString(cursor.getColumnIndexOrThrow("DIFICULTAT"));
                 String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
-                int intent = cursor.getInt(cursor.getColumnIndexOrThrow("INTENT"));
+                int intent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
 
-                String puntuacio = puntuacioVia(date, via, zona, intent);
+                String puntuacio = puntuacioVia(date, dificultat, zona, intent);
 
-                climbingDataList.add(new ClimbingData(date, via, zona, intent, puntuacio));
+                climbingDataList.add(new ClimbingData(date, dificultat, zona, intent, puntuacio));
             }
             cursor.close();
         }
@@ -360,17 +390,22 @@ public class MainActivity extends AppCompatActivity {
      * @param -String via, String zona, int intent
      * @return String corresponent a la puntuació de la via
      * */
-    private String puntuacioVia(String date, String via, String zona, int intent) {
+    private String puntuacioVia(String date, String dificultat, String zona, int ifIntent) {
         // activació de les preferencies,
         // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
-        if (preferencesGZero.getString(via, "error").equals("error")) {
+        if (preferencesGZero.getString(dificultat, "error").equals("error")) {
             startActivity(new Intent(this, Preferencies.class));
         }
-        String viaValor = preferencesGZero.getString(via, "0,0").replace(",",".");
+        String viaValor = preferencesGZero.getString(dificultat, "0,0").replace(",",".");
         String zonaMetres= preferencesGZero.getString(zona, "0,0").replace(",",".");
-        double puntsVia = Double.parseDouble(viaValor)*Double.parseDouble(zonaMetres);
-        if(intent == 1){
-            puntsVia *= Double.parseDouble(preferencesGZero.getString("Intent", "0,0").replace(",","."));
+        Log.d("zona", zona +": "+zonaMetres+" metres");
+        String coeficientZona = preferencesGZero.getString(zona+"Coeficient", "1,0").replace(",",".");
+        Log.d("zona", "coeficient "+"nom: "+zona+"Coeficient: "+coeficientZona);
+        Log.d("zona", "coeficient "+zona +": "+coeficientZona);
+        double puntsVia = Double.parseDouble(viaValor)*Double.parseDouble(zonaMetres)*Double.parseDouble(coeficientZona);
+        if(ifIntent == 1){
+            puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
+
         }
 
 

@@ -12,9 +12,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "climbing_data";
     private static final String COL_ID = "ID";
     private static final String COL_DATE = "DATE";
-    private static final String COL_VIA = "VIA";
+    private static final String COL_DIFICULTAT = "DIFICULTAT";
     private static final String COL_ZONA = "ZONA";
-    private static final String COL_INTENT = "INTENT";
+    private static final String COL_IFINTENT = "IFINTENT";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -25,9 +25,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_DATE + " TEXT, " +
-                COL_VIA + " TEXT, " +
+                COL_DIFICULTAT + " TEXT, " +
                 COL_ZONA + " TEXT, " +
-                COL_INTENT + " INTEGER)";
+                COL_IFINTENT + " INTEGER)";
         db.execSQL(createTable);
     }
 
@@ -37,13 +37,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String date, String via, String zona, int intent) {
+    public boolean insertData(String date, String dificultat, String zona, int ifIntent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_DATE, date);
-        contentValues.put(COL_VIA, via);
+        contentValues.put(COL_DIFICULTAT, dificultat);
         contentValues.put(COL_ZONA, zona);
-        contentValues.put(COL_INTENT, intent);
+        contentValues.put(COL_IFINTENT, ifIntent);
         long result = db.insert(TABLE_NAME, null, contentValues);
         db.close();
         return result != -1;
@@ -62,13 +62,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateData(int id, String date, String via, String zona, int intent){
+    public boolean updateData(int id, String date, String dificultat, String zona, int ifIntent){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_DATE, date);
-        contentValues.put(COL_VIA, via);
+        contentValues.put(COL_DIFICULTAT, dificultat);
         contentValues.put(COL_ZONA, zona);
-        contentValues.put(COL_INTENT, intent);
+        contentValues.put(COL_IFINTENT, ifIntent);
         int result = db.update(TABLE_NAME, contentValues, COL_ID + " = ?", new String[]{String.valueOf(id)});
         db.close();
         return result > 0; //retorna True si la actualització s'ha realitzat correctament

@@ -388,6 +388,24 @@
                 android:text="597,6"
                 android:textAlignment="center"
                 android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8c+:" />
+
+            <EditText
+                android:id="@+id/editText8cPlus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:text="836,7"
+                android:textAlignment="center"
+                android:textSize="14sp" />
         </GridLayout>
 
         <View
