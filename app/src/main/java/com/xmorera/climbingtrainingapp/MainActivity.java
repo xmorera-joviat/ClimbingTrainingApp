@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     List<ClimbingData> climbingDataList;
     SharedPreferences preferencesGZero;
     double puntuacioDia;
+    TextView puntuacioDiaTextView;
 
 
     /*
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         //inicialitzar les sharedPreferences
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
-
+        puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
         loadDayData(); //mostrar totes les dades de la bd
     }
 
@@ -359,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
      * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
      */
     private void loadDayData(){
-        puntuacioDia = 0;
+        puntuacioDia = 0.0;
         climbingDataList.clear();
         Cursor cursor = databaseHelper.getDayData(dateTextView.getText().toString());
         if (cursor != null) {
@@ -372,12 +373,13 @@ public class MainActivity extends AppCompatActivity {
                 int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
 
                 String puntuacio = puntuacioVia(date, dificultat, zona, ifIntent);
-
                 climbingDataList.add(new ClimbingData( id, date, dificultat, zona, ifIntent, puntuacio));
+                puntuacioDia += Double.parseDouble(puntuacio.replace(",","."));
             }
             cursor.close();
         }
         adapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
+        puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
     }
 
     /**
