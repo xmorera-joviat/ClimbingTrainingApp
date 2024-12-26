@@ -86,11 +86,11 @@ public class MainActivity extends AppCompatActivity  {
     /**
      * onCretate
      *
-     * mapeix dels elements de la pantalla a variables,
+     * mapeig dels elements de la pantalla a variables,
      * inicialitza els listeners dels botons de dificultat, zona i intent,
      * insereix la data actual al TextView de la data
      * implementa el listener de la data per selecionar una data qualsevol
-     * carrega i mostra en un recyclerView totes les dades de la base de dades ordenades per data en ordre descendent
+     * carrega i mostra en un recyclerView les dades de la base de dades pel dia que indica el TextView
      * */
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
@@ -215,7 +215,11 @@ public class MainActivity extends AppCompatActivity  {
         dadesManualsLayout.setVisibility(visibilitat);
         dificultatTextView.setVisibility(visibilitat);
     }
-
+    /**
+     * onResume
+     *
+     * recarrega les dades del  dia actual en el recyclerView
+     * */
     @Override
     protected void onResume() {
         super.onResume();

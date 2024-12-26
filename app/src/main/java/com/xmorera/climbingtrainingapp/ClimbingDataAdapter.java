@@ -84,7 +84,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
                         databaseHelper.deleteData(id);
                         climbingDataList.remove(position);
                         notifyItemRemoved(position);
-                        ((MainActivity) context).loadDayData();//accedim a un mètode de la MainActivity
+                        ((MainActivity) context).loadDayData();//refrescar la vista de MainActivity
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
