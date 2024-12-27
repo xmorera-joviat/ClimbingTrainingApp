@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -84,7 +85,8 @@ public class Resultats extends AppCompatActivity {
 
         // Inicialitzar la data final amb la data actual
         updateDateTextView(endDateEditText);
-    }
+
+        }
 
     private void updateDateTextView(EditText dateEditText) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
