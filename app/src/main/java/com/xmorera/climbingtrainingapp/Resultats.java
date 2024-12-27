@@ -1,6 +1,7 @@
 package com.xmorera.climbingtrainingapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -42,6 +43,7 @@ public class Resultats extends AppCompatActivity {
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 2;
     private static final int PICK_CSV_FILE = 3;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +113,7 @@ public class Resultats extends AppCompatActivity {
     private void importFromCSV() {
         // Comprovar permisos
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ _EXTERNAL_STORAGE}, REQUEST_CODE_READ_EXTERNAL_STORAGE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ_EXTERNAL_STORAGE);
         } else {
             openCSVFile();
         }
