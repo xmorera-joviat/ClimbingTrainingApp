@@ -15,6 +15,9 @@
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".Resultats"
+            android:exported="false" />
+        <activity
             android:name=".Preferencies"
             android:exported="false" />
         <activity
