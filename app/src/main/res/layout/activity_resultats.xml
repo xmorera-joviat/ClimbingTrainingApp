@@ -23,9 +23,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="16dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,12 +38,17 @@
 
             <EditText
                 android:id="@+id/start_date"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Selecciona data inicial"
+                android:textAlignment="center"
                 android:inputType="date"/>
-
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,11 +57,13 @@
 
             <EditText
                 android:id="@+id/end_date"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Selecciona data final"
+                android:textAlignment="center"
                 android:inputType="date"/>
+            </LinearLayout>
         </LinearLayout>
 <LinearLayout
     android:layout_width="match_parent"
@@ -97,7 +108,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gràfic Correspondent"
+                android:text="Gràfic Corresponent"
                 android:textSize="16sp"/>
 
             <androidx.recyclerview.widget.RecyclerView
