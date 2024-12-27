@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity  {
     double puntuacioDia;
     TextView puntuacioDiaTextView;
 
+    private ReconeixementDeVeu reconeixementDeVeu;
+
 
 
     /**
@@ -102,7 +104,8 @@ public class MainActivity extends AppCompatActivity  {
 
         dificultatTextView = findViewById(R.id.dificultatTextView);
         btnSpeak = findViewById(R.id.btnSpeak);
-        btnSpeak.setOnClickListener(view -> startVoiceInput());
+        reconeixementDeVeu = new ReconeixementDeVeu(this, voiceInputLauncher);
+        btnSpeak.setOnClickListener(view -> reconeixementDeVeu.startVoiceInput());
 
         btnEntradaManual = findViewById(R.id.btnEntradaManual);
         dadesManualsLayout = findViewById(R.id.dadesManualsLayout);
@@ -398,38 +401,15 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-    /**
-     * startVoiceInput
-     *
-     * inicia el reconeixement de veu i mostra els resultats en un Toast
-     */
-    private void startVoiceInput() {
-        resetInput();
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ca-ES");
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Digues el grau, la zona (i si és intent...)");
-        try {
-            voiceInputLauncher.launch(intent);
-        } catch (ActivityNotFoundException a){
-            Toast.makeText(this, "Ho sento, el reconeixement de veu no és compatible en aquest dispositiu", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     /*
-     * Implementació de l'ActivityResultLauncher per tractar el reconeixement de veu
+     * Implementació de l'ActivityResultLauncher llençat a ReconeixementDeVeu per tractar el reconeixement de veu
      */
-    private final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
+    public final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    ArrayList<String> results = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    if (results != null && !results.isEmpty()) {
-                        String comandaDeVeu = results.get(0);
-                        //afegir les dades reconegudes a la bd
-                    }
-                }
-            });
+            result ->
+            reconeixementDeVeu.handleVoiceInputResult(result.getResultCode(), result.getData())
+    );
 
 
 }
