@@ -67,21 +67,6 @@ public class MainActivity extends AppCompatActivity  {
     TextView puntuacioDiaTextView;
 
 
-    /*
-     * Implementació de l'ActivityResultLauncher per tractar el reconeixement de veu
-     */
-    private final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    ArrayList<String> results = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    if (results != null && !results.isEmpty()) {
-                        String command = results.get(0);
-                        Toast.makeText(this, "Command: " + command, Toast.LENGTH_SHORT).show();
-                        //afegir les dades reconegudes a la bd
-                    }
-                }
-            });
 
     /**
      * onCretate
@@ -430,5 +415,21 @@ public class MainActivity extends AppCompatActivity  {
             Toast.makeText(this, "Ho sento, el reconeixement de veu no és compatible en aquest dispositiu", Toast.LENGTH_SHORT).show();
         }
     }
+
+    /*
+     * Implementació de l'ActivityResultLauncher per tractar el reconeixement de veu
+     */
+    private final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    ArrayList<String> results = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    if (results != null && !results.isEmpty()) {
+                        String comandaDeVeu = results.get(0);
+                        //afegir les dades reconegudes a la bd
+                    }
+                }
+            });
+
 
 }

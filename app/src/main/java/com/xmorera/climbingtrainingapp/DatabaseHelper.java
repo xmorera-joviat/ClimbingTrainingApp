@@ -57,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getDayData(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ?";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ? ORDER BY ID DESC";
         return db.rawQuery(query, new String[]{date});
     }
 
