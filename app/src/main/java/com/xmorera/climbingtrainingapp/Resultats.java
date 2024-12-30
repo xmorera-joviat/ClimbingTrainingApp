@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -51,6 +52,10 @@ public class Resultats extends AppCompatActivity {
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 2;
     private static final int PICK_CSV_FILE = 3;
 
+    private SharedPreferences preferencesGZero;
+
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +93,12 @@ public class Resultats extends AppCompatActivity {
         btnImportar.setOnClickListener(v -> importFromCSV());
 
         databaseHelper = new DatabaseHelper(this);
+        preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
 
         // Inicialitzar la data final amb la data actual
         updateDateTextView(endDateEditText);
 
-
-        }
+    }
 
     private void updateDateTextView(EditText dateEditText) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -127,30 +132,66 @@ public class Resultats extends AppCompatActivity {
             Cursor cursor = databaseHelper.getUniqueDates(startDate, endDate);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    Log.d("Resultats", "Data: " + cursor.getString(cursor.getColumnIndexOrThrow("DATE")));
-                    //String date = cursor.getString(cursor.getColumnIndexOrThrow("data"));
-                    //Log.d("Resultats", "Data: " + date);
+                    //obtenció de les dates que tenen dades
+                    String data = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
+                    Log.d("Resultats", "Data: " + data);
+                    //per a cada data calcular el nombre de vies i la puntuació del dia
 
+                    Cursor cursor2 = databaseHelper.getDayData(data);
+                    if (cursor2 != null) {
+                        Double puntuacioDia = 0.0;
+                        int viesDia = 0;
+                        while (cursor2.moveToNext()) {
+                            String dificultat = cursor2.getString(cursor2.getColumnIndexOrThrow("DIFICULTAT"));
+                            String zona = cursor2.getString(cursor2.getColumnIndexOrThrow("ZONA"));
+                            int ifIntent = cursor2.getInt(cursor2.getColumnIndexOrThrow("IFINTENT"));
+                            String puntuacio = puntuacioData(dificultat, zona, ifIntent);
+                            puntuacioDia += Double.parseDouble(puntuacio.replace(",", "."));
+                            viesDia += 1;
+
+                        }
+                        cursor2.close();
+                        Log.d("resultats", "vies dia:  " + data + " " + viesDia + " puntuacioDia: " + puntuacioDia);
+                    }
                 }
                 cursor.close();
                 resultsDisplayTextView.setText("Resultats de la consulta:OK!");
+
+
+                // Generació del gràfic
+                generateChart();
+
             }
-
-            // Generació del gràfic
-            generateChart();
-
-
         } else {
             resultsDisplayTextView.setText("Selecciona les dates, inicial i final");
         }
     }
 
-    private void generateChart() {
+    private String puntuacioData(String dificultat, String zona, int ifIntent) {
+        // activació de les preferencies,
+        // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
+        if (preferencesGZero.getString(dificultat, "error").equals("error")) {
+            startActivity(new Intent(this, Preferencies.class));
+        }
+        String viaValor = preferencesGZero.getString(dificultat, "0,0").replace(",",".");
+        String zonaMetres= preferencesGZero.getString(zona, "0,0").replace(",",".");
+        String coeficientZona = preferencesGZero.getString(zona+"Coeficient", "1,0").replace(",",".");
+        double puntsVia = Double.parseDouble(viaValor)*Double.parseDouble(zonaMetres)*Double.parseDouble(coeficientZona);
+        if(ifIntent == 1){
+            puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
+
+        }
+
+
+        return String.format("%.1f", puntsVia).replace(".", ",");
+    }
+
+    private void generateChart () {
         // Implementa la lògica per generar el gràfic aquí
         // Potser utilitzant una biblioteca com MPAndroidChart o similar
     }
 
-    private void exportToCSV() {
+    private void exportToCSV () {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE);
         } else {
@@ -170,7 +211,7 @@ public class Resultats extends AppCompatActivity {
         }
     }
 
-    private void importFromCSV() {
+    private void importFromCSV () {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ_EXTERNAL_STORAGE);
         } else {
@@ -182,7 +223,7 @@ public class Resultats extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult ( int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_CSV_FILE && resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();

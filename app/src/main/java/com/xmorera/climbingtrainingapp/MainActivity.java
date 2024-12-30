@@ -368,13 +368,13 @@ public class MainActivity extends AppCompatActivity  {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndexOrThrow("ID"));
-                Log.d("IDData", id);
+                //Log.d("IDData", id);
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
                 String dificultat = cursor.getString(cursor.getColumnIndexOrThrow("DIFICULTAT"));
                 String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
                 int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
 
-                String puntuacio = puntuacioVia(date, dificultat, zona, ifIntent);
+                String puntuacio = puntuacioVia(dificultat, zona, ifIntent);
                 climbingDataList.add(new ClimbingData( id, date, dificultat, zona, ifIntent, puntuacio));
                 puntuacioDia += Double.parseDouble(puntuacio.replace(",","."));
                 vies += 1;
@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity  {
      * @param -String via, String zona, int intent
      * @return String corresponent a la puntuació de la via
      * */
-    private String puntuacioVia(String date, String dificultat, String zona, int ifIntent) {
+    private String puntuacioVia(String dificultat, String zona, int ifIntent) {
         // activació de les preferencies,
         // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
         if (preferencesGZero.getString(dificultat, "error").equals("error")) {
