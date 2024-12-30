@@ -94,8 +94,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getDataBetweenDates(String startDate, String endDate){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " BETWEEN ? AND ?";
+        String query = "SELECT * FROM " +
+                TABLE_NAME + " WHERE " + COL_DATE + " BETWEEN ? AND ?";
         return db.rawQuery(query, new String[]{startDate, endDate});
     }
 
+    /**
+     * getUniqueDates
+     * @param startData
+     * @param endDate
+     * @return Cursor amb cada una de les dates que tenen dades*/
+    public Cursor getUniqueDates(String startData, String endDate){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            String query = "SELECT DISTINCT " + COL_DATE + " FROM " + TABLE_NAME +
+                    " WHERE " + COL_DATE + " BETWEEN ? AND ?";
+            cursor = db.rawQuery(query, new String[]{startData, endDate});
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return cursor;
+    }
 }

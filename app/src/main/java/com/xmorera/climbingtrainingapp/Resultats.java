@@ -5,10 +5,12 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +43,8 @@ public class Resultats extends AppCompatActivity {
     private Button btnExportar;
     private Button btnImportar;
     private RecyclerView chartRecyclerView;
+
+    private DatabaseHelper databaseHelper;
 
     private Calendar calendar = Calendar.getInstance(); // Únic Calendar per a ambdues dates
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
@@ -83,8 +87,11 @@ public class Resultats extends AppCompatActivity {
         btnExportar.setOnClickListener(v -> exportToCSV());
         btnImportar.setOnClickListener(v -> importFromCSV());
 
+        databaseHelper = new DatabaseHelper(this);
+
         // Inicialitzar la data final amb la data actual
         updateDateTextView(endDateEditText);
+
 
         }
 
@@ -114,11 +121,25 @@ public class Resultats extends AppCompatActivity {
         String endDate = endDateEditText.getText().toString();
 
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
+
             // Realitza la consulta a la base de dades i mostra els resultats al resultsDisplayTextView
-            resultsDisplayTextView.setText("Resultats de la consulta");
+
+            Cursor cursor = databaseHelper.getUniqueDates(startDate, endDate);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    Log.d("Resultats", "Data: " + cursor.getString(cursor.getColumnIndexOrThrow("DATE")));
+                    //String date = cursor.getString(cursor.getColumnIndexOrThrow("data"));
+                    //Log.d("Resultats", "Data: " + date);
+
+                }
+                cursor.close();
+                resultsDisplayTextView.setText("Resultats de la consulta:OK!");
+            }
 
             // Generació del gràfic
             generateChart();
+
+
         } else {
             resultsDisplayTextView.setText("Selecciona les dates, inicial i final");
         }
