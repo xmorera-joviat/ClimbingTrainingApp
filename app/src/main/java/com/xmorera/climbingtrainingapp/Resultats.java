@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
@@ -34,20 +35,26 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class Resultats extends AppCompatActivity {
     private EditText startDateEditText;
     private EditText endDateEditText;
-    private TextView resultsDisplayTextView;
     private Button btnConsultar;
     private Button btnExportar;
     private Button btnImportar;
+
+    private RecyclerView resultatsRecyclerView;
+    private ResultatsDataAdapter resultatsDataAdapter;
+    private List<ResultatsData> resultatsDataList;
+
     private RecyclerView chartRecyclerView;
 
     private DatabaseHelper databaseHelper;
 
-    private Calendar calendar = Calendar.getInstance(); // Únic Calendar per a ambdues dates
+    private Calendar calendar = Calendar.getInstance(); // Únic Calendar per a amb dues dates
     private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 2;
     private static final int PICK_CSV_FILE = 3;
@@ -62,7 +69,7 @@ public class Resultats extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_resultats);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.resultats), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -82,15 +89,22 @@ public class Resultats extends AppCompatActivity {
         startDateEditText.setOnClickListener(v -> showDatePicker(startDateEditText));
         endDateEditText.setOnClickListener(v -> showDatePicker(endDateEditText));
 
-        resultsDisplayTextView = findViewById(R.id.results_display);
         btnConsultar = findViewById(R.id.btn_consultar);
         btnExportar = findViewById(R.id.btn_exportar);
         btnImportar = findViewById(R.id.btn_importar);
+
+        resultatsRecyclerView = findViewById(R.id.resultats_view);
+        resultatsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        resultatsDataList = new ArrayList<>();
+        resultatsDataAdapter = new ResultatsDataAdapter(this, resultatsDataList);
+        resultatsRecyclerView.setAdapter(resultatsDataAdapter);
+
         chartRecyclerView = findViewById(R.id.chart_view);
 
         btnConsultar.setOnClickListener(v -> performQuery());
-        btnExportar.setOnClickListener(v -> exportToCSV());
-        btnImportar.setOnClickListener(v -> importFromCSV());
+        //btnExportar.setOnClickListener(v -> exportToCSV());
+        //btnImportar.setOnClickListener(v -> importFromCSV());
 
         databaseHelper = new DatabaseHelper(this);
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
@@ -127,17 +141,19 @@ public class Resultats extends AppCompatActivity {
 
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
 
-            // Realitza la consulta a la base de dades i mostra els resultats al resultsDisplayTextView
+            // Realitza la consulta a la base de dades i mostra els resultats
+            // esborrar dades anteriors
+            resultatsDataList.clear();
 
             Cursor cursor = databaseHelper.getUniqueDates(startDate, endDate);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     //obtenció de les dates que tenen dades
-                    String data = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
-                    Log.d("Resultats", "Data: " + data);
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
+                    //Log.d("Resultats", "Data: " + date);
                     //per a cada data calcular el nombre de vies i la puntuació del dia
 
-                    Cursor cursor2 = databaseHelper.getDayData(data);
+                    Cursor cursor2 = databaseHelper.getDayData(date);
                     if (cursor2 != null) {
                         Double puntuacioDia = 0.0;
                         int viesDia = 0;
@@ -151,19 +167,27 @@ public class Resultats extends AppCompatActivity {
 
                         }
                         cursor2.close();
-                        Log.d("resultats", "vies dia:  " + data + " " + viesDia + " puntuacioDia: " + puntuacioDia);
+                        resultatsDataList.add(new ResultatsData(date,String.valueOf(viesDia),String.valueOf(puntuacioDia).replace(".",",")));
+
+                        //Log.d("resultats", "dia:  " + date + " vies: " + viesDia + " puntuacioDia: " + puntuacioDia);
                     }
                 }
                 cursor.close();
-                resultsDisplayTextView.setText("Resultats de la consulta:OK!");
-
+                //Log.d("Resultats", "ResultatsDataList size: " + resultatsDataList.size());
+                resultatsDataAdapter.notifyDataSetChanged();
+                resultatsRecyclerView.setVisibility(View.VISIBLE);
+                if (resultatsDataList.isEmpty()) {
+                    Toast.makeText(this, "No hi ha dades per mostrar", Toast.LENGTH_SHORT).show();
+                }
 
                 // Generació del gràfic
                 generateChart();
 
             }
+
         } else {
-            resultsDisplayTextView.setText("Selecciona les dates, inicial i final");
+            Toast.makeText(this, "Selecciona les dates, inicial i final", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -191,7 +215,8 @@ public class Resultats extends AppCompatActivity {
         // Potser utilitzant una biblioteca com MPAndroidChart o similar
     }
 
-    private void exportToCSV () {
+
+  /*  private void exportToCSV () {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE);
         } else {
@@ -243,4 +268,5 @@ public class Resultats extends AppCompatActivity {
             }
         }
     }
+*/
 }

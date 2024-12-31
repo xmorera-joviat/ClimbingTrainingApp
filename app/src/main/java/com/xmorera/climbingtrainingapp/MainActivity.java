@@ -2,13 +2,10 @@ package com.xmorera.climbingtrainingapp;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,10 +56,13 @@ public class MainActivity extends AppCompatActivity  {
     DatabaseHelper databaseHelper;//auxiliar de la base de dades
     Button btnSpeak;//botó per entrar les comandes de veu
     Button btnEntradaManual;
+
     RecyclerView recyclerView;
-    ClimbingDataAdapter adapter;
+    ClimbingDataAdapter climbingDataAdapter;
     List<ClimbingData> climbingDataList;
+
     SharedPreferences preferencesGZero;
+
     double puntuacioDia;
     TextView puntuacioDiaTextView;
     int vies;
@@ -186,10 +186,10 @@ public class MainActivity extends AppCompatActivity  {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         climbingDataList = new ArrayList<>();
-        databaseHelper = new DatabaseHelper(this);
+        climbingDataAdapter = new ClimbingDataAdapter(this, climbingDataList);
+        recyclerView.setAdapter(climbingDataAdapter);
 
-        adapter = new ClimbingDataAdapter(this, climbingDataList);
-        recyclerView.setAdapter(adapter);
+        databaseHelper = new DatabaseHelper(this);
 
         //inicialitzar les sharedPreferences
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
@@ -381,7 +381,7 @@ public class MainActivity extends AppCompatActivity  {
             }
             cursor.close();
         }
-        adapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
+        climbingDataAdapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
         viesDiaTextView.setText(String.valueOf(vies));
     }
