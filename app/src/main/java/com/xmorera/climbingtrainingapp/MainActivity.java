@@ -429,70 +429,70 @@ public class MainActivity extends AppCompatActivity  {
      * @return String que correspon al grau mitjà de la sessió
      */
     private String mitjanaDia(Double mitjanaNum) {
-        String mitjana = "IV";
-        if (  mitjanaNum <= Double.parseDouble(preferencesGZero.getString("V", "error").replace(",", "."))) {
-            mitjana = "IV";
+        String mitjana = "---";
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8c+", "error").replace(",", "."))) {
+            mitjana = "8c+";
         } else
-        if (mitjanaNum <= Double.parseDouble(preferencesGZero.getString("V+", "error").replace(",", "."))) {
-            mitjana = "V";
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8c", "error").replace(",", "."))) {
+            mitjana = "8c";
         } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6a", "error").replace(",", "."))) {
-            mitjana = "V+";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6a+", "error").replace(",", "."))) {
-            mitjana = "6a";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6b", "error").replace(",", "."))) {
-            mitjana = "6a+";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6b+", "error").replace(",", "."))) {
-            mitjana = "6b";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6c", "error").replace(",", "."))) {
-            mitjana = "6b+";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6c+", "error").replace(",", "."))) {
-            mitjana = "6c";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7a", "error").replace(",", "."))) {
-            mitjana = "6c+";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7a+", "error").replace(",", "."))) {
-            mitjana = "7a";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7b", "error").replace(",", "."))) {
-            mitjana = "7a+";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7b+", "error").replace(",", "."))) {
-            mitjana = "7b";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7c", "error").replace(",", "."))) {
-            mitjana = "7b+";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7c+", "error").replace(",", "."))) {
-            mitjana = "7c";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8a", "error").replace(",", "."))) {
-            mitjana = "7c+";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8a+", "error").replace(",", "."))) {
-            mitjana = "8a";
-        }else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8b", "error").replace(",", "."))) {
-            mitjana = "8a+";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8b+", "error").replace(",", "."))) {
-            mitjana = "8b";
-        } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8c", "error").replace(",", "."))) {
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8b+", "error").replace(",", "."))) {
             mitjana = "8b+";
         } else
-        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8c+", "error").replace(",", "."))) {
-            mitjana = "8c";
-        } else {
-            mitjana = "---";
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8b", "error").replace(",", "."))) {
+            mitjana = "8b";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8a+", "error").replace(",", "."))) {
+            mitjana = "8a+";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8a", "error").replace(",", "."))) {
+            mitjana = "8a";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7c+", "error").replace(",", "."))) {
+            mitjana = "7c+";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7c", "error").replace(",", "."))) {
+            mitjana = "7c";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7b+", "error").replace(",", "."))) {
+            mitjana = "7b+";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7b", "error").replace(",", "."))) {
+            mitjana = "7b";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7a+", "error").replace(",", "."))) {
+            mitjana = "7a+";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7a", "error").replace(",", "."))) {
+            mitjana = "7a";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6c+", "error").replace(",", "."))) {
+            mitjana = "6c+";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6c", "error").replace(",", "."))) {
+            mitjana = "6c";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6b+", "error").replace(",", "."))) {
+            mitjana = "6b+";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6b", "error").replace(",", "."))) {
+            mitjana = "6b";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6a+", "error").replace(",", "."))) {
+            mitjana = "6a+";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6a", "error").replace(",", "."))) {
+            mitjana = "6a";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("V+", "error").replace(",", "."))) {
+            mitjana = "V+";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("V", "error").replace(",", "."))) {
+            mitjana = "V";
+        } else
+        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("IV", "error").replace(",", "."))) {
+            mitjana = "IV";
         }
-
         return mitjana;
     }
 
