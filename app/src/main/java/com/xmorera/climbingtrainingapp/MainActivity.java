@@ -42,6 +42,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity  {
     LinearLayout dadesManualsLayout;
     TextView dateTextView, dificultatTextView; //mostrar la data i mostrar la via seleccionada
+    Button diaAnterior, diaPosterior;
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     Button btnIV, btnV, btnVPlus;
@@ -102,6 +103,24 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 showDatePicker();
+            }
+        });
+        diaAnterior = findViewById(R.id.diaAnterior);
+        diaAnterior.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar.add(Calendar.DAY_OF_MONTH, -1);
+                updateDateTextView();
+                loadDayData();
+            }
+        });
+        diaPosterior = findViewById(R.id.diaPosterior);
+        diaPosterior.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                updateDateTextView();
+                loadDayData();
             }
         });
 
