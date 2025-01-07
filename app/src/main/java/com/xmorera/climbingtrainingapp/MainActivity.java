@@ -471,7 +471,7 @@ public class MainActivity extends AppCompatActivity  {
         if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8c+", "error").replace(",", "."))) {
             mitjana = "8c";
         } else {
-            mitjana = "8c++";
+            mitjana = "---";
         }
 
         return mitjana;
