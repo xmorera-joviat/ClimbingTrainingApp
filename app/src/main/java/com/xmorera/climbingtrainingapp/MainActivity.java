@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,10 +63,13 @@ public class MainActivity extends AppCompatActivity  {
 
     SharedPreferences preferencesGZero;
 
-    double puntuacioDia;
+    TextView viesDiaTextView;
+    TextView metresDiaTextView;
+    TextView mitjanaDiaTextView;
     TextView puntuacioDiaTextView;
     int vies;
-    TextView viesDiaTextView;
+    double metres;
+    double puntuacioDia;
 
 
 
@@ -187,8 +191,12 @@ public class MainActivity extends AppCompatActivity  {
 
         //inicialitzar les sharedPreferences
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
-        puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
+
         viesDiaTextView = findViewById(R.id.viesDiaTextView);
+        metresDiaTextView = findViewById(R.id.metresDiaTextView);
+        mitjanaDiaTextView = findViewById(R.id.mitjanaDiaTextView);
+        puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
+
         loadDayData(); //mostrar totes les dades de la bd
     }
 
@@ -356,8 +364,9 @@ public class MainActivity extends AppCompatActivity  {
      * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
      */
     public void loadDayData(){
-        puntuacioDia = 0.0;
         vies = 0;
+        metres = 0.0;
+        puntuacioDia = 0.0;
         climbingDataList.clear();
         Cursor cursor = databaseHelper.getDayData(dateTextView.getText().toString());
         if (cursor != null) {
@@ -368,45 +377,104 @@ public class MainActivity extends AppCompatActivity  {
                 String dificultat = cursor.getString(cursor.getColumnIndexOrThrow("DIFICULTAT"));
                 String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
                 int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
-
-                String puntuacio = puntuacioVia(dificultat, zona, ifIntent);
-                climbingDataList.add(new ClimbingData( id, date, dificultat, zona, ifIntent, puntuacio));
-                puntuacioDia += Double.parseDouble(puntuacio.replace(",","."));
+                Log.d("dificultat",dificultat);
+                // activació de les preferencies,
+                // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
+                if (preferencesGZero.getString(dificultat, "error").equals("error")) {
+                    startActivity(new Intent(this, Preferencies.class));
+                }
+                Log.d("dificultat",preferencesGZero.getString(dificultat, "error"));
+                double puntsVia = Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",","."));
+                double metresVia = Double.parseDouble(preferencesGZero.getString(zona, "0,0").replace(",","."));
+                if(ifIntent == 1){ //en el cas d'un inent apliquem el coeficient de dificultat i contem la mitat de metres de la zona
+                    puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
+                    metresVia *= 0.5;
+                }
+                climbingDataList.add(new ClimbingData( id, date, dificultat, zona, ifIntent, String.format("%.1f", puntsVia)));
                 vies += 1;
+                metres += metresVia;
+                puntuacioDia += puntsVia;
             }
             cursor.close();
         }
         climbingDataAdapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
         viesDiaTextView.setText(String.valueOf(vies));
+        metresDiaTextView.setText(String.valueOf(metres));
+        mitjanaDiaTextView.setText(mitjanaDia(puntuacioDia/vies));
     }
 
     /**
-     * puntuacioVia
-     *
-     * s'encarrega de fer els càlculs depenent de la dificultat de la via, de la llargada i de l'intent
-     * @param -String via, String zona, int intent
-     * @return String corresponent a la puntuació de la via
-     * */
-    private String puntuacioVia(String dificultat, String zona, int ifIntent) {
-        // activació de les preferencies,
-        // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
-        if (preferencesGZero.getString(dificultat, "error").equals("error")) {
-            startActivity(new Intent(this, Preferencies.class));
+     * mitjanaDia
+     * @param mitjanaNum -double correspon a la puntuació del dia dividida entre el nombre de vies
+     * @return String que correspon al grau mitjà de la sessió
+     */
+    private String mitjanaDia(Double mitjanaNum) {
+        String mitjana = "IV";
+        if (  mitjanaNum <= Double.parseDouble(preferencesGZero.getString("V", "error").replace(",", "."))) {
+            mitjana = "IV";
+        } else
+        if (mitjanaNum <= Double.parseDouble(preferencesGZero.getString("V+", "error").replace(",", "."))) {
+            mitjana = "V";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6a", "error").replace(",", "."))) {
+            mitjana = "V+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6a+", "error").replace(",", "."))) {
+            mitjana = "6a";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6b", "error").replace(",", "."))) {
+            mitjana = "6a+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6b+", "error").replace(",", "."))) {
+            mitjana = "6b";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6c", "error").replace(",", "."))) {
+            mitjana = "6b+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("6c+", "error").replace(",", "."))) {
+            mitjana = "6c";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7a", "error").replace(",", "."))) {
+            mitjana = "6c+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7a+", "error").replace(",", "."))) {
+            mitjana = "7a";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7b", "error").replace(",", "."))) {
+            mitjana = "7a+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7b+", "error").replace(",", "."))) {
+            mitjana = "7b";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7c", "error").replace(",", "."))) {
+            mitjana = "7b+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("7c+", "error").replace(",", "."))) {
+            mitjana = "7c";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8a", "error").replace(",", "."))) {
+            mitjana = "7c+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8a+", "error").replace(",", "."))) {
+            mitjana = "8a";
+        }else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8b", "error").replace(",", "."))) {
+            mitjana = "8a+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8b+", "error").replace(",", "."))) {
+            mitjana = "8b";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8c", "error").replace(",", "."))) {
+            mitjana = "8b+";
+        } else
+        if (mitjanaNum<=Double.parseDouble(preferencesGZero.getString("8c+", "error").replace(",", "."))) {
+            mitjana = "8c";
+        } else {
+            mitjana = "8c++";
         }
-        String viaValor = preferencesGZero.getString(dificultat, "0,0").replace(",",".");
-        String zonaMetres= preferencesGZero.getString(zona, "0,0").replace(",",".");
-        String coeficientZona = preferencesGZero.getString(zona+"Coeficient", "1,0").replace(",",".");
-        double puntsVia = Double.parseDouble(viaValor)*Double.parseDouble(zonaMetres)*Double.parseDouble(coeficientZona);
-        if(ifIntent == 1){
-            puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
 
-        }
-
-
-        return String.format("%.1f", puntsVia).replace(".", ",");
+        return mitjana;
     }
-
-
 
 }

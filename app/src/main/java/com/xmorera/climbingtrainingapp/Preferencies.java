@@ -17,7 +17,7 @@ public class Preferencies extends AppCompatActivity {
             editText6a, editText6aPlus, editText6b, editText6bPlus, editText6c, editText6cPlus,
             editText7a, editText7aPlus, editText7b, editText7bPlus, editText7c, editText7cPlus,
             editText8a, editText8aPlus, editText8b, editText8bPlus, editText8c, editText8cPlus;
-    private EditText editTextIntentCoeficient, editTextShinyCoeficient, editTextCordaCoeficient, editTextBlocCoeficient;
+    private EditText editTextIntentCoeficient;
     private EditText editTextAutos, editTextCorda, editTextShiny, editTextBloc;
     private Button btnSave;
 
@@ -58,9 +58,6 @@ public class Preferencies extends AppCompatActivity {
         editText8c = findViewById(R.id.editText8c);
         editText8cPlus = findViewById(R.id.editText8cPlus);
         editTextIntentCoeficient = findViewById(R.id.editTextIntentCoeficient);
-        editTextShinyCoeficient = findViewById(R.id.editTextShinyCoeficient);
-        editTextCordaCoeficient = findViewById(R.id.editTextCordaCoeficient);
-        editTextBlocCoeficient = findViewById(R.id.editTextBlocCoeficient);
         editTextAutos = findViewById(R.id.editTextAutos);
         editTextCorda = findViewById(R.id.editTextCorda);
         editTextShiny = findViewById(R.id.editTextShiny);
@@ -76,31 +73,28 @@ public class Preferencies extends AppCompatActivity {
 
     private void loadPreferences() {
         // Carrega els valors de SharedPreferences
-        editTextIV.setText(preferencesGZero.getString("IV", "1,0"));
-        editTextV.setText(preferencesGZero.getString("V", "1,4"));
-        editTextVPlus.setText(preferencesGZero.getString("V+", "2,0"));
-        editText6a.setText(preferencesGZero.getString("6a", "2,8"));
-        editText6aPlus.setText(preferencesGZero.getString("6a+", "3,9"));
-        editText6b.setText(preferencesGZero.getString("6b", "5,4"));
-        editText6bPlus.setText(preferencesGZero.getString("6b+", "7,5"));
-        editText6c.setText(preferencesGZero.getString("6c", "10,6"));
-        editText6cPlus.setText(preferencesGZero.getString("6c+", "14,8"));
-        editText7a.setText(preferencesGZero.getString("7a", "20,7"));
-        editText7aPlus.setText(preferencesGZero.getString("7a+", "28,9"));
-        editText7b.setText(preferencesGZero.getString("7b", "40,5"));
-        editText7bPlus.setText(preferencesGZero.getString("7b+", "56,7"));
-        editText7c.setText(preferencesGZero.getString("7c", "79,4"));
-        editText7cPlus.setText(preferencesGZero.getString("7c+", "111,1"));
-        editText8a.setText(preferencesGZero.getString("8a", "155,6"));
-        editText8aPlus.setText(preferencesGZero.getString("8a+", "217,8"));
-        editText8b.setText(preferencesGZero.getString("8b", "304,9"));
-        editText8bPlus.setText(preferencesGZero.getString("8b+", "426,9"));
-        editText8c.setText(preferencesGZero.getString("8c", "597,6"));
-        editText8cPlus.setText(preferencesGZero.getString("8c+", "769,1"));
+        editTextIV.setText(preferencesGZero.getString("IV", "10,0"));
+        editTextV.setText(preferencesGZero.getString("V", "14,0"));
+        editTextVPlus.setText(preferencesGZero.getString("V+", "20,0"));
+        editText6a.setText(preferencesGZero.getString("6a", "28,0"));
+        editText6aPlus.setText(preferencesGZero.getString("6a+", "39,0"));
+        editText6b.setText(preferencesGZero.getString("6b", "54,0"));
+        editText6bPlus.setText(preferencesGZero.getString("6b+", "75,0"));
+        editText6c.setText(preferencesGZero.getString("6c", "106,0"));
+        editText6cPlus.setText(preferencesGZero.getString("6c+", "148,0"));
+        editText7a.setText(preferencesGZero.getString("7a", "207,0"));
+        editText7aPlus.setText(preferencesGZero.getString("7a+", "289,0"));
+        editText7b.setText(preferencesGZero.getString("7b", "405,0"));
+        editText7bPlus.setText(preferencesGZero.getString("7b+", "567,0"));
+        editText7c.setText(preferencesGZero.getString("7c", "794,0"));
+        editText7cPlus.setText(preferencesGZero.getString("7c+", "1111,0"));
+        editText8a.setText(preferencesGZero.getString("8a", "1556,0"));
+        editText8aPlus.setText(preferencesGZero.getString("8a+", "2178,0"));
+        editText8b.setText(preferencesGZero.getString("8b", "3049,0"));
+        editText8bPlus.setText(preferencesGZero.getString("8b+", "4269,0"));
+        editText8c.setText(preferencesGZero.getString("8c", "5976,0"));
+        editText8cPlus.setText(preferencesGZero.getString("8c+", "7691,0"));
         editTextIntentCoeficient.setText(preferencesGZero.getString("IntentCoeficient", "0,10"));
-        editTextShinyCoeficient.setText(preferencesGZero.getString("ShinyWallCoeficient", "1,10"));
-        editTextCordaCoeficient.setText(preferencesGZero.getString("CordaCoeficient", "1,20"));
-        editTextBlocCoeficient.setText(preferencesGZero.getString("BlocCoeficient", "1,30"));
         editTextAutos.setText(preferencesGZero.getString("Autos", "10,0"));
         editTextCorda.setText(preferencesGZero.getString("Corda", "12,0"));
         editTextShiny.setText(preferencesGZero.getString("ShinyWall", "12,0"));
@@ -132,9 +126,6 @@ public class Preferencies extends AppCompatActivity {
         editor.putString("8c", editText8c.getText().toString());
         editor.putString("8c+", editText8cPlus.getText().toString());
         editor.putString("IntentCoeficient", editTextIntentCoeficient.getText().toString());
-        editor.putString("CordaCoeficient", editTextCordaCoeficient.getText().toString());
-        editor.putString("ShinyWallCoeficient", editTextShinyCoeficient.getText().toString());
-        editor.putString("BlocCoeficient", editTextBlocCoeficient.getText().toString());
         editor.putString("Autos", editTextAutos.getText().toString());
         editor.putString("Corda", editTextCorda.getText().toString());
         editor.putString("ShinyWall", editTextShiny.getText().toString());
