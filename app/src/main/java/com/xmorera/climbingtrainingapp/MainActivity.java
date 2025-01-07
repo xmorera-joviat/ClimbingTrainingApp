@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity  {
     String zona;
     int ifIntent = 0;
     DatabaseHelper databaseHelper;//auxiliar de la base de dades
-    Button btnSpeak;//botó per entrar les comandes de veu
     Button btnEntradaManual;
 
     RecyclerView recyclerView;
@@ -67,8 +66,6 @@ public class MainActivity extends AppCompatActivity  {
     TextView puntuacioDiaTextView;
     int vies;
     TextView viesDiaTextView;
-
-    private ReconeixementDeVeu reconeixementDeVeu;
 
 
 
@@ -105,9 +102,6 @@ public class MainActivity extends AppCompatActivity  {
         });
 
         dificultatTextView = findViewById(R.id.dificultatTextView);
-        btnSpeak = findViewById(R.id.btnSpeak);
-        reconeixementDeVeu = new ReconeixementDeVeu(this, voiceInputLauncher);
-        btnSpeak.setOnClickListener(view -> reconeixementDeVeu.startVoiceInput());
 
         btnEntradaManual = findViewById(R.id.btnEntradaManual);
         dadesManualsLayout = findViewById(R.id.dadesManualsLayout);
@@ -309,6 +303,7 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View view) {
                 if(dificultatTextView.getText().toString().equals("")){
                     //si no s'ha introduit una via no fer res
+                    Toast.makeText(MainActivity.this, "Seleccionar dificultat", Toast.LENGTH_SHORT).show();
                 }else {
                     //dades per guardar a sqlite
                     String date = dateTextView.getText().toString();
@@ -412,16 +407,6 @@ public class MainActivity extends AppCompatActivity  {
         return String.format("%.1f", puntsVia).replace(".", ",");
     }
 
-
-
-    /*
-     * Implementació de l'ActivityResultLauncher llençat a ReconeixementDeVeu per tractar el reconeixement de veu
-     */
-    public final ActivityResultLauncher<Intent> voiceInputLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result ->
-            reconeixementDeVeu.handleVoiceInputResult(result.getResultCode(), result.getData())
-    );
 
 
 }

@@ -28,20 +28,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:hint="Entrar el grau, si és intent, i la zona "
                 android:textSize="18sp" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnSpeak"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:text="Entrada de veu!" />
-
-        <Button
             android:id="@+id/btnEntradaManual"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
