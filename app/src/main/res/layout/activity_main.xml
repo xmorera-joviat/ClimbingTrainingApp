@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,10 +29,9 @@
                     android:background="@null"
                     android:drawableTop="@drawable/left_arrow"
                     android:contentDescription="Dia anterior"
-                    android:gravity="center"
-                    android:minWidth="15dp"
-                    android:minHeight="15dp"
-                    android:layout_marginEnd="18dp"
+                    android:minWidth="45dp"
+                    android:minHeight="45dp"
+                    android:layout_marginEnd="36dp"
                     android:layout_gravity="center_vertical"
                     />
 
@@ -40,32 +39,31 @@
                     android:id="@+id/dateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:gravity="top"
+                    android:paddingTop="5dp"
                     android:text=""
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:layout_gravity="center_vertical"/>
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/diaPosterior"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:drawableTop="@drawable/right_arrow"
-                    android:contentDescription="Dia posterior"
-                    android:gravity="center"
-                    android:minWidth="25dp"
-                    android:minHeight="25dp"
-                    android:layout_marginStart="18dp"
                     android:layout_gravity="center_vertical"
-                    />
+                    android:layout_marginStart="36dp"
+                    android:background="@null"
+                    android:contentDescription="Dia posterior"
+                    android:drawableTop="@drawable/right_arrow"
+                    android:minWidth="45dp"
+                    android:minHeight="45dp" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/dificultatTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:hint="Entrar el grau, si és intent, i la zona "
                 android:textSize="18sp" />
 
@@ -75,7 +73,6 @@
             android:id="@+id/btnEntradaManual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             android:text="Entrada manual" />
 

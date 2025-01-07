@@ -34,6 +34,7 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         holder.dateTextView.setText(data.getDate());
         holder.viesTextView.setText(data.getVies());
         holder.puntuacioTextView.setText(data.getPuntuacio());
+        holder.metresTextView.setText(data.getMetres());
 
     }
 
@@ -46,12 +47,14 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         TextView dateTextView;
         TextView viesTextView;
         TextView puntuacioTextView;
+        TextView metresTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             viesTextView = itemView.findViewById(R.id.viesTextView);
             puntuacioTextView = itemView.findViewById(R.id.puntuacioTextView);
+            metresTextView = itemView.findViewById(R.id.metresTextView);
         }
     }
 }

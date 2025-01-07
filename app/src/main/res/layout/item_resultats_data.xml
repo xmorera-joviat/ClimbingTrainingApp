@@ -13,9 +13,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="10/10/2025"
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="start"
+            android:gravity="center"
             android:layout_weight="2"/>
 
         <TextView
@@ -25,7 +25,17 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="10"
-            android:textSize="24sp"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/metresTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="10"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -33,10 +43,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="1050.0"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:gravity="end"
-            android:layout_weight="1"/>
+            android:gravity="center"
+            android:layout_weight="2"/>
 
     </LinearLayout>
 

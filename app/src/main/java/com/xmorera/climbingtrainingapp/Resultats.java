@@ -1,50 +1,45 @@
 package com.xmorera.climbingtrainingapp;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.OpenableColumns;
-import android.util.Log;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class Resultats extends AppCompatActivity {
+public class Resultats extends AppCompatActivity implements View.OnClickListener {
+    private Button btnSetmanal;
+    private Button btnMensual;
+    private Button btnAnual;
+
+
+    private LinearLayout layoutAltres;
+
     private EditText startDateEditText;
     private EditText endDateEditText;
-    private Button btnConsultar;
-    private Button btnExportar;
-    private Button btnImportar;
+
 
     private RecyclerView resultatsRecyclerView;
     private ResultatsDataAdapter resultatsDataAdapter;
@@ -74,9 +69,14 @@ public class Resultats extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        layoutAltres = findViewById(R.id.layoutAltres);
 
-        // Desactivar l'entrada manual a les dates
-
+        btnSetmanal = findViewById(R.id.btnSetmanal);
+        btnMensual = findViewById(R.id.btnMensual);
+        btnAnual = findViewById(R.id.btnAnual);
+        btnSetmanal.setOnClickListener(this);
+        btnMensual.setOnClickListener(this);
+        btnAnual.setOnClickListener(this);
 
         startDateEditText = findViewById(R.id.start_date);
         endDateEditText = findViewById(R.id.end_date);
@@ -89,10 +89,6 @@ public class Resultats extends AppCompatActivity {
         startDateEditText.setOnClickListener(v -> showDatePicker(startDateEditText));
         endDateEditText.setOnClickListener(v -> showDatePicker(endDateEditText));
 
-        btnConsultar = findViewById(R.id.btn_consultar);
-        btnExportar = findViewById(R.id.btn_exportar);
-        btnImportar = findViewById(R.id.btn_importar);
-
         resultatsRecyclerView = findViewById(R.id.resultats_view);
         resultatsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -102,10 +98,6 @@ public class Resultats extends AppCompatActivity {
 
         chartRecyclerView = findViewById(R.id.chart_view);
 
-        btnConsultar.setOnClickListener(v -> performQuery());
-        //btnExportar.setOnClickListener(v -> exportToCSV());
-        //btnImportar.setOnClickListener(v -> importFromCSV());
-
         databaseHelper = new DatabaseHelper(this);
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
 
@@ -113,6 +105,30 @@ public class Resultats extends AppCompatActivity {
         updateDateTextView(endDateEditText);
 
     }
+
+    @Override
+    public void onClick(View view) {
+
+        int daysToSubstract = 0;
+        if (view.getId() == R.id.btnSetmanal) {
+            daysToSubstract = -7;
+        }
+
+        if (view.getId() == R.id.btnMensual) {
+            daysToSubstract = -30;
+        }
+        if (view.getId() == R.id.btnAnual) {
+            daysToSubstract = -365;
+        }
+
+        calendar.add(Calendar.DAY_OF_MONTH, daysToSubstract);
+        updateDateTextView(startDateEditText);
+        //tornem a posar la data actual al dia final
+        calendar.setTime(new Date());
+        updateDateTextView(endDateEditText);
+        performQuery();
+    }
+
 
     private void updateDateTextView(EditText dateEditText) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -130,12 +146,14 @@ public class Resultats extends AppCompatActivity {
                     calendar.set(Calendar.YEAR, selectedYear);
                     calendar.set(Calendar.MONTH, selectedMonth);
                     calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
-                    updateDateTextView(dateEditText); // Actualitza el TextView amb la nova data
+                    updateDateTextView(dateEditText);
+                    performQuery();// Actualitza el TextView amb la nova data
                 }, year, month, day);
         datePickerDialog.show();
     }
 
     private void performQuery() {
+
         String startDate = startDateEditText.getText().toString();
         String endDate = endDateEditText.getText().toString();
 
@@ -157,17 +175,26 @@ public class Resultats extends AppCompatActivity {
                     if (cursor2 != null) {
                         Double puntuacioDia = 0.0;
                         int viesDia = 0;
+                        Double metresDia = 0.0;
                         while (cursor2.moveToNext()) {
+
                             String dificultat = cursor2.getString(cursor2.getColumnIndexOrThrow("DIFICULTAT"));
                             String zona = cursor2.getString(cursor2.getColumnIndexOrThrow("ZONA"));
                             int ifIntent = cursor2.getInt(cursor2.getColumnIndexOrThrow("IFINTENT"));
-                            String puntuacio = puntuacioData(dificultat, zona, ifIntent);
-                            puntuacioDia += Double.parseDouble(puntuacio.replace(",", "."));
+
+                            // activació de les preferencies,
+                            // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
+                            if (preferencesGZero.getString(dificultat, "error").equals("error")) {
+                                startActivity(new Intent(this, Preferencies.class));
+                            }
+
+                            puntuacioDia += Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",", "."));
                             viesDia += 1;
+                            metresDia += Double.parseDouble(preferencesGZero.getString(zona, "0,0").replace(",", "."));
 
                         }
                         cursor2.close();
-                        resultatsDataList.add(new ResultatsData(date,String.valueOf(viesDia),String.valueOf(puntuacioDia).replace(".",",")));
+                        resultatsDataList.add(new ResultatsData(date,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",",")));
 
                         //Log.d("resultats", "dia:  " + date + " vies: " + viesDia + " puntuacioDia: " + puntuacioDia);
                     }
@@ -191,24 +218,7 @@ public class Resultats extends AppCompatActivity {
         }
     }
 
-    private String puntuacioData(String dificultat, String zona, int ifIntent) {
-        // activació de les preferencies,
-        // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
-        if (preferencesGZero.getString(dificultat, "error").equals("error")) {
-            startActivity(new Intent(this, Preferencies.class));
-        }
-        String viaValor = preferencesGZero.getString(dificultat, "0,0").replace(",",".");
-        String zonaMetres= preferencesGZero.getString(zona, "0,0").replace(",",".");
-        String coeficientZona = preferencesGZero.getString(zona+"Coeficient", "1,0").replace(",",".");
-        double puntsVia = Double.parseDouble(viaValor)*Double.parseDouble(zonaMetres)*Double.parseDouble(coeficientZona);
-        if(ifIntent == 1){
-            puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
 
-        }
-
-
-        return String.format("%.1f", puntsVia).replace(".", ",");
-    }
 
     private void generateChart () {
         // Implementa la lògica per generar el gràfic aquí
@@ -216,57 +226,5 @@ public class Resultats extends AppCompatActivity {
     }
 
 
-  /*  private void exportToCSV () {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE);
-        } else {
-            // Implementa la lògica per exportar dades a un fitxer CSV
-            try {
-                File file = new File(Environment.getExternalStorageDirectory(), "resultats.csv");
-                FileWriter writer = new FileWriter(file);
-                writer.append("Data,Resultat\n");
-                // Afegir dades aquí
-                writer.flush();
-                writer.close();
-                Toast.makeText(this, "Exportació completada", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Error en l'exportació", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
-    private void importFromCSV () {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READ_EXTERNAL_STORAGE);
-        } else {
-            // Implementa la lògica per importar dades des d'un fitxer CSV
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("text/csv");
-            startActivityForResult(intent, PICK_CSV_FILE);
-        }
-    }
-
-    @Override
-    protected void onActivityResult ( int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_CSV_FILE && resultCode == RESULT_OK && data != null) {
-            Uri uri = data.getData();
-            if (uri != null) {
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(getContentResolver().openInputStream(uri)));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        // Processa cada línia del fitxer CSV
-                    }
-                    reader.close();
-                    Toast.makeText(this, "Importació completada", Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "Error en la importació", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-*/
 }
