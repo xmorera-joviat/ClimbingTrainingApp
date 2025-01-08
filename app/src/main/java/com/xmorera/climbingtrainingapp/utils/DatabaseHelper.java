@@ -39,9 +39,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertData(String date, String dificultat, String zona, int ifIntent) {
+        //canviem el format de la data abans d'introduir-la a SQLite
+        String dateISO = DateConverter.convertCustomToISO(date);
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DATE, date);
+        contentValues.put(COL_DATE, dateISO);
         contentValues.put(COL_DIFICULTAT, dificultat);
         contentValues.put(COL_ZONA, zona);
         contentValues.put(COL_IFINTENT, ifIntent);
@@ -57,9 +60,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getDayData(String date) {
+        //canviem el format de la data abans d'introduir-la a SQLite
+        String dateISO = DateConverter.convertCustomToISO(date);
+
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ? ORDER BY ID DESC";
-        return db.rawQuery(query, new String[]{date});
+        return db.rawQuery(query, new String[]{dateISO});
     }
 
 
@@ -71,9 +77,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean updateData(int id, String date, String dificultat, String zona, int ifIntent){
+        //canviem el format de la data abans d'introduir-la a SQLite
+        String dateISO = DateConverter.convertCustomToISO(date);
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DATE, date);
+        contentValues.put(COL_DATE, dateISO);
         contentValues.put(COL_DIFICULTAT, dificultat);
         contentValues.put(COL_ZONA, zona);
         contentValues.put(COL_IFINTENT, ifIntent);
@@ -88,16 +97,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getDataByDate(String date) {
+        //canviem el format de la data abans d'introduir-la a SQLite
+        String dateISO = DateConverter.convertCustomToISO(date);
+
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ? ";
-        return db.rawQuery(query, new String[]{date});
+        return db.rawQuery(query, new String[]{dateISO});
     }
 
     public Cursor getDataBetweenDates(String startDate, String endDate){
+        //canviem el format de la data abans d'introduir-la a SQLite
+        String startDateISO = DateConverter.convertCustomToISO(startDate);
+        String endDateISO = DateConverter.convertCustomToISO(endDate);
+
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " +
                 TABLE_NAME + " WHERE " + COL_DATE + " BETWEEN ? AND ? ORDER BY " + COL_DATE + " DESC";
-        return db.rawQuery(query, new String[]{startDate, endDate});
+        return db.rawQuery(query, new String[]{startDateISO, endDateISO});
     }
 
     /**
@@ -106,13 +122,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param endDate
      * @return Cursor amb cada una de les dates que tenen dades entre les dates senyalades */
     public Cursor getUniqueDates(String startDate, String endDate){
-        Log.d("Resultats", "Data inicial: " + startDate + " Data final: " + endDate);
+        //canviem el format de la data abans d'introduir-la a SQLite
+        String startDateISO = DateConverter.convertCustomToISO(startDate);
+        String endDateISO = DateConverter.convertCustomToISO(endDate);
+
+        //Log.d("Resultats", "Data inicial: " + startDate + " Data final: " + endDate);
+        //Log.d("Resultats", "Data inicial: " + startDateISO + " Data final: " + endDateISO);
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
         try {
             String query = "SELECT DISTINCT " + COL_DATE + " FROM " + TABLE_NAME +
                     " WHERE " + COL_DATE + " BETWEEN ? AND ? ORDER BY " + COL_DATE + " DESC ";
-            cursor = db.rawQuery(query, new String[]{startDate, endDate});
+            cursor = db.rawQuery(query, new String[]{startDateISO, endDateISO});
         } catch (Exception e){
             e.printStackTrace();
         }

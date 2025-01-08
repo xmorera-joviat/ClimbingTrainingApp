@@ -429,6 +429,10 @@ public class MainActivity extends AppCompatActivity  {
      * @return String que correspon al grau mitjà de la sessió
      */
     private String mitjanaDia(Double mitjanaNum) {
+        if (preferencesGZero.getString("8c+", "error").equals("error")){
+            startActivity(new Intent(this, Preferencies.class));
+        }
+
         String mitjana = "---";
         if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8c+", "error").replace(",", "."))) {
             mitjana = "8c+";

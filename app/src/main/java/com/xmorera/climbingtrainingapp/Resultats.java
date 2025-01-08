@@ -21,14 +21,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
+import com.xmorera.climbingtrainingapp.utils.DateConverter;
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener {
     private Button btnSetmanal;
@@ -154,43 +154,17 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         datePickerDialog.show();
     }
 
-    /**
-     * formatDate
-     * retorna una data entrada en format d'un o dos dígits en el dia i mes en format dd/MM/yyyy
-     * @param dateString data a formatar
-     * @return data en format dd/MM/yyyy
-     * */
-    public static String formatDate(String dateString) {
-        // Format d'entrada que accepta dies i mesos amb 1 o 2 dígits
-        SimpleDateFormat inputFormat = new SimpleDateFormat("d/M/yyyy");
-        // Format de sortida que sempre tindrà 2 dígits per dia i mes
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        try {
-            // Parsejar la cadena a un objecte Date
-            Date date = inputFormat.parse(dateString);
-            // Retornar la data formatada
-            return outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace(); // Gestionar l'excepció si el format no és correcte
-            return null;
-        }
-    }
 
     private void performQuery() {
-        /*
-        * ATENCIÓ s'ha de passar la data amb dos dígits tant pel dia com pel mes
-        * */
-        String startDate = formatDate(startDateEditText.getText().toString());
-        String endDate = formatDate(endDateEditText.getText().toString());
 
-        //Log.d("Resultats", "Data inicial: " + startDate + " Data final: " + endDate);
+        String startDate = startDateEditText.getText().toString();
+        String endDate = endDateEditText.getText().toString();
 
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
 
             // Realitza la consulta a la base de dades i mostra els resultats
 
-            // esborrar dades anteriors
+            // esborrar dates anteriors
             resultatsDataList.clear();
 
             Cursor cursor = databaseHelper.getUniqueDates(startDate, endDate);
@@ -198,11 +172,11 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                 while (cursor.moveToNext()) {
                     //obtenció de les dates que tenen dades
                     String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
-                    Log.d("Resultats", "Data: " + date);
+                    String dateCustom = DateConverter.convertISOToCustom(date);
 
                     //per a cada data calcular el nombre de vies i la puntuació del dia
 
-                    Cursor cursor2 = databaseHelper.getDayData(date);
+                    Cursor cursor2 = databaseHelper.getDayData(dateCustom);
                     if (cursor2 != null) {
                         Double puntuacioDia = 0.0;
                         int viesDia = 0;
@@ -225,10 +199,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
                         }
                         cursor2.close();
-                        resultatsDataList.add(new ResultatsData(date,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",",")));
+                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",",")));
 
-                        //Log.d("resultats", "dia:  " + date + " vies: " + viesDia + " puntuacioDia: " + puntuacioDia);
-                    }
+                       }
                 }
                 cursor.close();
                 //Log.d("Resultats", "ResultatsDataList size: " + resultatsDataList.size());
