@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,13 +21,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener {
     private Button btnSetmanal;
@@ -50,9 +51,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     private DatabaseHelper databaseHelper;
 
     private Calendar calendar = Calendar.getInstance(); // Únic Calendar per a amb dues dates
-    private static final int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 1;
-    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 2;
-    private static final int PICK_CSV_FILE = 3;
+
 
     private SharedPreferences preferencesGZero;
 
@@ -121,12 +120,15 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             daysToSubstract = -365;
         }
 
-        calendar.add(Calendar.DAY_OF_MONTH, daysToSubstract);
-        updateDateTextView(startDateEditText);
-        //tornem a posar la data actual al dia final
-        calendar.setTime(new Date());
-        updateDateTextView(endDateEditText);
+        updateDate(startDateEditText, daysToSubstract);
+        calendar.setTime(new Date()); //reset a data actual
+        updateDate(endDateEditText, 0); // Actualitzar la data final amb la data actual
         performQuery();
+    }
+
+    private void updateDate(EditText dateEditText, int daysToSubstract) {
+        calendar.add(Calendar.DAY_OF_MONTH, daysToSubstract);
+        updateDateTextView(dateEditText);
     }
 
 
@@ -152,14 +154,42 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         datePickerDialog.show();
     }
 
-    private void performQuery() {
+    /**
+     * formatDate
+     * retorna una data entrada en format d'un o dos dígits en el dia i mes en format dd/MM/yyyy
+     * @param dateString data a formatar
+     * @return data en format dd/MM/yyyy
+     * */
+    public static String formatDate(String dateString) {
+        // Format d'entrada que accepta dies i mesos amb 1 o 2 dígits
+        SimpleDateFormat inputFormat = new SimpleDateFormat("d/M/yyyy");
+        // Format de sortida que sempre tindrà 2 dígits per dia i mes
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        String startDate = startDateEditText.getText().toString();
-        String endDate = endDateEditText.getText().toString();
+        try {
+            // Parsejar la cadena a un objecte Date
+            Date date = inputFormat.parse(dateString);
+            // Retornar la data formatada
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace(); // Gestionar l'excepció si el format no és correcte
+            return null;
+        }
+    }
+
+    private void performQuery() {
+        /*
+        * ATENCIÓ s'ha de passar la data amb dos dígits tant pel dia com pel mes
+        * */
+        String startDate = formatDate(startDateEditText.getText().toString());
+        String endDate = formatDate(endDateEditText.getText().toString());
+
+        //Log.d("Resultats", "Data inicial: " + startDate + " Data final: " + endDate);
 
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
 
             // Realitza la consulta a la base de dades i mostra els resultats
+
             // esborrar dades anteriors
             resultatsDataList.clear();
 
@@ -168,7 +198,8 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                 while (cursor.moveToNext()) {
                     //obtenció de les dates que tenen dades
                     String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
-                    //Log.d("Resultats", "Data: " + date);
+                    Log.d("Resultats", "Data: " + date);
+
                     //per a cada data calcular el nombre de vies i la puntuació del dia
 
                     Cursor cursor2 = databaseHelper.getDayData(date);

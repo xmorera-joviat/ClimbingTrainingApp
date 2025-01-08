@@ -1,10 +1,11 @@
-package com.xmorera.climbingtrainingapp;
+package com.xmorera.climbingtrainingapp.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -88,29 +89,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getDataByDate(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ?";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ? ";
         return db.rawQuery(query, new String[]{date});
     }
 
     public Cursor getDataBetweenDates(String startDate, String endDate){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " +
-                TABLE_NAME + " WHERE " + COL_DATE + " BETWEEN ? AND ?";
+                TABLE_NAME + " WHERE " + COL_DATE + " BETWEEN ? AND ? ORDER BY " + COL_DATE + " DESC";
         return db.rawQuery(query, new String[]{startDate, endDate});
     }
 
     /**
      * getUniqueDates
-     * @param startData
+     * @param startDate
      * @param endDate
-     * @return Cursor amb cada una de les dates que tenen dades*/
-    public Cursor getUniqueDates(String startData, String endDate){
+     * @return Cursor amb cada una de les dates que tenen dades entre les dates senyalades */
+    public Cursor getUniqueDates(String startDate, String endDate){
+        Log.d("Resultats", "Data inicial: " + startDate + " Data final: " + endDate);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
         try {
             String query = "SELECT DISTINCT " + COL_DATE + " FROM " + TABLE_NAME +
-                    " WHERE " + COL_DATE + " BETWEEN ? AND ?";
-            cursor = db.rawQuery(query, new String[]{startData, endDate});
+                    " WHERE " + COL_DATE + " BETWEEN ? AND ? ORDER BY " + COL_DATE + " DESC ";
+            cursor = db.rawQuery(query, new String[]{startDate, endDate});
         } catch (Exception e){
             e.printStackTrace();
         }
