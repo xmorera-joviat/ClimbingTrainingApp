@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#FF00FF00</color>   <!-- Verd -->
+    <color name="red">#FFFF0000</color>     <!-- Vermell -->
+    <color name="yellow">#FFFFFF00</color>  <!-- Groc -->
+    <color name="fuchsia">#FFFF00FF</color> <!-- Fucsia -->
+    <color name="orange">#FFFFA500</color>  <!-- Carbassa -->
+    <color name="blue">#FF0000FF</color> <!-- Blau -->
 </resources>

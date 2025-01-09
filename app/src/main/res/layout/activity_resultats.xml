@@ -156,13 +156,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
+
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-
-
+                android:layout_height="500dp" />
 
         </LinearLayout>
     </LinearLayout>

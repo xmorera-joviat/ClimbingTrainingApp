@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,35 +29,35 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
+
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener {
     private Button btnSetmanal;
     private Button btnMensual;
     private Button btnAnual;
 
-
     private LinearLayout layoutAltres;
 
     private EditText startDateEditText;
     private EditText endDateEditText;
 
-
     private RecyclerView resultatsRecyclerView;
     private ResultatsDataAdapter resultatsDataAdapter;
     private List<ResultatsData> resultatsDataList;
-
-    private RecyclerView chartRecyclerView;
 
     private DatabaseHelper databaseHelper;
 
     private Calendar calendar = Calendar.getInstance(); // Únic Calendar per a amb dues dates
 
-
     private SharedPreferences preferencesGZero;
 
-
+    private LineChart chartView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -95,10 +97,10 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         resultatsDataAdapter = new ResultatsDataAdapter(this, resultatsDataList);
         resultatsRecyclerView.setAdapter(resultatsDataAdapter);
 
-        chartRecyclerView = findViewById(R.id.chart_view);
-
         databaseHelper = new DatabaseHelper(this);
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
+
+        chartView = findViewById(R.id.chart_view);
 
         // Inicialitzar la data final amb la data actual
         updateDateTextView(endDateEditText);
@@ -201,7 +203,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                         cursor2.close();
                         resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",",")));
 
-                       }
+                    }
                 }
                 cursor.close();
                 //Log.d("Resultats", "ResultatsDataList size: " + resultatsDataList.size());
@@ -224,9 +226,55 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
 
 
-    private void generateChart () {
-        // Implementa la lògica per generar el gràfic aquí
-        // Potser utilitzant una biblioteca com MPAndroidChart o similar
+    private void generateChart() {
+        // Prepare data for the chart
+        ArrayList<Entry> scoreEntries = new ArrayList<>();
+        ArrayList<Entry> routesEntries = new ArrayList<>();
+        ArrayList<Entry> metersEntries = new ArrayList<>();
+
+        // Loop through the resultatsDataList to create entries for the chart
+        for (int i = 0; i < resultatsDataList.size(); i++) {
+            // Assuming the score, number of routes, and meters are what you want to plot
+            double score = Double.parseDouble(resultatsDataList.get(i).getPuntuacio().replace(",", "."));
+            int routes = Integer.parseInt(resultatsDataList.get(i).getVies());
+            double meters = Double.parseDouble(resultatsDataList.get(i).getMetres().replace(",", "."));
+
+            scoreEntries.add(new Entry(i, (float) score)); // X-axis is the index, Y-axis is the score
+            routesEntries.add(new Entry(i, (float) routes)); // X-axis is the index, Y-axis is the number of routes
+            metersEntries.add(new Entry(i, (float) meters)); // X-axis is the index, Y-axis is the meters
+        }
+
+        // Create LineDataSets with the entries
+        LineDataSet scoreDataSet = new LineDataSet(scoreEntries, "Puntuació Diària");
+        scoreDataSet.setColor(ContextCompat.getColor(this, R.color.red)); // Set line color for score
+        scoreDataSet.setValueTextColor(Color.BLACK);
+        scoreDataSet.setDrawCircles(true);
+        scoreDataSet.setCircleColor(ContextCompat.getColor(this, R.color.red));
+        scoreDataSet.setLineWidth(2f);
+        scoreDataSet.setCircleRadius(5f);
+
+        LineDataSet routesDataSet = new LineDataSet(routesEntries, "Nombre de Vies");
+        routesDataSet.setColor(ContextCompat.getColor(this, R.color.blue)); // Set line color for routes
+        routesDataSet.setValueTextColor(Color.BLACK);
+        routesDataSet.setDrawCircles(true);
+        routesDataSet.setCircleColor(ContextCompat.getColor(this, R.color.blue));
+        routesDataSet.setLineWidth(2f);
+        routesDataSet.setCircleRadius(5f);
+
+        LineDataSet metersDataSet = new LineDataSet(metersEntries, "Metres");
+        metersDataSet.setColor(ContextCompat.getColor(this, R.color.green)); // Set line color for meters
+        metersDataSet.setValueTextColor(Color.BLACK);
+        metersDataSet.setDrawCircles(true);
+        metersDataSet.setCircleColor(ContextCompat.getColor(this, R.color.green));
+        metersDataSet.setLineWidth(2f);
+        metersDataSet.setCircleRadius(5f);
+
+        // Create LineData object with all datasets
+        LineData lineData = new LineData(scoreDataSet, routesDataSet, metersDataSet);
+
+        // Set data to the chart
+        chartView.setData(lineData);
+        chartView.invalidate(); // Refresh the chart
     }
 
 
