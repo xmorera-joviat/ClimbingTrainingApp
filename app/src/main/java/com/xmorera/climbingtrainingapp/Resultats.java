@@ -37,11 +37,12 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
 
 
-public class Resultats extends AppCompatActivity implements View.OnClickListener {
+public class Resultats extends AppCompatActivity implements View.OnClickListener  {
     private Button btnSetmanal;
     private Button btnMensual;
     private Button btnAnual;
@@ -109,6 +110,24 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         // Inicialitzar la data final amb la data actual
         updateDateTextView(endDateEditText);
 
+        //creació de la custom marker view per veue la data en fer click en un node de la gràfica
+        CustomMarkerView markerView = new CustomMarkerView(this, R.layout.custom_marker_view);
+        chartView.setMarkerView(markerView);
+
+        //set the value selected listener
+        chartView.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                //mostrar el marcador quan un valor es sellecionat
+                markerView.refreshContent(e, h);
+                markerView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected() {
+                markerView.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -278,6 +297,39 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         // Set data to the chart
         chartView.setData(lineData);
         chartView.invalidate(); // Refresh the chart
+    }
+
+    //classe auxiliar per a visulaitzar la data d'un node en fer-ne click
+    public class CustomMarkerView extends MarkerView{
+
+        private TextView tvDate;
+
+        public CustomMarkerView(Context context, int layoutResource) {
+            super(context, layoutResource);
+            tvDate = findViewById(R.id.tvDate);
+        }
+
+        @Override
+        public void refreshContent(Entry e, Highlight highlight) {
+            String date = getDateFromEntry(e);
+            tvDate.setText(date);
+            super.refreshContent(e, highlight);
+        }
+
+        private String getDateFromEntry(Entry e) {
+            int index = (int) e.getX();
+            return resultatsDataList.get(resultatsDataList.size() -1 - index).getDate();
+        }
+
+
+        public int getXOffset(float xpos) {
+            return -getWidth() / 2;
+        }
+
+
+        public int getYOffset(float ypos) {
+            return -getHeight();
+        }
     }
 
 
