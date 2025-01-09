@@ -2,6 +2,7 @@ package com.xmorera.climbingtrainingapp;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -30,9 +32,11 @@ import java.util.Date;
 import java.util.List;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
 
@@ -224,8 +228,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-
-
     private void generateChart() {
         // Prepare data for the chart
         ArrayList<Entry> scoreEntries = new ArrayList<>();
@@ -233,29 +235,24 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         ArrayList<Entry> metersEntries = new ArrayList<>();
 
         // Loop through the resultatsDataList to create entries for the chart
-        for (int i = 0; i < resultatsDataList.size(); i++) {
+        for (int i = resultatsDataList.size() - 1; i >= 0; i--) {
             // Assuming the score, number of routes, and meters are what you want to plot
             double score = Double.parseDouble(resultatsDataList.get(i).getPuntuacio().replace(",", "."));
             int routes = Integer.parseInt(resultatsDataList.get(i).getVies());
             double meters = Double.parseDouble(resultatsDataList.get(i).getMetres().replace(",", "."));
 
-            scoreEntries.add(new Entry(i, (float) score)); // X-axis is the index, Y-axis is the score
-            routesEntries.add(new Entry(i, (float) routes)); // X-axis is the index, Y-axis is the number of routes
-            metersEntries.add(new Entry(i, (float) meters)); // X-axis is the index, Y-axis is the meters
+            routesEntries.add(new Entry(resultatsDataList.size() - 1 - i, (float) routes)); // X-axis is the index in reverse order
+            metersEntries.add(new Entry(resultatsDataList.size() - 1 - i, (float) meters)); // X-axis is the index in reverse order
+            scoreEntries.add(new Entry(resultatsDataList.size() - 1 - i, (float) score)); // X-axis is the index in reverse order
+
         }
 
         // Create LineDataSets with the entries
-        LineDataSet scoreDataSet = new LineDataSet(scoreEntries, "Puntuació Diària");
-        scoreDataSet.setColor(ContextCompat.getColor(this, R.color.red)); // Set line color for score
-        scoreDataSet.setValueTextColor(Color.BLACK);
-        scoreDataSet.setDrawCircles(true);
-        scoreDataSet.setCircleColor(ContextCompat.getColor(this, R.color.red));
-        scoreDataSet.setLineWidth(2f);
-        scoreDataSet.setCircleRadius(5f);
 
-        LineDataSet routesDataSet = new LineDataSet(routesEntries, "Nombre de Vies");
+        LineDataSet routesDataSet = new LineDataSet(routesEntries, "Vies");
         routesDataSet.setColor(ContextCompat.getColor(this, R.color.blue)); // Set line color for routes
-        routesDataSet.setValueTextColor(Color.BLACK);
+        routesDataSet.setValueTextSize(10f);
+        routesDataSet.setValueTextColor(Color.GRAY);
         routesDataSet.setDrawCircles(true);
         routesDataSet.setCircleColor(ContextCompat.getColor(this, R.color.blue));
         routesDataSet.setLineWidth(2f);
@@ -263,20 +260,29 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
         LineDataSet metersDataSet = new LineDataSet(metersEntries, "Metres");
         metersDataSet.setColor(ContextCompat.getColor(this, R.color.green)); // Set line color for meters
-        metersDataSet.setValueTextColor(Color.BLACK);
+        metersDataSet.setValueTextSize(10f);
+        metersDataSet.setValueTextColor(Color.GRAY);
         metersDataSet.setDrawCircles(true);
         metersDataSet.setCircleColor(ContextCompat.getColor(this, R.color.green));
         metersDataSet.setLineWidth(2f);
         metersDataSet.setCircleRadius(5f);
 
+        LineDataSet scoreDataSet = new LineDataSet(scoreEntries, "Puntuació");
+        scoreDataSet.setColor(ContextCompat.getColor(this, R.color.red)); // Set line color for score
+        scoreDataSet.setValueTextSize(10f);
+        scoreDataSet.setValueTextColor(Color.GRAY);
+        scoreDataSet.setDrawCircles(true);
+        scoreDataSet.setCircleColor(ContextCompat.getColor(this, R.color.red));
+        scoreDataSet.setLineWidth(2f);
+        scoreDataSet.setCircleRadius(5f);
+
         // Create LineData object with all datasets
-        LineData lineData = new LineData(scoreDataSet, routesDataSet, metersDataSet);
+        LineData lineData = new LineData( routesDataSet, metersDataSet, scoreDataSet);
 
         // Set data to the chart
         chartView.setData(lineData);
         chartView.invalidate(); // Refresh the chart
     }
-
 
 
 }
