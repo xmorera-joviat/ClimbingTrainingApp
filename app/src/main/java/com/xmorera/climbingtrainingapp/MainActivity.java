@@ -98,7 +98,11 @@ public class MainActivity extends AppCompatActivity  {
         dateTextView = findViewById(R.id.dateTextView);
         //data actual, la posem a l'inici de l'aplicació
         updateDateTextView();
-        //selecció d'una data mitjançant el calendari en pantalla
+
+        // mirem si tenim una data passada en un intent
+
+
+        // selecció d'una data mitjançant el calendari en pantalla
         dateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +127,9 @@ public class MainActivity extends AppCompatActivity  {
                 loadDayData();
             }
         });
+
+
+
 
         dificultatTextView = findViewById(R.id.dificultatTextView);
 
@@ -229,6 +236,8 @@ public class MainActivity extends AppCompatActivity  {
         dadesManualsLayout.setVisibility(visibilitat);
         dificultatTextView.setVisibility(visibilitat);
     }
+
+    boolean firstTime = true;
     /**
      * onResume
      *
@@ -237,7 +246,24 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
-        loadDayData();
+        //loadDayData();
+        String selectedDate = getIntent().getStringExtra("selectedDate");
+        if (selectedDate != null && firstTime) {
+            // If a date was passed, set it to the dateTextView
+            dateTextView.setText(selectedDate);
+            //controlar que no es puguin entrar dades per no provocar un error
+        } else {
+            // If no date was passed, set the current date
+            updateDateTextView();
+
+        }
+        loadDayData(); // Load data for the current date
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        firstTime = false;
     }
 
     /**

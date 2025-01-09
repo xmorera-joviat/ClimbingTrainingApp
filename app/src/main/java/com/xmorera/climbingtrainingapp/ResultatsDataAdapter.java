@@ -1,9 +1,11 @@
 package com.xmorera.climbingtrainingapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,8 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
 
     private List<ResultatsData> resultatsDataList;
     private Context context;
+
+
 
     public ResultatsDataAdapter(Context context, List<ResultatsData> resultatsDataList) {
         this.resultatsDataList = resultatsDataList;
@@ -36,6 +40,19 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         holder.puntuacioTextView.setText(data.getPuntuacio());
         holder.metresTextView.setText(data.getMetres());
 
+        // Set an OnClickListener for the itemView
+        holder.itemView.setOnClickListener(v -> {
+            // Create an Intent to start MainActivity
+            Intent intent = new Intent(context, MainActivity.class);
+
+            // Pass the selected date as an extra
+            intent.putExtra("selectedDate", data.getDate());
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            // Start MainActivity
+            context.startActivity(intent);
+
+        });
     }
 
     @Override

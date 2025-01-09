@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -299,7 +300,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         chartView.invalidate(); // Refresh the chart
     }
 
-    //classe auxiliar per a visulaitzar la data d'un node en fer-ne click
+
+
+    //classe auxiliar per a visualitzar la data d'un node en fer-ne click
     public class CustomMarkerView extends MarkerView{
 
         private TextView tvDate;
@@ -321,11 +324,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             return resultatsDataList.get(resultatsDataList.size() -1 - index).getDate();
         }
 
-
         public int getXOffset(float xpos) {
             return -getWidth() / 2;
         }
-
 
         public int getYOffset(float ypos) {
             return -getHeight();
