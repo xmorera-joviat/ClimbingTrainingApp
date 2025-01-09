@@ -181,7 +181,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                     String dateCustom = DateConverter.convertISOToCustom(date);
 
                     //per a cada data calcular el nombre de vies i la puntuació del dia
-
                     Cursor cursor2 = databaseHelper.getDayData(dateCustom);
                     if (cursor2 != null) {
                         Double puntuacioDia = 0.0;
@@ -206,7 +205,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                         }
                         cursor2.close();
                         resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",",")));
-
                     }
                 }
                 cursor.close();
@@ -219,7 +217,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
                 // Generació del gràfic
                 generateChart();
-
             }
 
         } else {
@@ -230,9 +227,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
     private void generateChart() {
         // Prepare data for the chart
-        ArrayList<Entry> scoreEntries = new ArrayList<>();
         ArrayList<Entry> routesEntries = new ArrayList<>();
         ArrayList<Entry> metersEntries = new ArrayList<>();
+        ArrayList<Entry> scoreEntries = new ArrayList<>();
 
         // Loop through the resultatsDataList to create entries for the chart
         for (int i = resultatsDataList.size() - 1; i >= 0; i--) {
@@ -248,7 +245,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         }
 
         // Create LineDataSets with the entries
-
         LineDataSet routesDataSet = new LineDataSet(routesEntries, "Vies");
         routesDataSet.setColor(ContextCompat.getColor(this, R.color.blue)); // Set line color for routes
         routesDataSet.setValueTextSize(10f);

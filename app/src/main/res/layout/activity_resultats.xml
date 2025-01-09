@@ -117,7 +117,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="vies"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -126,14 +126,14 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="metres"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="punts"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:layout_weight="2"/>
