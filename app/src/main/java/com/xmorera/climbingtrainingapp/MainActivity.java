@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity  {
     Button btnEntradaManual;
     Button diaAnterior, diaPosterior;
     Button btnAvui;
+    Button btnResultats;
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     Button btnIV, btnV, btnVPlus;
@@ -141,6 +142,14 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View view) {
                 dateTextView.setText(avui);
                 loadDayData();
+            }
+        });
+
+        btnResultats = findViewById(R.id.btnResultats);
+        btnResultats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, Resultats.class));
             }
         });
 
@@ -302,10 +311,10 @@ public class MainActivity extends AppCompatActivity  {
             startActivity(new Intent(this, Preferencies.class));
             return true;
         }
-        if (id == R.id.menu_resultats) {
+        /*if (id == R.id.menu_resultats) {
             startActivity(new Intent(this, Resultats.class));
             return true;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 

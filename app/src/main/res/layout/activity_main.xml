@@ -92,8 +92,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
                 android:text="Entrada manual"
-                android:layout_weight="1"/>
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnResultats"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_weight="4"
+                android:background="@null"
+                android:drawableTop="@drawable/line_chart50"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
 
         </LinearLayout>
 
