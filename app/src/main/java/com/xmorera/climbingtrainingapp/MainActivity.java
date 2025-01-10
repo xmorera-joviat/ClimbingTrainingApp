@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity  {
     double metres;
     double puntuacioDia;
 
-
+    String avui;
 
     /**
      * onCretate
@@ -98,9 +99,7 @@ public class MainActivity extends AppCompatActivity  {
         dateTextView = findViewById(R.id.dateTextView);
         //data actual, la posem a l'inici de l'aplicació
         updateDateTextView();
-
-        // mirem si tenim una data passada en un intent
-
+        avui = dateTextView.getText().toString();
 
         // selecció d'una data mitjançant el calendari en pantalla
         dateTextView.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +236,7 @@ public class MainActivity extends AppCompatActivity  {
         dificultatTextView.setVisibility(visibilitat);
     }
 
-    boolean firstTime = true;
+    boolean firstTime = true;// variable per controlar que quan es torna a l'inici es mostri la data actual
     /**
      * onResume
      *
@@ -246,12 +245,12 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
-        //loadDayData();
         String selectedDate = getIntent().getStringExtra("selectedDate");
         if (selectedDate != null && firstTime) {
             // If a date was passed, set it to the dateTextView
             dateTextView.setText(selectedDate);
             //controlar que no es puguin entrar dades per no provocar un error
+
         } else {
             // If no date was passed, set the current date
             updateDateTextView();
@@ -447,6 +446,12 @@ public class MainActivity extends AppCompatActivity  {
         viesDiaTextView.setText(String.valueOf(vies));
         metresDiaTextView.setText(String.valueOf(metres));
         mitjanaDiaTextView.setText(mitjanaDia(puntuacioDia/vies));
+        // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
+        if (dateTextView.getText().toString().equals(avui)) {
+            btnEntradaManual.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
+        } else {
+            btnEntradaManual.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+        }
     }
 
     /**
