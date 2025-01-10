@@ -1,4 +1,4 @@
-package com.xmorera.climbingtrainingapp;
+package com.xmorera.climbingtrainingapp.resultats;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -8,9 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -39,8 +37,10 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
+import com.xmorera.climbingtrainingapp.utils.Preferencies;
 
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
@@ -224,7 +224,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
                         }
                         cursor2.close();
-                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",",")));
+                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",","),"---"));
                     }
                 }
                 cursor.close();

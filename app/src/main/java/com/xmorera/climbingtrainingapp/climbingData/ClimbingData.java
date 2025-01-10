@@ -1,4 +1,4 @@
-package com.xmorera.climbingtrainingapp;
+package com.xmorera.climbingtrainingapp.climbingData;
 
 public class ClimbingData {
     private String id;

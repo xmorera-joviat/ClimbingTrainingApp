@@ -1,15 +1,17 @@
-package com.xmorera.climbingtrainingapp;
+package com.xmorera.climbingtrainingapp.resultats;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.xmorera.climbingtrainingapp.MainActivity;
+import com.xmorera.climbingtrainingapp.R;
 
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         holder.viesTextView.setText(data.getVies());
         holder.puntuacioTextView.setText(data.getPuntuacio());
         holder.metresTextView.setText(data.getMetres());
+        holder.mitjanaTextView.setText(data.getMitjana());
 
         // Set an OnClickListener for the itemView
         holder.itemView.setOnClickListener(v -> {
@@ -51,7 +54,6 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
 
             // Start MainActivity
             context.startActivity(intent);
-
         });
     }
 
@@ -65,6 +67,7 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         TextView viesTextView;
         TextView puntuacioTextView;
         TextView metresTextView;
+        TextView mitjanaTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +75,7 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
             viesTextView = itemView.findViewById(R.id.viesTextView);
             puntuacioTextView = itemView.findViewById(R.id.puntuacioTextView);
             metresTextView = itemView.findViewById(R.id.metresTextView);
+            mitjanaTextView = itemView.findViewById(R.id.mitjanaTextView);
         }
     }
 }

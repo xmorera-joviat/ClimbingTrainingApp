@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,8 +27,13 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xmorera.climbingtrainingapp.climbingData.ClimbingData;
+import com.xmorera.climbingtrainingapp.climbingData.ClimbingDataAdapter;
+import com.xmorera.climbingtrainingapp.resultats.Resultats;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
+import com.xmorera.climbingtrainingapp.utils.Preferencies;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -453,10 +457,15 @@ public class MainActivity extends AppCompatActivity  {
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
         viesDiaTextView.setText(String.valueOf(vies));
         metresDiaTextView.setText(String.valueOf(metres));
-        mitjanaDiaTextView.setText(mitjanaDia(puntuacioDia/vies));
+        mitjanaDiaTextView.setText(mitjanaGrau(puntuacioDia/vies));
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
         if (dateTextView.getText().toString().equals(avui)) {
             btnAvui.setVisibility(View.GONE);
+            try {
+                calendar.setTime(dateFormat.parse(avui));
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
         } else {
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.red));
@@ -467,76 +476,76 @@ public class MainActivity extends AppCompatActivity  {
 
     /**
      * mitjanaDia
-     * @param mitjanaNum -double correspon a la puntuació del dia dividida entre el nombre de vies
+     * @param puntsVies -double correspon a la puntuació del dia dividida entre el nombre de vies
      * @return String que correspon al grau mitjà de la sessió
      */
-    private String mitjanaDia(Double mitjanaNum) {
+    private String mitjanaGrau(Double puntsVies) {
         if (preferencesGZero.getString("8c+", "error").equals("error")){
             startActivity(new Intent(this, Preferencies.class));
         }
 
         String mitjana = "---";
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8c+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("8c+", "error").replace(",", "."))) {
             mitjana = "8c+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8c", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("8c", "error").replace(",", "."))) {
             mitjana = "8c";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8b+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("8b+", "error").replace(",", "."))) {
             mitjana = "8b+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8b", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("8b", "error").replace(",", "."))) {
             mitjana = "8b";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8a+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("8a+", "error").replace(",", "."))) {
             mitjana = "8a+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("8a", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("8a", "error").replace(",", "."))) {
             mitjana = "8a";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7c+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("7c+", "error").replace(",", "."))) {
             mitjana = "7c+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7c", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("7c", "error").replace(",", "."))) {
             mitjana = "7c";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7b+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("7b+", "error").replace(",", "."))) {
             mitjana = "7b+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7b", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("7b", "error").replace(",", "."))) {
             mitjana = "7b";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7a+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("7a+", "error").replace(",", "."))) {
             mitjana = "7a+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("7a", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("7a", "error").replace(",", "."))) {
             mitjana = "7a";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6c+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("6c+", "error").replace(",", "."))) {
             mitjana = "6c+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6c", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("6c", "error").replace(",", "."))) {
             mitjana = "6c";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6b+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("6b+", "error").replace(",", "."))) {
             mitjana = "6b+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6b", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("6b", "error").replace(",", "."))) {
             mitjana = "6b";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6a+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("6a+", "error").replace(",", "."))) {
             mitjana = "6a+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("6a", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("6a", "error").replace(",", "."))) {
             mitjana = "6a";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("V+", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("V+", "error").replace(",", "."))) {
             mitjana = "V+";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("V", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("V", "error").replace(",", "."))) {
             mitjana = "V";
         } else
-        if (mitjanaNum>=Double.parseDouble(preferencesGZero.getString("IV", "error").replace(",", "."))) {
+        if (puntsVies>=Double.parseDouble(preferencesGZero.getString("IV", "error").replace(",", "."))) {
             mitjana = "IV";
         }
         return mitjana;

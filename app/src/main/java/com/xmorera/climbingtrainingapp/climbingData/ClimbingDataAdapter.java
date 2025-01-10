@@ -1,4 +1,4 @@
-package com.xmorera.climbingtrainingapp;
+package com.xmorera.climbingtrainingapp.climbingData;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xmorera.climbingtrainingapp.MainActivity;
+import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 
 import java.util.List;

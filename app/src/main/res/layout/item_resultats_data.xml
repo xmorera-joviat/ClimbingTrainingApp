@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="10"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/blue"/>
 
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="10"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/green"/>
 
@@ -45,11 +45,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="1050.0"
-            android:textSize="18sp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="right"
+            android:textColor="@color/red"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/mitjanaTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="---"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/red"
-            android:layout_weight="2"/>
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
