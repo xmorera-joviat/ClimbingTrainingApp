@@ -2,6 +2,7 @@ package com.xmorera.climbingtrainingapp.resultats;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xmorera.climbingtrainingapp.MainActivity;
 import com.xmorera.climbingtrainingapp.R;
+import com.xmorera.climbingtrainingapp.utils.Utilitats;
 
 import java.util.List;
 
@@ -19,8 +21,6 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
 
     private List<ResultatsData> resultatsDataList;
     private Context context;
-
-
 
     public ResultatsDataAdapter(Context context, List<ResultatsData> resultatsDataList) {
         this.resultatsDataList = resultatsDataList;
@@ -41,7 +41,7 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         holder.viesTextView.setText(data.getVies());
         holder.puntuacioTextView.setText(data.getPuntuacio());
         holder.metresTextView.setText(data.getMetres());
-        holder.mitjanaTextView.setText(data.getMitjana());
+        holder.mitjanaTextView.setText(Utilitats.mitjanaGrau(data.getMitjana(), context.getSharedPreferences("preferenciesGZero", Context.MODE_PRIVATE)));
 
         // Set an OnClickListener for the itemView
         holder.itemView.setOnClickListener(v -> {

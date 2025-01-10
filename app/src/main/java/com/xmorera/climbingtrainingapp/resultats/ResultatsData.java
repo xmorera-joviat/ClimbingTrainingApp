@@ -5,9 +5,9 @@ public class ResultatsData {
     private String vies;
     private String metres;
     private String puntuacio;
-    private String mitjana;
+    private Double mitjana;
 
-    public ResultatsData(String date, String vies, String metres, String puntuacio, String mitjana) {
+    public ResultatsData(String date, String vies, String metres, String puntuacio, Double mitjana) {
         this.date = date;
         this.vies = vies;
         this.metres = metres;
@@ -30,6 +30,6 @@ public class ResultatsData {
         return puntuacio;
     }
 
-    public String getMitjana() { return mitjana; }
+    public Double getMitjana() { return mitjana; }
 
 }

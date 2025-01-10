@@ -41,6 +41,7 @@ import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
 import com.xmorera.climbingtrainingapp.utils.Preferencies;
+import com.xmorera.climbingtrainingapp.utils.Utilitats;
 
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
@@ -64,6 +65,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     private SharedPreferences preferencesGZero;
 
     private LineChart chartView;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -129,6 +131,8 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                 markerView.setVisibility(View.GONE);
             }
         });
+
+
     }
 
     @Override
@@ -156,7 +160,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         calendar.add(Calendar.DAY_OF_MONTH, daysToSubstract);
         updateDateTextView(dateEditText);
     }
-
 
     private void updateDateTextView(EditText dateEditText) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -224,7 +227,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
                         }
                         cursor2.close();
-                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",","),"---"));
+                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",","),puntuacioDia/viesDia));
                     }
                 }
                 cursor.close();
@@ -300,9 +303,10 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         chartView.invalidate(); // Refresh the chart
     }
 
-
-
-    //classe auxiliar per a visualitzar la data d'un node en fer-ne click
+    /**
+     * CustomMarkerView
+     * classe auxiliar per a visualitzar la data d'un node en fer-ne click
+     */
     public class CustomMarkerView extends MarkerView{
 
         private TextView tvDate;
