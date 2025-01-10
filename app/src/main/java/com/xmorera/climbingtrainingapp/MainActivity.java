@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +44,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity  {
     LinearLayout dadesManualsLayout;
     TextView dateTextView, dificultatTextView; //mostrar la data i mostrar la via seleccionada
+    Button btnEntradaManual;
     Button diaAnterior, diaPosterior;
+    Button btnAvui;
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     Button btnIV, btnV, btnVPlus;
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity  {
     String zona;
     int ifIntent = 0;
     DatabaseHelper databaseHelper;//auxiliar de la base de dades
-    Button btnEntradaManual;
 
     RecyclerView recyclerView;
     ClimbingDataAdapter climbingDataAdapter;
@@ -127,8 +129,14 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-
-
+        btnAvui = findViewById(R.id.btnAvui);
+        btnAvui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateTextView.setText(avui);
+                loadDayData();
+            }
+        });
 
         dificultatTextView = findViewById(R.id.dificultatTextView);
 
@@ -448,11 +456,14 @@ public class MainActivity extends AppCompatActivity  {
         mitjanaDiaTextView.setText(mitjanaDia(puntuacioDia/vies));
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
         if (dateTextView.getText().toString().equals(avui)) {
-            btnEntradaManual.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
+            btnAvui.setVisibility(View.GONE);
+            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
         } else {
-            btnEntradaManual.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.red));
+            btnAvui.setVisibility(View.VISIBLE);
         }
     }
+
 
     /**
      * mitjanaDia
