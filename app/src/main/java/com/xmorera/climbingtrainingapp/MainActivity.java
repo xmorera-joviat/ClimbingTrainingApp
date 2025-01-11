@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingData;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingDataAdapter;
+import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.resultats.Resultats;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.Preferencies;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity  {
     Button btnResultats;
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    Button btnIV, btnV, btnVPlus;
+    Button btnIV, btnIVPlus,btnV, btnVPlus;
     Button btn6a, btn6aPlus,btn6b, btn6bPlus,btn6c, btn6cPlus;
     Button btn7a, btn7aPlus,btn7b, btn7bPlus,btn7c, btn7cPlus;
     Button btn8a, btn8aPlus,btn8b, btn8bPlus,btn8c, btn8cPlus;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity  {
     List<ClimbingData> climbingDataList;
 
     SharedPreferences preferencesGZero;
+    Puntuacio puntuacio;
 
     TextView viesDiaTextView;
     TextView metresDiaTextView;
@@ -172,6 +174,7 @@ public class MainActivity extends AppCompatActivity  {
         //mapeig de botons
         {
             btnIV = findViewById(R.id.btnIV);
+            //btnIVPlus = findViewById(R.id.btnIVPlus);
             btnV = findViewById(R.id.btnV);
             btnVPlus = findViewById(R.id.btnVPlus);
             btn6a = findViewById(R.id.btn6a);
@@ -195,6 +198,7 @@ public class MainActivity extends AppCompatActivity  {
 
             //establiment dels listeners pels botons de via
             setDificultatListener(btnIV);
+            //setDificultatListener(btnIVPlus);
             setDificultatListener(btnV);
             setDificultatListener(btnVPlus);
             setDificultatListener(btn6a);
@@ -244,6 +248,8 @@ public class MainActivity extends AppCompatActivity  {
         metresDiaTextView = findViewById(R.id.metresDiaTextView);
         mitjanaDiaTextView = findViewById(R.id.mitjanaDiaTextView);
         puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
+
+        puntuacio = new Puntuacio();
 
         loadDayData(); //mostrar totes les dades de la bd
     }
@@ -447,14 +453,16 @@ public class MainActivity extends AppCompatActivity  {
                 Log.d("dificultat",dificultat);
                 // activació de les preferencies,
                 // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
-                if (preferencesGZero.getString(dificultat, "error").equals("error")) {
+                if (preferencesGZero.getString(zona, "error").equals("error")) {
                     startActivity(new Intent(this, Preferencies.class));
                 }
-                Log.d("dificultat",preferencesGZero.getString(dificultat, "error"));
-                double puntsVia = Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",","."));
+                //Log.d("dificultat",preferencesGZero.getString(dificultat, "error"));
+                double puntsVia = puntuacio.getPunts(dificultat);
+                //double puntsVia = Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",","."));
                 double metresVia = Double.parseDouble(preferencesGZero.getString(zona, "0,0").replace(",","."));
                 if(ifIntent == 1){ //en el cas d'un inent apliquem el coeficient de dificultat i contem la mitat de metres de la zona
-                    puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
+                    puntsVia *= puntuacio.getIntent();
+                    //puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
                     metresVia *= 0.5;
                 }
                 climbingDataList.add(new ClimbingData( id, date, dificultat, zona, ifIntent, String.format("%.1f", puntsVia)));

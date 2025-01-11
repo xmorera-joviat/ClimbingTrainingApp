@@ -38,10 +38,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xmorera.climbingtrainingapp.R;
+import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
 import com.xmorera.climbingtrainingapp.utils.Preferencies;
-import com.xmorera.climbingtrainingapp.utils.Utilitats;
 
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
@@ -63,6 +63,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     private Calendar calendar = Calendar.getInstance(); // Únic Calendar per a amb dues dates
 
     private SharedPreferences preferencesGZero;
+    Puntuacio puntuacio;
 
     private LineChart chartView;
 
@@ -107,6 +108,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
         databaseHelper = new DatabaseHelper(this);
         preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
+        puntuacio = new Puntuacio();
 
         chartView = findViewById(R.id.chart_view);
 
@@ -217,17 +219,18 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
                             // activació de les preferencies,
                             // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
-                            if (preferencesGZero.getString(dificultat, "error").equals("error")) {
+                            if (preferencesGZero.getString(zona, "error").equals("error")) {
                                 startActivity(new Intent(this, Preferencies.class));
                             }
 
-                            puntuacioDia += Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",", "."));
+                            puntuacioDia += puntuacio.getPunts(dificultat);
+                            //puntuacioDia += Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",", "."));
                             viesDia += 1;
                             metresDia += Double.parseDouble(preferencesGZero.getString(zona, "0,0").replace(",", "."));
 
                         }
                         cursor2.close();
-                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.valueOf(puntuacioDia).replace(".",","),puntuacioDia/viesDia));
+                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.format("%,.1f",puntuacioDia).replace(".",","),puntuacioDia/viesDia));
                     }
                 }
                 cursor.close();
