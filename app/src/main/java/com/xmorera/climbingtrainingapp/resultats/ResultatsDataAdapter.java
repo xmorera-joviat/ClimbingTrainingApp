@@ -41,7 +41,7 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         holder.viesTextView.setText(data.getVies());
         holder.puntuacioTextView.setText(data.getPuntuacio());
         holder.metresTextView.setText(data.getMetres());
-        holder.mitjanaTextView.setText(Utilitats.mitjanaGrau(data.getMitjana(), context.getSharedPreferences("preferenciesGZero", Context.MODE_PRIVATE)));
+        holder.mitjanaTextView.setText(Utilitats.mitjanaGrau(data.getMitjana()));
 
         // Set an OnClickListener for the itemView
         holder.itemView.setOnClickListener(v -> {

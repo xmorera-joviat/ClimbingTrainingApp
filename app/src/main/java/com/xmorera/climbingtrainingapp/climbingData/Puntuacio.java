@@ -5,8 +5,15 @@ import java.util.Map;
 
 public class Puntuacio {
     private Map<String, Double> puntuacio;
-    //penalització per intent
-    private double intent= 0.1;
+    //la puntuació s'ha de dividir entre x per baixar y graus:
+    // 1.30  --> 1 grau
+    // 1.69  --> 2 graus
+    // 2.197 --> 3 graus
+    // 2.856 --> 4 graus
+    // 3.713 --> 5 graus
+    private double penalitzacioIntent = 1.69;
+    private double penalitzacioDescansos = 1.3;
+    private double penalitzacioMetres = 0.5;
 
     public Puntuacio(){
         puntuacio = new HashMap<>();
@@ -61,11 +68,33 @@ public class Puntuacio {
         }
     }
 
-    public void setIntent(double intent){
-        this.intent = intent;
+    public double getIfIntent(){
+        return penalitzacioIntent;
     }
 
-    public double getIntent(){
-        return intent;
+    public double getPenalitzacioMetres(){
+        return penalitzacioMetres;
+    }
+
+    public double getPenalitzacioDescansos (int descansos){
+        double penalitzacio = 1.3;
+        switch (descansos){
+            case 1:
+                penalitzacio = 1.3;
+                break;
+            case 2:
+                penalitzacio = 1.69;
+                break;
+            case 3:
+                penalitzacio = 2.197;
+                break;
+            case 4:
+                penalitzacio = 2.856;
+                break;
+            default:
+                penalitzacio = 3.713;
+                break;
+        }
+        return penalitzacio;
     }
 }

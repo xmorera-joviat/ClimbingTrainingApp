@@ -29,9 +29,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_DIFICULTAT + " TEXT, " +
                 COL_ZONA + " TEXT, " +
                 COL_IFINTENT + " INTEGER)";
+
+        String createRocodromsTable = "CREATE TABLE IF NOT EXISTS rocodroms (" +
+                "ID_ROCO INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "NOM_ROCO TEXT NOT NULL)";
+
+        String createZonesTable = "CREATE TABLE IF NOT EXISTS zones (" +
+                "ID_ZONA INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "NOM_ZONA TEXT NOT NULL, " +
+                "ALTURA_ZONA INTEGER NOT NULL, " +
+                "ID_ROCO INTEGER NOT NULL, " +
+                "FOREIGN KEY(ID_ROCO) REFERENCES rocodroms(ID_ROCO) ON DELETE CASCADE)";
+
         db.execSQL(createTable);
+        db.execSQL(createRocodromsTable);
+        db.execSQL(createZonesTable);
+
+        //inserir dades inicials sobre rocòdroms
+        insertInitialDataRocodroms(db);
+
     }
 
+    private void insertInitialDataRocodroms(SQLiteDatabase db) {
+        // inserir rocodrom
+        ContentValues gravetatZero = new ContentValues();
+        gravetatZero.put("NOM_ROCO", "Gravetat Zero, Terrassa");
+        int idGravetatZero = (int) db.insert("rocodroms", null, gravetatZero);
+
+        // inserir Zones
+        ContentValues gravetatZeroAutos = new ContentValues();
+        gravetatZeroAutos.put("NOM_ZONA", "Autos");
+        gravetatZeroAutos.put("ALTURA_ZONA", 10);
+        gravetatZeroAutos.put("ID_ROCO", idGravetatZero);
+        db.insert("zones", null, gravetatZeroAutos);
+
+        ContentValues gravetatZeroCorda = new ContentValues();
+        gravetatZeroCorda.put("NOM_ZONA", "Corda");
+        gravetatZeroCorda.put("ALTURA_ZONA", 12);
+        gravetatZeroCorda.put("ID_ROCO", idGravetatZero);
+        db.insert("zones", null, gravetatZeroCorda);
+
+        ContentValues gravetatZeroShiny = new ContentValues();
+        gravetatZeroShiny.put("NOM_ZONA", "Shiny");
+        gravetatZeroShiny.put("ALTURA_ZONA", 12);
+        gravetatZeroShiny.put("ID_ROCO", idGravetatZero);
+        db.insert("zones", null, gravetatZeroShiny);
+
+        ContentValues gravetatZeroBloc = new ContentValues();
+        gravetatZeroBloc.put("NOM_ZONA", "Bloc");
+        gravetatZeroBloc.put("ALTURA_ZONA", 4);
+        gravetatZeroBloc.put("ID_ROCO", idGravetatZero);
+        db.insert("zones", null, gravetatZeroBloc);
+
+    }
+
+    //////////////// CRUD CLIMBING_DATA //////////////////
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -140,4 +192,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
+    ////////////////////CRUD ROCODROM////////////////////
+    public boolean insertRocodrom(String nomRocodrom) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("NOM_ROCO", nomRocodrom);
+        long result = db.insert("rocodroms", null, contentValues);
+        db.close();
+        return result != -1;
+    }
+
+    public Cursor getAllRocodroms() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM rocodroms", new String[]{});
+    }
+
+    public Integer deleteRocodrom(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("rocodroms", "ID_ROCO = ?", new String[]{String.valueOf(id)});
+    }
+
+    public boolean updateRocodrom(int id, String nomRocodrom){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("NOM_ROCO", nomRocodrom);
+        int result = db.update("rocodroms", contentValues, "ID_ROCO = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return result > 0;
+    }
+
+    ////////////////////CRUD ZONES////////////////////
+    public boolean insertZona(int idRocodrom, String nomZona, int alturaZona ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ID_ROCO", idRocodrom);
+        contentValues.put("NOM_ZONA", nomZona);
+        contentValues.put("ALTURA_ZONA", alturaZona);
+        long result = db.insert("zones", null, contentValues);
+        db.close();
+        return result != -1;
+    }
+    public Cursor getZonesByRocodrom(int idRocodrom) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM zones WHERE ID_ROCO = ?", new String[]{String.valueOf(idRocodrom)});
+    }
+    public Integer deleteZona(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("zones", "ID_ZONA = ?", new String[]{String.valueOf(id)});
+    }
+    public boolean updateZona(int id, int idRocodrom, String nomZona, int alturaZona){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ID_ROCO", idRocodrom);
+        contentValues.put("NOM_ZONA", nomZona);
+        contentValues.put("ALTURA_ZONA", alturaZona);
+        int result = db.update("zones", contentValues, "ID_ZONA = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return result > 0;
+    }
+
 }

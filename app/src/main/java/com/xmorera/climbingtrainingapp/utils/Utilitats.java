@@ -2,53 +2,58 @@ package com.xmorera.climbingtrainingapp.utils;
 
 import android.content.SharedPreferences;
 
+import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
+
 
 public class Utilitats {
 
-    public static String mitjanaGrau(Double puntsVies, SharedPreferences preferences) {
+    public static String mitjanaGrau(Double mitjanaPuntsVies) {
+        Puntuacio puntuacio = new Puntuacio();
 
         String mitjana = "---";
-        if (puntsVies >= Double.parseDouble(preferences.getString("8c+", "error").replace(",", "."))) {
+        if (mitjanaPuntsVies >= puntuacio.getPunts("8c+")) {
             mitjana = "8c+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("8c", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("8c")) {
             mitjana = "8c";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("8b+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("8b+")) {
             mitjana = "8b+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("8b", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("8b")) {
             mitjana = "8b";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("8a+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("8a+")) {
             mitjana = "8a+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("8a", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("8a")) {
             mitjana = "8a";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("7c+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("7c+")) {
             mitjana = "7c+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("7c", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("7c")) {
             mitjana = "7c";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("7b+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("7b+")) {
             mitjana = "7b+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("7b", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("7b")) {
             mitjana = "7b";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("7a+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("7a+")) {
             mitjana = "7a+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("7a", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("7a")) {
             mitjana = "7a";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("6c+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("6c+")) {
             mitjana = "6c+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("6c", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("6c")) {
             mitjana = "6c";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("6b+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("6b+")) {
             mitjana = "6b+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("6b", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("6b")) {
             mitjana = "6b";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("6a+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("6a+")) {
             mitjana = "6a+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("6a", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("6a")) {
             mitjana = "6a";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("V+", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("V+")) {
             mitjana = "V+";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("V", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("V")) {
             mitjana = "V";
-        } else if (puntsVies >= Double.parseDouble(preferences.getString("IV", "error").replace(",", "."))) {
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("IV+")) {
+            mitjana = "IV+";
+        } else if (mitjanaPuntsVies >= puntuacio.getPunts("IV+")) {
             mitjana = "IV";
         }
         return mitjana;

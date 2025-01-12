@@ -10,10 +10,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,20 +52,21 @@ import java.util.List;
  * @author Xavier Morera
  * */
 public class MainActivity extends AppCompatActivity  {
-    LinearLayout dadesManualsLayout;
-    TextView dateTextView, dificultatTextView; //mostrar la data i mostrar la via seleccionada
-    Button btnEntradaManual;
+    TextView dateTextView; //mostrar la data i mostrar la via seleccionada
     Button diaAnterior, diaPosterior;
     Button btnAvui;
     Button btnResultats;
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    Spinner rocodromSpinner;
+    LinearLayout intentsLayout;
+    GridLayout grausGrid;
+    Spinner descansosSpinner;
     Button btnIV, btnIVPlus,btnV, btnVPlus;
     Button btn6a, btn6aPlus,btn6b, btn6bPlus,btn6c, btn6cPlus;
     Button btn7a, btn7aPlus,btn7b, btn7bPlus,btn7c, btn7cPlus;
     Button btn8a, btn8aPlus,btn8b, btn8bPlus,btn8c, btn8cPlus;
     CheckBox chkIntent;
-    Button btnAutos, btnCorda, btnShinyWall, btnBloc;//tipus de via
     //variables per a entrar les dades a la base de dades
     String dificultat;
     String zona;
@@ -72,7 +77,6 @@ public class MainActivity extends AppCompatActivity  {
     ClimbingDataAdapter climbingDataAdapter;
     List<ClimbingData> climbingDataList;
 
-    SharedPreferences preferencesGZero;
     Puntuacio puntuacio;
 
     TextView viesDiaTextView;
@@ -155,26 +159,57 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-        dificultatTextView = findViewById(R.id.dificultatTextView);
+        rocodromSpinner = findViewById(R.id.rocodromSpinner);
+        String[] rocodroms = {"Gravetat Zero, Terrassa", "Sharma, Gavà", "Climbat, Barcelona", "La panxa del bou, Sabadell"};
 
-        btnEntradaManual = findViewById(R.id.btnEntradaManual);
-        dadesManualsLayout = findViewById(R.id.dadesManualsLayout);
-        visibilitatDadesManuals(View.GONE);
-        btnEntradaManual.setOnClickListener(new View.OnClickListener() {
+// Adaptador per l'spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, rocodroms);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        rocodromSpinner.setAdapter(adapter);
+
+// Últim rocòdrom seleccionat
+        SharedPreferences prefs = getSharedPreferences("Rocodrom", MODE_PRIVATE);
+        int ultimRocodrom = prefs.getInt("ultimRocodrom", 0);
+        rocodromSpinner.setSelection(ultimRocodrom);
+
+// Listener per gestionar les opcions
+        rocodromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                resetInput();
-                if (dadesManualsLayout.getVisibility() == View.GONE) {
-                    visibilitatDadesManuals(View.VISIBLE);
-                } else {
-                    visibilitatDadesManuals(View.GONE);
-                }
+            public void onItemSelected(AdapterView<?> adapterView, View view, int posicio, long id) {
+                //guardar l'últim rocodrom seleccionat
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("ultimRocodrom", posicio);
+                editor.apply();
+                //generar les zones del rocòdrom seleccionat
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // Optional: Handle the case when no item is selected
             }
         });
+
+        descansosSpinner = findViewById(R.id.descansosSpinner);
+        String[] descansos = {"neta", "1", "2", "3", "4", "5+"};
+        ArrayAdapter<String> adapterDescansos = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, descansos);
+        adapterDescansos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        descansosSpinner.setAdapter(adapterDescansos);
+        descansosSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         //mapeig de botons
         {
             btnIV = findViewById(R.id.btnIV);
-            //btnIVPlus = findViewById(R.id.btnIVPlus);
+            btnIVPlus = findViewById(R.id.btnIVPlus);
             btnV = findViewById(R.id.btnV);
             btnVPlus = findViewById(R.id.btnVPlus);
             btn6a = findViewById(R.id.btn6a);
@@ -198,7 +233,7 @@ public class MainActivity extends AppCompatActivity  {
 
             //establiment dels listeners pels botons de via
             setDificultatListener(btnIV);
-            //setDificultatListener(btnIVPlus);
+            setDificultatListener(btnIVPlus);
             setDificultatListener(btnV);
             setDificultatListener(btnVPlus);
             setDificultatListener(btn6a);
@@ -222,16 +257,11 @@ public class MainActivity extends AppCompatActivity  {
 
             chkIntent = findViewById(R.id.chkIntent);
 
-            btnAutos = findViewById(R.id.btnAutos);
-            btnCorda = findViewById(R.id.btnCorda);
-            btnShinyWall = findViewById(R.id.btnShinyWall);
-            btnBloc = findViewById(R.id.btnBloc);
-            //listeners pels botons de zona
-            setZoneListener(btnAutos);
-            setZoneListener(btnCorda);
-            setZoneListener(btnShinyWall);
-            setZoneListener(btnBloc);
+
+            //listeners pels botons de dificultat per entrar les dades
+
         }
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -241,28 +271,25 @@ public class MainActivity extends AppCompatActivity  {
 
         databaseHelper = new DatabaseHelper(this);
 
-        //inicialitzar les sharedPreferences
-        preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
-
         viesDiaTextView = findViewById(R.id.viesDiaTextView);
         metresDiaTextView = findViewById(R.id.metresDiaTextView);
         mitjanaDiaTextView = findViewById(R.id.mitjanaDiaTextView);
         puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
 
-        puntuacio = new Puntuacio();
+        // puntuacio = new Puntuacio();
 
-        loadDayData(); //mostrar totes les dades de la bd
+        // loadDayData(); //mostrar totes les dades de la bd
     }
 
     /**
-     * visibilitatDadesManuals
+     * visibilitatGraus
      * amaga o mostra el panell de dades introduïdes manualment
      * @param 'View.GONE
      * @param 'View.VISIBLE
      * */
-    private void visibilitatDadesManuals(int visibilitat) {
-        dadesManualsLayout.setVisibility(visibilitat);
-        dificultatTextView.setVisibility(visibilitat);
+    private void visibilitatGraus(int visibilitat) {
+        intentsLayout.setVisibility(visibilitat);
+        grausGrid.setVisibility(visibilitat);
     }
 
     boolean firstTime = true;// variable per controlar que quan es torna a l'inici es mostri la data actual
@@ -285,7 +312,7 @@ public class MainActivity extends AppCompatActivity  {
             updateDateTextView();
 
         }
-        loadDayData(); // Load data for the current date
+        // loadDayData(); // Load data for the current date
     }
 
     @Override
@@ -366,7 +393,6 @@ public class MainActivity extends AppCompatActivity  {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dificultatTextView.setText(button.getText());
             }
         });
     }
@@ -378,29 +404,7 @@ public class MainActivity extends AppCompatActivity  {
      * formateja la data per fer la inserció a la base de dades
      * amaga el panell de selecció manual
      * */
-    private void setZoneListener(Button button) {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(dificultatTextView.getText().toString().equals("")){
-                    //si no s'ha introduit una via no fer res
-                    Toast.makeText(MainActivity.this, "Seleccionar dificultat", Toast.LENGTH_SHORT).show();
-                }else {
-                    //dades per guardar a sqlite
-                    String date = dateTextView.getText().toString();
-                    dificultat = dificultatTextView.getText().toString();
-                    zona = button.getText().toString();
-                    if (chkIntent.isChecked()) {
-                        ifIntent = 1;
-                    }
-                    //introducció de dades a la base de dades
-                    insertData(date, dificultat, zona, ifIntent);
-                    resetInput();
-                    visibilitatDadesManuals(View.GONE);
-                }
-            }
-        });
-    }
+
 
     /**
      * insertData
@@ -412,7 +416,7 @@ public class MainActivity extends AppCompatActivity  {
     private void insertData(String date, String dificultat, String zona, int ifIntent){
         boolean insertSuccess = databaseHelper.insertData(date, dificultat, zona, ifIntent);
         if (insertSuccess) {
-            Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
             loadDayData();
         } else {
             Toast.makeText(MainActivity.this, "Error en guardar la via", Toast.LENGTH_SHORT).show();
@@ -426,7 +430,6 @@ public class MainActivity extends AppCompatActivity  {
      */
     private void resetInput() {
         //reset pantalla introducció de dades
-        dificultatTextView.setText("");
         chkIntent.setChecked(false);
         ifIntent = 0;
     }
@@ -451,19 +454,17 @@ public class MainActivity extends AppCompatActivity  {
                 String zona = cursor.getString(cursor.getColumnIndexOrThrow("ZONA"));
                 int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
                 Log.d("dificultat",dificultat);
-                // activació de les preferencies,
-                // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
-                if (preferencesGZero.getString(zona, "error").equals("error")) {
-                    startActivity(new Intent(this, Preferencies.class));
-                }
+
                 //Log.d("dificultat",preferencesGZero.getString(dificultat, "error"));
                 double puntsVia = puntuacio.getPunts(dificultat);
-                //double puntsVia = Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",","."));
-                double metresVia = Double.parseDouble(preferencesGZero.getString(zona, "0,0").replace(",","."));
+
+                //**************************************************
+                double metresVia = 10.0; //aquí s'ha de consultar la base de dades per saber els metres de la zona depenent del rocòdrom carregat
+                //**************************************************
+
                 if(ifIntent == 1){ //en el cas d'un inent apliquem el coeficient de dificultat i contem la mitat de metres de la zona
-                    puntsVia *= puntuacio.getIntent();
-                    //puntsVia *= Double.parseDouble(preferencesGZero.getString("IntentCoeficient", "0,0").replace(",","."));
-                    metresVia *= 0.5;
+                    puntsVia /= puntuacio.getIfIntent();// veure Puntuacio.java
+                    metresVia *= puntuacio.getPenalitzacioMetres();
                 }
                 climbingDataList.add(new ClimbingData( id, date, dificultat, zona, ifIntent, String.format("%.1f", puntsVia)));
                 vies += 1;
@@ -476,11 +477,10 @@ public class MainActivity extends AppCompatActivity  {
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
         viesDiaTextView.setText(String.valueOf(vies));
         metresDiaTextView.setText(String.valueOf(metres));
-        mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioDia/vies, preferencesGZero));
+        mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioDia/vies));
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
         if (dateTextView.getText().toString().equals(avui)) {
-            btnAvui.setVisibility(View.GONE);
-            try {
+           try {
                 calendar.setTime(dateFormat.parse(avui));
             } catch (ParseException e){
                 e.printStackTrace();
