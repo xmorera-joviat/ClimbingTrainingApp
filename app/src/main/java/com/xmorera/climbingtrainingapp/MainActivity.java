@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 /**
  * Classe principal de l'aplicació Climbing Training App.
@@ -58,9 +60,10 @@ public class MainActivity extends AppCompatActivity  {
     Button btnResultats;
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    LinearLayout entradaLayout;
     Spinner rocodromSpinner;
-    LinearLayout intentsLayout;
-    GridLayout grausGrid;
+    HashMap<String, Integer> rocodromsHashMap;
+    GridLayout zonesGrid;
     Spinner descansosSpinner;
     Button btnIV, btnIVPlus,btnV, btnVPlus;
     Button btn6a, btn6aPlus,btn6b, btn6bPlus,btn6c, btn6cPlus;
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
     /**
-     * onCretate
+     * onCreate
      *
      * mapeig dels elements de la pantalla a variables,
      * inicialitza els listeners dels botons de dificultat, zona i intent,
@@ -158,36 +161,15 @@ public class MainActivity extends AppCompatActivity  {
                 startActivity(new Intent(MainActivity.this, Resultats.class));
             }
         });
-
+        zonesGrid = findViewById(R.id.zonesGrid);
+//////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
         rocodromSpinner = findViewById(R.id.rocodromSpinner);
-        String[] rocodroms = {"Gravetat Zero, Terrassa", "Sharma, Gavà", "Climbat, Barcelona", "La panxa del bou, Sabadell"};
 
-// Adaptador per l'spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, rocodroms);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        rocodromSpinner.setAdapter(adapter);
 
-// Últim rocòdrom seleccionat
-        SharedPreferences prefs = getSharedPreferences("Rocodrom", MODE_PRIVATE);
-        int ultimRocodrom = prefs.getInt("ultimRocodrom", 0);
-        rocodromSpinner.setSelection(ultimRocodrom);
-
-// Listener per gestionar les opcions
-        rocodromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int posicio, long id) {
-                //guardar l'últim rocodrom seleccionat
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("ultimRocodrom", posicio);
-                editor.apply();
-                //generar les zones del rocòdrom seleccionat
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                // Optional: Handle the case when no item is selected
-            }
-        });
+        entradaLayout = findViewById(R.id.entradaLayout);
+        entradaLayout.setVisibility(View.GONE);
 
         descansosSpinner = findViewById(R.id.descansosSpinner);
         String[] descansos = {"neta", "1", "2", "3", "4", "5+"};
@@ -288,8 +270,7 @@ public class MainActivity extends AppCompatActivity  {
      * @param 'View.VISIBLE
      * */
     private void visibilitatGraus(int visibilitat) {
-        intentsLayout.setVisibility(visibilitat);
-        grausGrid.setVisibility(visibilitat);
+        entradaLayout.setVisibility(visibilitat);
     }
 
     boolean firstTime = true;// variable per controlar que quan es torna a l'inici es mostri la data actual
@@ -312,13 +293,89 @@ public class MainActivity extends AppCompatActivity  {
             updateDateTextView();
 
         }
+        //carrega Spinner
+        loadSpinnerRocodroms();
         // loadDayData(); // Load data for the current date
+    }
+
+    private void loadSpinnerRocodroms() {
+        rocodromsHashMap = new HashMap<>();
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        Cursor cursor = databaseHelper.getAllRocodroms();
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("ID_ROCO"));
+                String nom = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ROCO"));
+                rocodromsHashMap.put(nom, id);
+            }
+            cursor.close();
+        }
+
+// Adaptador per l'spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, rocodromsHashMap.keySet().toArray(new String[0]));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        rocodromSpinner.setAdapter(adapter);
+
+// Últim rocòdrom seleccionat
+        SharedPreferences prefs = getSharedPreferences("Rocodrom", MODE_PRIVATE);
+        int ultimRocodrom = prefs.getInt("ultimRocodrom", 0);
+        rocodromSpinner.setSelection(ultimRocodrom);
+
+// Listener per gestionar les opcions
+        rocodromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int posicio, long id) {
+                //guardar l'últim rocodrom seleccionat
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("ultimRocodrom", posicio);
+                editor.apply();
+                //generar les zones del rocòdrom seleccionat
+                //Toast.makeText(MainActivity.this, "ID_ROCO: " + rocodromsHashMap.get(adapterView.getItemAtPosition(posicio)), Toast.LENGTH_SHORT).show();
+                DatabaseHelper databaseHelper2 = new DatabaseHelper(MainActivity.this);
+                Cursor cursor2 = databaseHelper2.getZonesByRocodrom(rocodromsHashMap.get(adapterView.getItemAtPosition(posicio)));
+                zonesGrid.removeAllViews(); //buidar GridLayout zonesGrid
+                if (cursor2 != null) {
+                    if (cursor2.moveToFirst()) {
+                        do{
+                            String nomZona = cursor2.getString(cursor2.getColumnIndexOrThrow("NOM_ZONA"));
+                            int alturaZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ALTURA_ZONA"));
+                            //generar botons de zona
+                            Button btnZona = new Button(MainActivity.this);
+                            btnZona.setText(nomZona);
+                            btnZona.setTag(alturaZona);
+                            //listener del botó de zona
+                            btnZona.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    int altura = (int) view.getTag();
+                                    entradaLayout.setVisibility(View.VISIBLE);
+                                    Toast.makeText(MainActivity.this, "Altura: " + altura, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            zonesGrid.addView(btnZona);
+
+                        }
+                        while (cursor2.moveToNext()) ;
+                    }else {
+                        entradaLayout.setVisibility(View.GONE);
+                        Toast.makeText(MainActivity.this, "No hi ha zones definides per aquest rocòdrom.", Toast.LENGTH_LONG).show();
+                    }
+                }
+                cursor2.close();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                // Optional: Handle the case when no item is selected
+            }
+        });
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         firstTime = false;
+        entradaLayout.setVisibility(View.GONE);
     }
 
     /**
@@ -480,7 +537,7 @@ public class MainActivity extends AppCompatActivity  {
         mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioDia/vies));
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
         if (dateTextView.getText().toString().equals(avui)) {
-           try {
+            try {
                 calendar.setTime(dateFormat.parse(avui));
             } catch (ParseException e){
                 e.printStackTrace();

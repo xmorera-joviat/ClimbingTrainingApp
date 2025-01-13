@@ -50,40 +50,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    private void insertInitialDataRocodroms(SQLiteDatabase db) {
-        // inserir rocodrom
-        ContentValues gravetatZero = new ContentValues();
-        gravetatZero.put("NOM_ROCO", "Gravetat Zero, Terrassa");
-        int idGravetatZero = (int) db.insert("rocodroms", null, gravetatZero);
-
-        // inserir Zones
-        ContentValues gravetatZeroAutos = new ContentValues();
-        gravetatZeroAutos.put("NOM_ZONA", "Autos");
-        gravetatZeroAutos.put("ALTURA_ZONA", 10);
-        gravetatZeroAutos.put("ID_ROCO", idGravetatZero);
-        db.insert("zones", null, gravetatZeroAutos);
-
-        ContentValues gravetatZeroCorda = new ContentValues();
-        gravetatZeroCorda.put("NOM_ZONA", "Corda");
-        gravetatZeroCorda.put("ALTURA_ZONA", 12);
-        gravetatZeroCorda.put("ID_ROCO", idGravetatZero);
-        db.insert("zones", null, gravetatZeroCorda);
-
-        ContentValues gravetatZeroShiny = new ContentValues();
-        gravetatZeroShiny.put("NOM_ZONA", "Shiny");
-        gravetatZeroShiny.put("ALTURA_ZONA", 12);
-        gravetatZeroShiny.put("ID_ROCO", idGravetatZero);
-        db.insert("zones", null, gravetatZeroShiny);
-
-        ContentValues gravetatZeroBloc = new ContentValues();
-        gravetatZeroBloc.put("NOM_ZONA", "Bloc");
-        gravetatZeroBloc.put("ALTURA_ZONA", 4);
-        gravetatZeroBloc.put("ID_ROCO", idGravetatZero);
-        db.insert("zones", null, gravetatZeroBloc);
-
-    }
-
-    //////////////// CRUD CLIMBING_DATA //////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////// CRUD CLIMBING_DATA /////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -193,7 +162,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    ////////////////////CRUD ROCODROM////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////  CRUD ROCODROM  ////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
     public boolean insertRocodrom(String nomRocodrom) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -222,7 +193,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
-    ////////////////////CRUD ZONES////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////  CRUD ZONES  ////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
     public boolean insertZona(int idRocodrom, String nomZona, int alturaZona ) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -250,6 +223,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int result = db.update("zones", contentValues, "ID_ZONA = ?", new String[]{String.valueOf(id)});
         db.close();
         return result > 0;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////  introducció de dades inicials  ////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    private void insertInitialDataRocodroms(SQLiteDatabase db) {
+        // gravetat zero
+        ContentValues gravetatZero = new ContentValues();
+        gravetatZero.put("NOM_ROCO", "Gravetat Zero, Terrassa");
+        int idGravetatZero = (int) db.insert("rocodroms", null, gravetatZero);
+
+        // inserir Zones G0
+        ContentValues gravetatZeroAutos = new ContentValues();
+        gravetatZeroAutos.put("NOM_ZONA", "Autos");
+        gravetatZeroAutos.put("ALTURA_ZONA", 10);
+        gravetatZeroAutos.put("ID_ROCO", idGravetatZero);
+        db.insert("zones", null, gravetatZeroAutos);
+
+        ContentValues gravetatZeroCorda = new ContentValues();
+        gravetatZeroCorda.put("NOM_ZONA", "Corda");
+        gravetatZeroCorda.put("ALTURA_ZONA", 12);
+        gravetatZeroCorda.put("ID_ROCO", idGravetatZero);
+        db.insert("zones", null, gravetatZeroCorda);
+
+        ContentValues gravetatZeroShiny = new ContentValues();
+        gravetatZeroShiny.put("NOM_ZONA", "Shiny");
+        gravetatZeroShiny.put("ALTURA_ZONA", 12);
+        gravetatZeroShiny.put("ID_ROCO", idGravetatZero);
+        db.insert("zones", null, gravetatZeroShiny);
+
+        ContentValues gravetatZeroBloc = new ContentValues();
+        gravetatZeroBloc.put("NOM_ZONA", "Bloc");
+        gravetatZeroBloc.put("ALTURA_ZONA", 4);
+        gravetatZeroBloc.put("ID_ROCO", idGravetatZero);
+        db.insert("zones", null, gravetatZeroBloc);
+
+        // La panxa del bou
+        ContentValues laPanxaDelBou = new ContentValues();
+        laPanxaDelBou.put("NOM_ROCO", "La panxa del bou, Sabadell");
+        int idLaPanxaDelBou = (int) db.insert("rocodroms", null, laPanxaDelBou);
+
+        // Climbat Barcelona
+        ContentValues climbatBarcelona = new ContentValues();
+        climbatBarcelona.put("NOM_ROCO", "Climbat, Barcelona");
+        int idClimbatBarcelona = (int) db.insert("rocodroms", null, climbatBarcelona);
+
+        // Sharma Gavà
+        ContentValues sharmaGava = new ContentValues();
+        sharmaGava.put("NOM_ROCO", "Sharma, Gavà");
+        int idSharmaGava = (int) db.insert("rocodroms", null, sharmaGava);
     }
 
 }
