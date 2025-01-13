@@ -162,11 +162,8 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
         zonesGrid = findViewById(R.id.zonesGrid);
-//////////////////////////////////////////////////////////////////////////////
-        /////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-        rocodromSpinner = findViewById(R.id.rocodromSpinner);
 
+        rocodromSpinner = findViewById(R.id.rocodromSpinner);
 
         entradaLayout = findViewById(R.id.entradaLayout);
         entradaLayout.setVisibility(View.GONE);

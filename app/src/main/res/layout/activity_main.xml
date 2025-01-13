@@ -188,22 +188,41 @@
                     android:id="@+id/chkIntent"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="45dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_weight="1"
-                    android:text="intent" />
+                    android:text="intent"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:text="descansos (zona de corda):"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/blau_turquesa">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        android:layout_gravity="right"
+                        android:text="descansos"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="(zona de corda):"/>
+
+                </LinearLayout>
 
                 <Spinner
                     android:id="@+id/descansosSpinner"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:paddingLeft="25dp"
+                    android:background="@color/blau_turquesa"/>
 
             </LinearLayout>
 

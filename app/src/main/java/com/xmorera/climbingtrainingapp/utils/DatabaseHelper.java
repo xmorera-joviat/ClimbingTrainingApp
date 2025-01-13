@@ -68,6 +68,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createRocodromsTable);
         db.execSQL(createZonesTable);
 
+        insertInitialDataRocodroms(db);
+
     }
 
     @Override
