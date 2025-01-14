@@ -13,4 +13,6 @@
     <color name="dark_gray">#FF404040</color> <!-- Gris fosc -->
     <color name="charcoal_gray">#FF333333</color> <!-- Gris antracita -->
     <color name="blau_turquesa">#80CBC4</color> <!-- Blau turquesa -->"
+    <color name="text_dark_theme">#c1c1c1</color>
+    <color name="text_light_theme">#737373</color>
 </resources>

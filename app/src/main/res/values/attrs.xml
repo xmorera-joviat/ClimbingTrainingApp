@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ClimbingTrainingApp">
+        <!-- Define custom attributes here. -->
+        <attr name="CTA_color_de_fons_botons" format="color" />
+        <attr name="CTA_color_de_text_botons" format="color" />
+    </declare-styleable>
+</resources>
