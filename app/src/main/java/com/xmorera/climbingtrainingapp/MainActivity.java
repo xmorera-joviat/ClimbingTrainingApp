@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity  {
     Calendar calendar = Calendar.getInstance();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     LinearLayout entradaLayout;
+    LinearLayout descansosLayout;
     Spinner rocodromSpinner;
     HashMap<String, Integer> rocodromsHashMap;
     GridLayout zonesGrid;
@@ -91,6 +93,9 @@ public class MainActivity extends AppCompatActivity  {
     double puntuacioDia;
 
     String avui;
+
+    //llista per guardar els botons de zona que es generen en temps d'execució
+    List<Button> botonsZona = new ArrayList<>();
 
 
     /**
@@ -167,6 +172,8 @@ public class MainActivity extends AppCompatActivity  {
 
         entradaLayout = findViewById(R.id.entradaLayout);
         entradaLayout.setVisibility(View.GONE);
+        descansosLayout = findViewById(R.id.descansosLayout);
+        descansosLayout.setVisibility(View.GONE);
 
         descansosSpinner = findViewById(R.id.descansosSpinner);
         String[] descansos = {"neta", "1", "2", "3", "4", "5+"};
@@ -293,6 +300,7 @@ public class MainActivity extends AppCompatActivity  {
         //carrega Spinner
         loadSpinnerRocodroms();
         // loadDayData(); // Load data for the current date
+
     }
 
     private void loadSpinnerRocodroms() {
@@ -336,17 +344,45 @@ public class MainActivity extends AppCompatActivity  {
                         do{
                             String nomZona = cursor2.getString(cursor2.getColumnIndexOrThrow("NOM_ZONA"));
                             int alturaZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ALTURA_ZONA"));
+                            int esCorda = cursor2.getInt(cursor2.getColumnIndexOrThrow("ZONA_CORDA"));
+
+                            Bundle infoBoto = new Bundle();
+                            infoBoto.putInt("alturaZona", alturaZona);
+                            infoBoto.putInt("esCorda", esCorda);
+
+
                             //generar botons de zona
                             Button btnZona = new Button(MainActivity.this);
                             btnZona.setText(nomZona);
-                            btnZona.setTag(alturaZona);
+                            btnZona.setTag(infoBoto);
+                            botonsZona.add(btnZona);
+
                             //listener del botó de zona
                             btnZona.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    int altura = (int) view.getTag();
+                                    //restaura el color de tots els botons de zona
+                                    for (Button b : botonsZona) {
+                                        //selecció del color de fons del botó del tema
+                                        TypedArray colorFonsBotons = obtainStyledAttributes(R.style.Base_Theme_ClimbingTrainingApp, new int[]{android.R.attr.colorButtonNormal});
+                                        int colorFons = colorFonsBotons.getColor(0, 0);
+                                        colorFonsBotons.recycle();//alliberem recursos
+                                        b.setBackgroundColor(colorFons);
+                                    }
+
+                                    //canvi de color pel boto seleccionat
+                                    view.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
+
+                                    Bundle infoBoto = (Bundle) view.getTag();
+                                    int alturaZona = infoBoto.getInt("alturaZona");
+                                    int esCorda = infoBoto.getInt("esCorda");
                                     entradaLayout.setVisibility(View.VISIBLE);
-                                    Toast.makeText(MainActivity.this, "Altura: " + altura, Toast.LENGTH_SHORT).show();
+                                    if (esCorda == 1) {
+                                        descansosLayout.setVisibility(View.VISIBLE);
+                                    } else {
+                                        descansosLayout.setVisibility(View.GONE);
+                                    }
+                                    //Toast.makeText(MainActivity.this, "Altura: " + alturaZona + "m, Corda: " + esCorda, Toast.LENGTH_LONG).show();
                                 }
                             });
                             zonesGrid.addView(btnZona);

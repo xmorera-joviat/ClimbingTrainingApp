@@ -183,6 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:padding="5dp"
                 android:paddingHorizontal="10dp">
 
                 <CheckBox
@@ -192,43 +193,56 @@
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:text="intent"
+                    android:buttonTint="@color/orange"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <LinearLayout
+                    android:id="@+id/descansosLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:background="?android:attr/colorButtonNormal">
 
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/orange">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:gravity="right"
+                            android:layout_gravity="right"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:text="descansos"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:gravity="right"
+                            android:layout_gravity="right"
+                            android:paddingStart="2dp"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:text="(zona de corda):"/>
+
+                    </LinearLayout>
+
+                    <Spinner
+                        android:id="@+id/descansosSpinner"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:gravity="right"
-                        android:layout_gravity="right"
-
-                        android:text="descansos"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2"
-                        android:gravity="center"
-
-                        android:text="(zona de corda):"/>
+                        android:layout_weight="1"
+                        android:paddingLeft="25dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/orange"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                 </LinearLayout>
-
-                <Spinner
-                    android:id="@+id/descansosSpinner"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:paddingLeft="25dp"
-                    android:background="?android:attr/colorButtonNormal"
-                    tools:ignore="TouchTargetSizeCheck" />
-
             </LinearLayout>
 
             <GridLayout
