@@ -152,24 +152,6 @@
                 android:layout_marginRight="4dp"
                 android:text="Zona4" />
 
-            <Button
-                android:id="@+id/btnZona5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:text="Zona5" />
-
-            <Button
-                android:id="@+id/btnZona6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:text="Zona6" />
-
         </GridLayout>
 
         <LinearLayout
@@ -184,11 +166,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="5dp"
+                android:gravity="center"
                 android:paddingHorizontal="10dp">
 
                 <CheckBox
                     android:id="@+id/chkIntent"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
@@ -201,14 +184,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="?android:attr/colorButtonNormal">
+                    android:layout_weight="3"
+                    android:paddingEnd="5dp">
 
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:background="@color/orange">
+                        android:layout_weight="1">
 
 
                         <TextView
@@ -238,7 +222,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:paddingLeft="25dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
                         android:background="@color/orange"
                         tools:ignore="TouchTargetSizeCheck" />
 
