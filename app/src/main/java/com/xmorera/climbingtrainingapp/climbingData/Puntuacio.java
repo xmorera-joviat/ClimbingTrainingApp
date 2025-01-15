@@ -11,8 +11,8 @@ public class Puntuacio {
     // 2.197 --> 3 graus
     // 2.856 --> 4 graus
     // 3.713 --> 5 graus
-    private double penalitzacioIntent = 1.69;
-    private double penalitzacioDescansos = 1.3;
+    private double penalitzacioIntent = 2.197; // 3 graus
+    private double penalitzacioDescansos = 1.3; // 1 grau per descans
     private double penalitzacioMetres = 0.5;
 
     public Puntuacio(){
@@ -46,19 +46,19 @@ public class Puntuacio {
 
     }
 
-    public void afegir(String grau, double punts){
+    public void afegirGrau(String grau, double punts){
         puntuacio.put(grau, punts);
     }
 
-    public double getPunts(String grau){
+    public double getPuntsGrau(String grau){
         return puntuacio.get(grau);
     }
 
-    public boolean conté(String grau){
+    public boolean contéGrau(String grau){
         return puntuacio.containsKey(grau);
     }
 
-    public void eliminar(String grau){
+    public void eliminarGrau(String grau){
         puntuacio.remove(grau);
     }
 
@@ -77,7 +77,7 @@ public class Puntuacio {
     }
 
     public double getPenalitzacioDescansos (int descansos){
-        double penalitzacio = 1.3;
+        double penalitzacio = penalitzacioDescansos;
         switch (descansos){
             case 1:
                 penalitzacio = 1.3;

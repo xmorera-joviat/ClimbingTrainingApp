@@ -223,7 +223,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                                 startActivity(new Intent(this, Preferencies.class));
                             }
 
-                            puntuacioDia += puntuacio.getPunts(dificultat);
+                            puntuacioDia += puntuacio.getPuntsGrau(dificultat);
                             //puntuacioDia += Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",", "."));
                             viesDia += 1;
                             metresDia += Double.parseDouble(preferencesGZero.getString(zona, "0,0").replace(",", "."));
