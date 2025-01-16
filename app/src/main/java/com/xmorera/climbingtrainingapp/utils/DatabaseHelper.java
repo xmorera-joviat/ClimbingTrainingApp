@@ -209,6 +209,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_ROCODROMS, null, contentValues);
         db.close();
         return result != -1;
+        //
     }
 
     public Cursor getAllRocodroms() {
