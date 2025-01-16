@@ -68,7 +68,7 @@ public class Puntuacio {
         }
     }
 
-    public double getIfIntent(){
+    public double getPenalitzacioIntent(){
         return penalitzacioIntent;
     }
 

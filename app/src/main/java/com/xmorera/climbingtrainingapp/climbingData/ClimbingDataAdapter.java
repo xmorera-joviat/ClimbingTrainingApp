@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xmorera.climbingtrainingapp.MainActivity;
@@ -42,7 +44,14 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
         holder.dateTextView.setText(data.getDate());
         holder.dificultatTextView.setText(data.getDificultat());
         holder.zonaTextView.setText(data.getZona());
-        holder.ifIntentTextView.setText(data.getIfIntent() == 1 ? "Intent" : "Neta");
+        String nomRocoReduit;
+        nomRocoReduit = (data.getNomRocoReduit() == null) ? "" : " (" + data.getNomRocoReduit() + ")";
+        holder.nomRocoReduitTextView.setText(nomRocoReduit);
+        boolean neta = data.getIfIntent() == 1 || data.getDescansos() > 0;
+        holder.ifIntentTextView.setText(neta ? "Intent/descansos" : "Neta");
+        holder.ifIntentTextView.setTextColor(neta ?
+                ContextCompat.getColor(context, R.color.red) :
+                ContextCompat.getColor(context, R.color.gray));
         holder.puntuacioTextView.setText(String.valueOf(data.getPuntuacio()));
         holder.btnEsborrarVia.setOnClickListener(v -> {
             showDeleteConfirmationDialog(Integer.parseInt(data.getId()), position);
@@ -59,6 +68,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
         TextView dateTextView;
         TextView dificultatTextView;
         TextView zonaTextView;
+        TextView nomRocoReduitTextView;
         TextView ifIntentTextView;
         TextView puntuacioTextView;
         Button btnEsborrarVia;
@@ -69,6 +79,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
             dateTextView = itemView.findViewById(R.id.dateTextView);
             dificultatTextView = itemView.findViewById(R.id.dificultatTextView);
             zonaTextView = itemView.findViewById(R.id.zonaTextView);
+            nomRocoReduitTextView = itemView.findViewById(R.id.nomRocoReduit);
             ifIntentTextView = itemView.findViewById(R.id.intentTextView);
             puntuacioTextView = itemView.findViewById(R.id.puntuacioTextView);
             btnEsborrarVia = itemView.findViewById(R.id.btnEsborrarVia);

@@ -32,13 +32,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_ID_ROCO = "ID_ROCO";
     private static final String COL_NOM_ROCO = "NOM_ROCO";
     private static final String COL_LOCALITAT = "LOCALITAT_ROCO";
+    private static final String COL_NOM_ROCO_REDUIT = "NOM_ROCO_REDUIT";
 
     // Columns for zones
     private static final String COL_ID_ZONA = "ID_ZONA";
     private static final String COL_NOM_ZONA = "NOM_ZONA";
     private static final String COL_ALTURA_ZONA = "ALTURA_ZONA";
     private static final String COL_ZONA_CORDA = "ZONA_CORDA";
-    private static final String COL_ID_ROCO_FK = "ID_ROCO"; // Foreign key
+    private static final String COL_ID_ROCO_FK = "ID_ROCO_FK"; // Foreign key
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createRocodromsTable = "CREATE TABLE " + TABLE_ROCODROMS + " (" +
                 COL_ID_ROCO + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_NOM_ROCO + " TEXT NOT NULL, " +
+                COL_NOM_ROCO_REDUIT + " TEXT CHECK(LENGTH(NOM_ROCO_REDUIT) <= 5), " +
                 COL_LOCALITAT + " TEXT)";
 
         // Create zones table
@@ -205,10 +207,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //////  CRUD ROCODROM  /////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean insertRocodrom(String nomRocodrom, String localitatRocodrom) {
+    public boolean insertRocodrom(String nomRocodrom, String nomRocoReduit, String localitatRocodrom) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_NOM_ROCO, nomRocodrom);
+        contentValues.put(COL_NOM_ROCO_REDUIT, nomRocoReduit);
         contentValues.put(COL_LOCALITAT, localitatRocodrom);
         long result = db.insert(TABLE_ROCODROMS, null, contentValues);
         db.close();
@@ -225,10 +228,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_ROCODROMS, COL_ID_ROCO+" = ?", new String[]{String.valueOf(id)});
     }
 
-    public boolean updateRocodrom(int id, String nomRocodrom, String localitatRocodrom){
+    public boolean updateRocodrom(int id, String nomRocodrom, String nomRocoReduit,String localitatRocodrom){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_NOM_ROCO, nomRocodrom);
+        contentValues.put(COL_NOM_ROCO_REDUIT, nomRocoReduit);
         contentValues.put(COL_LOCALITAT, localitatRocodrom);
         int result = db.update(TABLE_ROCODROMS, contentValues, COL_ID_ROCO+" = ?", new String[]{String.valueOf(id)});
         db.close();
@@ -256,7 +260,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public Cursor getZonesByRocodrom(int idRocodrom) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM "+ TABLE_ZONES+" WHERE "+COL_ID_ROCO_FK+" = ?", new String[]{String.valueOf(idRocodrom)});
+        String query = "SELECT Z.*, R.NOM_ROCO_REDUIT " +
+                "FROM ZONES Z " +
+                "JOIN ROCODROMS R ON Z.ID_ROCO_FK = R.ID_ROCO " +
+                "WHERE Z.ID_ROCO_FK = ?";
+        return db.rawQuery(query, new String[]{String.valueOf(idRocodrom)});
+        //return db.rawQuery("SELECT * FROM "+ TABLE_ZONES+" WHERE "+COL_ID_ROCO_FK+" = ?", new String[]{String.valueOf(idRocodrom)});
     }
     public Integer deleteZona(int id){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -304,6 +313,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // gravetat zero
         ContentValues gravetatZero = new ContentValues();
         gravetatZero.put(COL_NOM_ROCO, "Gravetat Zero");
+        gravetatZero.put(COL_NOM_ROCO_REDUIT, "GZ");
         gravetatZero.put(COL_LOCALITAT, "Terrassa");
         int idGravetatZero = (int) db.insert(TABLE_ROCODROMS, null, gravetatZero);
 
@@ -339,18 +349,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // La panxa del bou
         ContentValues laPanxaDelBou = new ContentValues();
         laPanxaDelBou.put(COL_NOM_ROCO, "La panxa del bou");
+        laPanxaDelBou.put(COL_NOM_ROCO_REDUIT, "LPB");
         laPanxaDelBou.put(COL_LOCALITAT, "Sabadell");
         int idLaPanxaDelBou = (int) db.insert(TABLE_ROCODROMS, null, laPanxaDelBou);
 
         // Climbat Barcelona
         ContentValues climbatBarcelona = new ContentValues();
         climbatBarcelona.put(COL_NOM_ROCO, "Climbat");
+        climbatBarcelona.put(COL_NOM_ROCO_REDUIT, "CLBT");
         climbatBarcelona.put(COL_LOCALITAT, "Barcelona");
         int idClimbatBarcelona = (int) db.insert(TABLE_ROCODROMS, null, climbatBarcelona);
 
         // Sharma Gavà
         ContentValues sharmaGava = new ContentValues();
         sharmaGava.put(COL_NOM_ROCO, "Sharma");
+        sharmaGava.put(COL_NOM_ROCO_REDUIT, "SH-G");
         sharmaGava.put(COL_LOCALITAT,"Gavà");
         int idSharmaGava = (int) db.insert(TABLE_ROCODROMS, null, sharmaGava);
     }

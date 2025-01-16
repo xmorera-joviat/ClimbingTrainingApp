@@ -29,12 +29,26 @@
                 android:text="6a+"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/zonaTextView"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Autos"
-                android:textSize="14sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/zonaTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Autos"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/nomRocoReduit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" (GZ)"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/intentTextView"

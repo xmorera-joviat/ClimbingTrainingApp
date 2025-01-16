@@ -3,15 +3,12 @@ package com.xmorera.climbingtrainingapp;
 import static android.app.PendingIntent.getActivity;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     int ifIntent;
     int idZona;
     String nomZona;
+    String nomRocoReduit;
     int alturaZona;
     int esCorda;
     int descansosCorda;
@@ -111,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
     TypedArray colorFonsBotonsTema;
     //TypedArray colorTextTema;
     int colorFonsBotons;
+
+
+ ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * onCreate
@@ -286,24 +287,14 @@ public class MainActivity extends AppCompatActivity {
 
         //loadDayData(); //mostrar totes les dades de la bd
     }
-
-
-    /**
-     * visibilitatGraus
-     * amaga o mostra el panell de dades introduïdes manualment
-     *
-     * @param 'View.GONE
-     * @param 'View.VISIBLE
-     */
-    private void visibilitatGraus(int visibilitat) {
-        entradaLayout.setVisibility(visibilitat);
-    }
-
-    boolean firstTime = true;// variable per controlar que quan es torna a l'inici es mostri la data actual
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// END ONCREATE  ///////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * onResume
-     * <p>
+     * actualitza la data actual en el TextView de la data
+     * carrega el spinner de rocodroms
      * recarrega les dades del  dia actual en el recyclerView
      */
     @Override
@@ -332,6 +323,48 @@ public class MainActivity extends AppCompatActivity {
         firstTime = false;
         entradaLayout.setVisibility(View.GONE);
     }
+
+    /**
+     * onCreateOptionsMenu
+     * <p>
+     * mostra el menú de la part superiot dreta (tres puntets)
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /**
+     * onOptionsItemSelected
+     * gestió dels botons de menu
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        // si hi ha més elements s'ha de fer amb switch
+        if (id == R.id.menu_settings) {
+            startActivity(new Intent(this, Preferencies.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * visibilitatGraus
+     * amaga o mostra el panell de dades introduïdes manualment
+     *
+     * @param 'View.GONE
+     * @param 'View.VISIBLE
+     */
+    private void visibilitatGraus(int visibilitat) {
+        entradaLayout.setVisibility(visibilitat);
+    }
+
+
+    boolean firstTime = true;// variable per controlar que quan es torna a l'inici es mostri la data actual
+
 
     /**
      * loadSpinnerRocodroms
@@ -378,11 +411,13 @@ public class MainActivity extends AppCompatActivity {
                         do {
                             idZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_ZONA"));
                             nomZona = cursor2.getString(cursor2.getColumnIndexOrThrow("NOM_ZONA"));
+                            nomRocoReduit = cursor2.getString(cursor2.getColumnIndexOrThrow("NOM_ROCO_REDUIT"));
                             alturaZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ALTURA_ZONA"));
                             esCorda = cursor2.getInt(cursor2.getColumnIndexOrThrow("ZONA_CORDA"));
 
                             Bundle infoBoto = new Bundle();
                             infoBoto.putString("nomZona", nomZona);
+                            infoBoto.putString("nomRocReduit", nomRocoReduit);
                             infoBoto.putInt("alturaZona", alturaZona);
                             infoBoto.putInt("esCorda", esCorda);
                             infoBoto.putInt("idZona", idZona);
@@ -410,10 +445,11 @@ public class MainActivity extends AppCompatActivity {
                                     Bundle infoBoto = (Bundle) view.getTag();
                                     idZona = infoBoto.getInt("idZona");
                                     nomZona = infoBoto.getString("nomZona");
+                                    nomRocoReduit = infoBoto.getString("nomRocReduit");
                                     alturaZona = infoBoto.getInt("alturaZona");
                                     esCorda = infoBoto.getInt("esCorda");
                                     entradaLayout.setVisibility(View.VISIBLE);
-
+Toast.makeText(MainActivity.this, "NO_ROCO_REDUIT: " + nomRocoReduit, Toast.LENGTH_SHORT).show();
                                     if (esCorda == 1) {
                                         descansosLayout.setVisibility(View.VISIBLE);
                                     } else {
@@ -440,32 +476,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * onCreateOptionsMenu
-     * <p>
-     * mostra el menú de la part superiot dreta (tres puntets)
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    /**
-     * onOptionsItemSelected
-     * gestió dels botons de menu
-     */
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        // si hi ha més elements s'ha de fer amb switch
-        if (id == R.id.menu_settings) {
-            startActivity(new Intent(this, Preferencies.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * updateDateTextView
@@ -520,7 +530,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     ifIntent = 0;
                 }
-                insertData(idZona, dateTextView.getText().toString(), ifIntent, descansosCorda, dificultat);
+                insertDataClimbing(idZona, dateTextView.getText().toString(), ifIntent, descansosCorda, dificultat);
                 resetInput();
             }
         });
@@ -530,11 +540,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * insertData
      * <p>
-     * insereix les dades a la base de dades
+     * insereix les dades a la taula climbing_data.
      *
-     * @param -String date, String via, String zona, int intent
+     * @param  idZona
+     * @param  date
+     * @param  ifIntent
+     * @param  descansos
+     * @param  dificultat
+     *
      */
-    private void insertData(int idZona, String date, int ifIntent, int descansos, String dificultat) {
+    private void insertDataClimbing(int idZona, String date, int ifIntent, int descansos, String dificultat) {
         boolean insertSuccess = databaseHelper.insertData(idZona, date, ifIntent, descansos, dificultat);
         if (insertSuccess) {
             loadDayData();
@@ -566,7 +581,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * loadDayData
      * <p>
-     * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
+     * carrega les dades de la base de dades corresponents al dia que mostra el TextView dateTextView
+     * a la llista climbingDataList i notifica a l'adaptador si ha canvis
      */
     public void loadDayData() {
         vies = 0;
@@ -593,13 +609,13 @@ public class MainActivity extends AppCompatActivity {
                 Double puntsVia = puntuacio.getPuntsGrau(dificultat);
 
                 if(ifIntent == 1){ //en el cas d'un inent apliquem el coeficient de dificultat i contem la mitat de metres de la zona
-                    puntsVia /= puntuacio.getIfIntent();// veure Puntuacio.java
+                    puntsVia /= puntuacio.getPenalitzacioIntent();
                     metresVia *= puntuacio.getPenalitzacioMetres();
-                } else if(descansos > 0){
+                } else if(descansos > 0){ //en el cas d'una via de corda apliquem el coeficient de descansos
                     puntsVia /= puntuacio.getPenalitzacioDescansos(descansos);
                 }
 
-                climbingDataList.add(new ClimbingData( String.valueOf(id), date, dificultat, zona, ifIntent, String.format("%.1f", puntsVia)));
+                climbingDataList.add(new ClimbingData( String.valueOf(id), date, dificultat, zona, nomRocoReduit, ifIntent, descansos, String.format("%.1f", puntsVia)));
 
                 vies += 1;
                 metres += metresVia;
@@ -613,10 +629,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         climbingDataAdapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
+
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
         viesDiaTextView.setText(String.valueOf(vies));
         metresDiaTextView.setText(String.valueOf(metres));
         mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioDia/vies));
+
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
         if (dateTextView.getText().toString().equals(avui)) {
             try {
