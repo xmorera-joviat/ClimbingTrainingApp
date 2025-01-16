@@ -198,7 +198,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             // esborrar dates anteriors
             resultatsDataList.clear();
 
-            Cursor cursor = databaseHelper.getUniqueDates(startDate, endDate);
+            Cursor cursor = databaseHelper.getClimbingUniqueDates(startDate, endDate);
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     //obtenció de les dates que tenen dades
@@ -206,7 +206,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                     String dateCustom = DateConverter.convertISOToCustom(date);
 
                     //per a cada data calcular el nombre de vies i la puntuació del dia
-                    Cursor cursor2 = databaseHelper.getDayData(dateCustom);
+                    Cursor cursor2 = databaseHelper.getDayClimbingData(dateCustom);
                     if (cursor2 != null) {
                         Double puntuacioDia = 0.0;
                         int viesDia = 0;
