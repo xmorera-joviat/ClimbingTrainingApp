@@ -633,6 +633,7 @@ public class MainActivity extends AppCompatActivity  {
                     metresVia *= puntuacio.getPenalitzacioMetres();
                 } else if (descansos > 0){
                     puntsVia /= puntuacio.getPenalitzacioDescansos(descansos);
+                    ifIntent=1; // si hi ha descansos ho indicarem al tag intent/descansos de l'item
                 }
                 climbingDataList.add(new ClimbingData( id_cd, date, dificultat, nomZona, ifIntent, String.format("%.1f", puntsVia)));
                 vies += 1;
@@ -655,7 +656,7 @@ public class MainActivity extends AppCompatActivity  {
             }
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
         } else {
-            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.red));
+            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
             btnAvui.setVisibility(View.VISIBLE);
         }
 

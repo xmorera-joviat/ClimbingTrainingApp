@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.xmorera.climbingtrainingapp.MainActivity;
@@ -38,11 +39,18 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
     @Override
     public void onBindViewHolder(@NonNull ClimbingDataAdapter.ViewHolder holder, int position) {
         ClimbingData data = climbingDataList.get(position);
-        //holder.idTextView.setText(data.getId());
         holder.dateTextView.setText(data.getDate());
         holder.dificultatTextView.setText(data.getDificultat());
         holder.zonaTextView.setText(data.getZona());
-        holder.ifIntentTextView.setText(data.getIfIntent() == 1 ? "Intent" : "Neta");
+        if (data.getIfIntent() == 1){
+            holder.puntuacioTextView.setTextColor(ContextCompat.getColor(context, R.color.orange));
+            holder.ifIntentTextView.setTextColor(ContextCompat.getColor(context, R.color.orange));
+            holder.ifIntentTextView.setText("Intent/Descansos");
+        } else {
+            holder.puntuacioTextView.setTextColor(ContextCompat.getColor(context, R.color.green));
+            holder.ifIntentTextView.setTextColor(ContextCompat.getColor(context, R.color.green));
+            holder.ifIntentTextView.setText("Neta");
+        }
         holder.puntuacioTextView.setText(String.valueOf(data.getPuntuacio()));
         holder.btnEsborrarVia.setOnClickListener(v -> {
             showDeleteConfirmationDialog(Integer.parseInt(data.getId()), position);

@@ -103,7 +103,7 @@
                 android:background="@null"
                 android:drawableTop="@drawable/plus30"
                 android:gravity="end"
-                tools:ignore="SpeakableTextPresentCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         </LinearLayout>
 
@@ -468,10 +468,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="---"
-                android:textSize="24sp"
+                android:textSize="36sp"
                 android:textStyle="bold"
                 android:layout_weight="1"
-                android:textColor="@color/red"/>
+                android:textColor="@color/green"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -487,7 +487,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="---"
-                android:textSize="24sp"
+                android:textSize="36sp"
                 android:textStyle="bold"
                 android:layout_weight="1"/>
 
@@ -514,10 +514,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="---"
-                android:textSize="24sp"
+                android:textSize="36sp"
                 android:textStyle="bold"
                 android:layout_weight="1"
-                android:textColor="@color/blue"/>
+                android:textColor="@color/red"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -533,10 +533,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="---"
-                android:textSize="24sp"
+                android:textSize="36sp"
                 android:textStyle="bold"
                 android:layout_weight="1"
-                android:textColor="@color/green"/>
+                android:textColor="@color/blue"/>
 
 
         </LinearLayout>

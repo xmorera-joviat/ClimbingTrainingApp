@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="50.0"
-            android:textSize="24sp"
+            android:textSize="36sp"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_weight="4"/>
