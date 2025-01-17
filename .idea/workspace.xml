@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+    <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+        <config>
+          <theme>@style/Base.Theme.ClimbingTrainingApp</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_preferencies.xml">
+        <config>
+          <theme>@style/Theme.AppCompat.DayNight.DarkActionBar</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_resultats.xml">
+        <config>
+          <theme>@style/Theme.AppCompat.DayNight.DarkActionBar</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/custom_marker_view.xml">
+        <config>
+          <theme>@style/Theme.AppCompat.DayNight.DarkActionBar</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_climbing_data.xml">
+        <config>
+          <theme>@style/Theme.AppCompat.DayNight.DarkActionBar</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_resultats_data.xml">
+        <config>
+          <theme>@style/Theme.AppCompat.DayNight.DarkActionBar</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml">
+        <config>
+          <theme>@style/Base.Theme.ClimbingTrainingApp</theme>
+        </config>
+      </layout>
+    </layouts>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.5.0.5.1.0 (terminal OK!)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <change afterPath="$PROJECT_DIR$/app/esborrarBuild.bat" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" show_ignored="true" />
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=11412645)]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ClimbingTrainingApp" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ClimbingTrainingApp" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ClimbingTrainingApp" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ClimbingTrainingApp" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="layoutResourceFile" />
+        <option value="resourceFile" />
+        <option value="Class" />
+        <option value="valueResourceFile" />
+      </list>
+    </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="BUILD_TARGET_KEY" value="apk" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;xmorera-joviat&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/xmorera-joviat/ClimbingTrainingApp.git&quot;,
+    &quot;accountId&quot;: &quot;52634b3a-2356-43d4-aa9a-ed0abaaae4cb&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2qWdNaSjeSUnsQVwp1M3dIxUc0e" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Android App.app.executor": "Run",
+    "ApkExportedModule": "ClimbingTrainingApp.app",
+    "Gradle.ClimbingTrainingApp:app [testDebugUnitTest].executor": "Run",
+    "Gradle.ClimbingTrainingApp:app [testReleaseUnitTest].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "git-widget-placeholder": "recuperacio",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/EscolaJoviat/AndroidStudioProjects/ClimbingTrainingApp/app/src/main/res/drawable",
+    "project.structure.last.edited": "Dependencies",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\EscolaJoviat\AndroidStudioProjects\ClimbingTrainingApp\app\src\main\res\drawable" />
+    </key>
+    <key name="android.template.-191026242">
+      <recent name="com.xmorera.climbingtrainingapp" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\EscolaJoviat\AndroidStudioProjects\ClimbingTrainingApp\app\src\main\res\drawable" />
+      <recent name="D:\EscolaJoviat\AndroidStudioProjects\ClimbingTrainingApp\app\src\main\res\values" />
+    </key>
+    <key name="android.template.-366530653">
+      <recent name="com.xmorera.climbingtrainingapp" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.xmorera.climbingtrainingapp.resultats" />
+      <recent name="com.xmorera.climbingtrainingapp.climbingData" />
+      <recent name="com.xmorera.climbingtrainingapp.utils" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Android App.app">
+    <configuration name="Resultats" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false" temporary="true">
+      <module name="ClimbingTrainingApp.app.main" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+      <option name="CLEAR_APP_STORAGE" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="specific_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Hybrid>
+      <Java>
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Java>
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="com.xmorera.climbingtrainingapp.resultats.Resultats" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="ClimbingTrainingApp.app.main" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+      <option name="CLEAR_APP_STORAGE" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Hybrid>
+      <Java>
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Java>
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClimbingTrainingApp:app [testDebugUnitTest]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/app" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="testDebugUnitTest" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="ClimbingTrainingApp:app [testReleaseUnitTest]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/app" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="testReleaseUnitTest" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Android App.Resultats" />
+        <item itemvalue="Gradle.ClimbingTrainingApp:app [testReleaseUnitTest]" />
+        <item itemvalue="Gradle.ClimbingTrainingApp:app [testDebugUnitTest]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="" />
+      <created>1734782226824</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1734782226824</updated>
+    </task>
+    <task id="LOCAL-00025" summary="recuperació de la ID de la base de dades&#10;&#10;per fer:&#10;implementar botó en el recyclerView per esborrar un registre&#10;---">
+      <option name="closed" value="true" />
+      <created>1735129881077</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1735129881077</updated>
+    </task>
+    <task id="LOCAL-00026" summary="mostrar total puntuació per dia&#10;&#10;per fer:&#10;implementar botó en el recyclerView per esborrar un registre&#10;---">
+      <option name="closed" value="true" />
+      <created>1735156770663</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1735156770663</updated>
+    </task>
+    <task id="LOCAL-00027" summary="versió 0.1&#10;botó en el recyclerView per esborrar un registre&#10;---">
+      <option name="closed" value="true" />
+      <created>1735169882357</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1735169882357</updated>
+    </task>
+    <task id="LOCAL-00028" summary="versió 0.1.1&#10;* ScrollView en el activity_main&#10;&#10;---&#10;&#10;per fer:&#10;* implementar entrada per veu">
+      <option name="closed" value="true" />
+      <created>1735203189427</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1735203189427</updated>
+    </task>
+    <task id="LOCAL-00029" summary="versió 0.1.1&#10;* ScrollView en el activity_main&#10;&#10;---&#10;&#10;per fer:&#10;* implementar entrada per veu">
+      <option name="closed" value="true" />
+      <created>1735281944895</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1735281944895</updated>
+    </task>
+    <task id="LOCAL-00030" summary="versió 0.1.1.1.1&#10;* eliminar Toast confirmació introducció de via&#10;&#10;&#10;---&#10;&#10;per fer:&#10;&#10;* implementar entrada per veu --&gt; branca ReconeixementDeVeu&#10;* veure resultats per setmanes, mesos, i entre dues dates.&#10;* mostrar els resultats i mitjanes en gràfics&#10;* possibilitat de gravar vídeos&#10;* exportar/importar dades">
+      <option name="closed" value="true" />
+      <created>1735303512990</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1735303512990</updated>
+    </task>
+    <task id="LOCAL-00031" summary="versió 0.1.2&#10;* implementar entrada per veu --&gt; branca ReconeixementDeVeu&#10;&#10;&#10;---&#10;&#10;per fer:&#10;* veure resultats per setmanes, mesos, i entre dues dates.&#10;* mostrar els resultats i mitjanes en gràfics&#10;* possibilitat de gravar vídeos&#10;* exportar/importar dades">
+      <option name="closed" value="true" />
+      <created>1735309540446</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1735309540446</updated>
+    </task>
+    <task id="LOCAL-00032" summary="versió 0.1.2.1&#10;&#10;treballant en l'activity Resultats per triar dates, mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;&#10;---&#10;&#10;per fer:&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1735312471101</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1735312471101</updated>
+    </task>
+    <task id="LOCAL-00033" summary="versió 0.1.2.1.1&#10;&#10;treballant en l'activity Resultats per triar dates, mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;&#10;---&#10;&#10;per fer:&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1735319168071</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1735319168071</updated>
+    </task>
+    <task id="LOCAL-00034" summary="versió 0.1.2.2&#10;* comptabilitzar les vies del dia&#10;* inserció de resultats en el menú&#10;* treballant en l'activity Resultats per triar dates, mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;&#10;---&#10;&#10;per fer:&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1735331462966</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1735331462966</updated>
+    </task>
+    <task id="LOCAL-00035" summary="versió 0.1.2.2.1&#10;* botons Exportar i Importar més petits&#10;* comptabilitzar les vies del dia&#10;* inserció de resultats en el menú&#10;* treballant en l'activity Resultats per triar dates, mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;&#10;---&#10;&#10;per fer:&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1735333437252</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1735333437252</updated>
+    </task>
+    <task id="LOCAL-00036" summary="versió 0.1.2.2.1&#10;* obtenció de les dates amb registres&#10;&#10;* botons Exportar i Importar més petits&#10;* comptabilitzar les vies del dia&#10;* inserció de resultats en el menú&#10;* treballant en l'activity Resultats per triar dates, mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;&#10;---&#10;&#10;per fer:&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1735582821506</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1735582821506</updated>
+    </task>
+    <task id="LOCAL-00037" summary="versió 0.1.2.2.1.1&#10;* calcul de les vies i puntuació per dia&#10;* treballant en l'activity Resultats per triar dates, mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;&#10;---&#10;&#10;per fer:&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1735593286155</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1735593286155</updated>
+    </task>
+    <task id="LOCAL-00038" summary="versió 0.1.3&#10;* mostrar resultats entre dues dates&#10;&#10;&#10;&#10;&#10;---&#10;&#10;per fer:&#10;* icona per l'app&#10;* mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1735653059059</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1735653059059</updated>
+    </task>
+    <task id="LOCAL-00039" summary="versió 0.2&#10;* icona de l'app&#10;&#10;&#10;---&#10;&#10;per fer:&#10;* mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1735721497557</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1735721497557</updated>
+    </task>
+    <task id="LOCAL-00040" summary="versió 0.2.1&#10;* eliminar entrada de veu&#10;* informació i toast entrada manual&#10;&#10;&#10;---&#10;&#10;per fer:&#10;* actualització sharedpreferences puntuació grau&#10;* eliminar coeficients&#10;* puntuació fixa per via, independent dels metres&#10;* canviar càlculs, mostrar vies, metres, mitjana de grau i puntuació&#10;* mostrar metres&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* tancar sessió&#10;&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736246848390</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1736246848390</updated>
+    </task>
+    <task id="LOCAL-00041" summary="versió 0.3.0&#10;* puntuació fixa per via, independent dels metres&#10;* actualització sharedpreferences puntuació&#10;* eliminació coeficients de zona&#10; *mostrar vies, metres, mitjana de grau i puntuació en la pantalla del dia&#10;&#10;&#10;---&#10;&#10;per fer:&#10; &#10;&#10; *mostrar vies, metres, mitjana de grau i puntuació de resultats&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* tancar sessió&#10;&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736254627026</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1736254627026</updated>
+    </task>
+    <task id="LOCAL-00042" summary="versió 0.3.1&#10;&#10;---&#10;&#10;per fer:&#10;* botons per avançar/retrocedir 1 dia&#10;* mostrar vies, metres, mitjana de grau i puntuació de resultats&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* tancar sessió&#10;&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736255827989</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1736255827989</updated>
+    </task>
+    <task id="LOCAL-00043" summary="versió 0.3.1&#10;* botons per avançar/retrocedir 1 dia&#10;---&#10;&#10;per fer:&#10;* mostrar vies, metres, mitjana de grau i puntuació de resultats&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* tancar sessió&#10;&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736259591583</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1736259591583</updated>
+    </task>
+    <task id="LOCAL-00044" summary="versió 0.3.1.1&#10;* recalcular mitjana diaria&#10;---&#10;&#10;per fer:&#10;* mostrar vies, metres, mitjana de grau i puntuació de resultats&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736270968449</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1736270968449</updated>
+    </task>
+    <task id="LOCAL-00045" summary="versió 0.3.2&#10;* recalcular mitjana diaria&#10;* mostrar vies, metres, mitjana de grau i puntuació de resultats&#10;* cerca per períodes&#10;&#10;- per arreglar:&#10;*quan es fa una cerca entre anys diferents no retorna dades&#10;&#10;---&#10;&#10;- per fer:&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736284093556</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1736284093556</updated>
+    </task>
+    <task id="LOCAL-00046" summary="versió 0.3.2.1&#10;* package utils&#10;* classe DateConverter&#10;&#10;- per arreglar:&#10;*quan es fa una cerca entre anys diferents no retorna dades. L'eror està en el format de la data. en SQLite ha de ser yyyy/MM/dd. Llavors s'ha de fer la conversió en entrar i sortir de la BD. &#10;---&#10;&#10;- per fer:&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736339169777</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1736339169777</updated>
+    </task>
+    <task id="LOCAL-00047" summary="versió 0.3.2.2&#10;&#10;&#10;- per arreglar:&#10;*Data en SQLite ha de ser yyyy-MM-dd. Conversió en entrar i sortir de la BD. &#10;---&#10;&#10;- per fer:&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736353542750</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1736353542750</updated>
+    </task>
+    <task id="LOCAL-00048" summary="versió 0.4&#10;* mostrar resultats en un gràfic&#10;&#10;---&#10;&#10;- per fer:&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736413963589</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1736413963589</updated>
+    </task>
+    <task id="LOCAL-00049" summary="versió 0.4.1&#10;* representar els resultats de la gràfica en ordre invers&#10;&#10;---&#10;&#10;- per fer:&#10;* visibilitat dels gràfics&#10;* saber la data en fer clic a un registre del gràfic&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736443785679</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1736443785679</updated>
+    </task>
+    <task id="LOCAL-00050" summary="versió 0.4.1.1&#10;&#10;---&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;- per fer:&#10;* visibilitat dels gràfics&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736446192953</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1736446192955</updated>
+    </task>
+    <task id="LOCAL-00051" summary="versió 0.4.1.1&#10;&#10;---&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;- per fer:&#10;* visibilitat dels gràfics&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736446228785</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1736446228785</updated>
+    </task>
+    <task id="LOCAL-00052" summary="versió 0.4.1.1&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;---&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736449342095</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1736449342095</updated>
+    </task>
+    <task id="LOCAL-00053" summary="versió 0.4.2&#10;* en fer click a la data d'un resultat veure el dia en la pàgina principal&#10;&#10;** controlar que no es puguin entrar dades per no provocar un error: per exemple tornant a l'activity de resultats o mostrant un dialog dient que no estas a la data actual (MainActivity onResume i onPause)&#10;&#10;---&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736458453215</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1736458453215</updated>
+    </task>
+    <task id="LOCAL-00054" summary="versió 0.4.2.1&#10;* en fer click a la data d'un resultat veure el dia en la pàgina principal&#10;* informar quan la data seleccionada no sigui la data actual&#10;&#10;&#10;---&#10;*mostrar la mitjana de grau en els resultats&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736501985773</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1736501985773</updated>
+    </task>
+    <task id="LOCAL-00055" summary="versió 0.4.2.2&#10;* mostrar botó avui al costat de l'entrada manual en data diferent d'avui&#10;---&#10;* mostrar la mitjana de grau en els resultats&#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736512602904</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1736512602904</updated>
+    </task>
+    <task id="LOCAL-00056" summary="versió 0.4.2.3&#10;* ajustar data de tornada&#10;* creació de packages&#10;___&#10;* mostrar la mitjana de grau en els resultats&#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736528614372</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1736528614372</updated>
+    </task>
+    <task id="LOCAL-00057" summary="versió 0.4.3&#10;* mostrar la mitjana de grau en els resultats&#10;---&#10;* boto gràfics &#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736536499279</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1736536499279</updated>
+    </task>
+    <task id="LOCAL-00058" summary="versió 0.4.4&#10;* boto gràfics &#10;&#10;---&#10;&#10;* botó per obrir nova sessió&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736538745616</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1736538745616</updated>
+    </task>
+    <task id="LOCAL-00059" summary="versió 0.4.5&#10;* substitució de SharedPreferences de puntuació per una classe nova, ja que la puntuació, tot i que arbitrària és igual per a tots els rocos.&#10;&#10;---&#10;* revisar penalització de metres en corda&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736632657204</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1736632657205</updated>
+    </task>
+    <task id="LOCAL-00060" summary="versió 0.4.5&#10;* substitució de SharedPreferences de puntuació per una classe nova, ja que la puntuació, tot i que arbitrària és igual per a tots els rocos.&#10;* color (vies, metres, punts)&#10;&#10;---&#10;* estandaritzar les penalitzacions (intent, descansos)&#10;* canviar l'ordre de selecció de vies. generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;* revisar penalització de metres en corda&#10;* selecció de rocodrom&#10;* configuració per diferents rocòdroms&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736673530122</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1736673530123</updated>
+    </task>
+    <task id="LOCAL-00061" summary="versió 0.5.0&#10;* redisseny activity_main&#10;* ampliació de la base de dades &quot;rocodroms&quot; i &quot;zones&quot;&#10;* actualització Puntuacio.java i penalitzacions&#10;&#10;---&#10;* canviar l'ordre de selecció de vies. generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;* selecció de rocodrom&#10;* configuració per diferents rocòdroms&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736718960770</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1736718960771</updated>
+    </task>
+    <task id="LOCAL-00062" summary="versió 0.5.0.1&#10;* selecció de rocodrom&#10;* Generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736774895185</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1736774895185</updated>
+    </task>
+    <task id="LOCAL-00063" summary="versió 0.5.0.1.1&#10;* selecció de rocodrom&#10;* Generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736800138255</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1736800138256</updated>
+    </task>
+    <task id="LOCAL-00064" summary="versió 0.5.0.1.1&#10;* descansos (unificació de color)&#10;* selecció de rocodrom&#10;* Generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736803755192</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1736803755192</updated>
+    </task>
+    <task id="LOCAL-00065" summary="versió 0.5.0.1.2&#10;* selecció del tema genèric a utilitzar&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736860775758</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1736860775759</updated>
+    </task>
+    <task id="LOCAL-00066" summary="versió 0.5.0.2.1&#10;* visibilitat i estil botons de zona&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736880857646</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1736880857647</updated>
+    </task>
+    <task id="LOCAL-00067" summary="versió 0.5.0.3&#10;* preparació de dades per entrar a la BD&#10;-----&#10;&#10;* introducció de dades a la BD&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736888835575</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1736888835575</updated>
+    </task>
+    <task id="LOCAL-00068" summary="versió 0.5.0.4&#10;* introducció de dades a la BD&#10;* gestionar penalitzacions intents i reposos&#10;&#10;---&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1736979000082</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1736979000082</updated>
+    </task>
+    <task id="LOCAL-00069" summary="versió 0.5.0.5 (no funciona en API35)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* mostrar nom reduit del roco a la zona&#10;* ampliar font en els resultats diaris&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1737055716956</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1737055716956</updated>
+    </task>
+    <task id="LOCAL-00070" summary="versió 0.5.0.5.1 (terminal OK)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1737066746609</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1737066746609</updated>
+    </task>
+    <task id="LOCAL-00071" summary="versió 0.5.0.5.1.0 (terminal OK!)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1737066893654</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1737066893654</updated>
+    </task>
+    <task id="LOCAL-00072" summary="versió 0.5.0.5.1.0 (terminal OK!)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1737067038967</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1737067038967</updated>
+    </task>
+    <task id="LOCAL-00073" summary="versió 0.5.0.5.1.0 (terminal OK!)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1737102090353</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1737102090353</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="recuperacio" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="versió 0.3.2.2&#10;&#10;&#10;- per arreglar:&#10;*Data en SQLite ha de ser yyyy-MM-dd. Conversió en entrar i sortir de la BD. &#10;---&#10;&#10;- per fer:&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4&#10;* mostrar resultats en un gràfic&#10;&#10;---&#10;&#10;- per fer:&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.1&#10;* representar els resultats de la gràfica en ordre invers&#10;&#10;---&#10;&#10;- per fer:&#10;* visibilitat dels gràfics&#10;* saber la data en fer clic a un registre del gràfic&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.1.1&#10;&#10;---&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;- per fer:&#10;* visibilitat dels gràfics&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.1.1&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;---&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.2&#10;* en fer click a la data d'un resultat veure el dia en la pàgina principal&#10;&#10;** controlar que no es puguin entrar dades per no provocar un error: per exemple tornant a l'activity de resultats o mostrant un dialog dient que no estas a la data actual (MainActivity onResume i onPause)&#10;&#10;---&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.2.1&#10;* en fer click a la data d'un resultat veure el dia en la pàgina principal&#10;* informar quan la data seleccionada no sigui la data actual&#10;&#10;&#10;---&#10;*mostrar la mitjana de grau en els resultats&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.2.2&#10;* mostrar botó avui al costat de l'entrada manual en data diferent d'avui&#10;---&#10;* mostrar la mitjana de grau en els resultats&#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.2.3&#10;* ajustar data de tornada&#10;* creació de packages&#10;___&#10;* mostrar la mitjana de grau en els resultats&#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.3&#10;* mostrar la mitjana de grau en els resultats&#10;---&#10;* boto gràfics &#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.4&#10;* boto gràfics &#10;&#10;---&#10;&#10;* botó per obrir nova sessió&#10;* Expotra/Importar&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.4&#10;* boto gràfics &#10;&#10;---&#10;&#10;* botó per obrir nova sessió&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.5&#10;* substitució de SharedPreferences de puntuació per una classe nova, ja que la puntuació, tot i que arbitrària és igual per a tots els rocos.&#10;&#10;---&#10;* revisar penalització de metres en corda&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.4.5&#10;* substitució de SharedPreferences de puntuació per una classe nova, ja que la puntuació, tot i que arbitrària és igual per a tots els rocos.&#10;* color (vies, metres, punts)&#10;&#10;---&#10;* estandaritzar les penalitzacions (intent, descansos)&#10;* canviar l'ordre de selecció de vies. generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;* revisar penalització de metres en corda&#10;* selecció de rocodrom&#10;* configuració per diferents rocòdroms&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0&#10;* redisseny activity_main&#10;* ampliació de la base de dades &quot;rocodroms&quot; i &quot;zones&quot;&#10;* actualització Puntuacio.java i penalitzacions&#10;&#10;---&#10;* canviar l'ordre de selecció de vies. generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;* selecció de rocodrom&#10;* configuració per diferents rocòdroms&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.1&#10;* selecció de rocodrom&#10;* Generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.1.1&#10;* selecció de rocodrom&#10;* Generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.1.1&#10;* descansos (unificació de color)&#10;* selecció de rocodrom&#10;* Generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.1.2&#10;* selecció del tema genèric a utilitzar&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.2.1&#10;* visibilitat i estil botons de zona&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.3&#10;* preparació de dades per entrar a la BD&#10;-----&#10;&#10;* introducció de dades a la BD&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.4&#10;* introducció de dades a la BD&#10;* gestionar penalitzacions intents i reposos&#10;&#10;---&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.5 (no funciona en API35)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* mostrar nom reduit del roco a la zona&#10;* ampliar font en els resultats diaris&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.5.1 (terminal OK)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.5.1.0 (terminal OK!)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <option name="LAST_COMMIT_MESSAGE" value="versió 0.5.0.5.1.0 (terminal OK!)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+  </component>
+</project>
