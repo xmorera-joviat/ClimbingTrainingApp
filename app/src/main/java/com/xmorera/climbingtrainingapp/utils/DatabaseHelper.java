@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "climbing_training.db";
-    private static final int DATABASE_VERSION = 3; // Incremented version
+    private static final int DATABASE_VERSION = 4; // Incremented version
 
     // Table names
     private static final String TABLE_CLIMBING_DATA = "climbing_data";
@@ -74,13 +74,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createRocodromsTable);
         db.execSQL(createZonesTable);
 
-        //insertInitialDataRocodroms(db);
+        insertInitialDataRocodroms(db);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 3) {
+        if (oldVersion < 4) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLIMBING_DATA);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROCODROMS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZONES);
@@ -122,7 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String dateISO = DateConverter.convertCustomToISO(date);
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_CLIMBING_DATA + " WHERE " + COL_DATE + " = ? ORDER BY ID DESC";
+        String query = "SELECT * FROM " + TABLE_CLIMBING_DATA + " WHERE " + COL_DATE + " = ? ORDER BY ID_CD DESC";
         return db.rawQuery(query, new String[]{dateISO});
     }
 
@@ -212,6 +212,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public Cursor getRocodromById(int idRocodrom) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+TABLE_ROCODROMS+" WHERE "+COL_ID_ROCO+" = ?", new String[]{String.valueOf(idRocodrom)});
+    }
+
     public Cursor getAllRocodroms() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM "+TABLE_ROCODROMS, new String[]{});
@@ -247,6 +252,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return result != -1;
     }
+
+    public Cursor getZonaById(int idZona) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+ TABLE_ZONES+" WHERE "+COL_ID_ZONA+" = ?", new String[]{String.valueOf(idZona)});
+    }
+
     public Cursor getZonesByRocodrom(int idRocodrom) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM "+ TABLE_ZONES+" WHERE "+COL_ID_ROCO_FK+" = ?", new String[]{String.valueOf(idRocodrom)});

@@ -46,8 +46,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.5.0.5.1.2&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUDS&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.5.0.5.2&#10;* revisar CRUDS&#10;&#10;---&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/climbingData/Puntuacio.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/climbingData/Puntuacio.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -386,14 +388,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734782226824</updated>
-    </task>
-    <task id="LOCAL-00027" summary="versió 0.1&#10;botó en el recyclerView per esborrar un registre&#10;---">
-      <option name="closed" value="true" />
-      <created>1735169882357</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1735169882357</updated>
     </task>
     <task id="LOCAL-00028" summary="versió 0.1.1&#10;* ScrollView en el activity_main&#10;&#10;---&#10;&#10;per fer:&#10;* implementar entrada per veu">
       <option name="closed" value="true" />
@@ -779,7 +773,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737116881005</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="versió 0.5.0.5.2&#10;* revisar CRUDS&#10;&#10;---&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1737125235378</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1737125235378</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -822,7 +824,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="versió 0.4.1&#10;* representar els resultats de la gràfica en ordre invers&#10;&#10;---&#10;&#10;- per fer:&#10;* visibilitat dels gràfics&#10;* saber la data en fer clic a un registre del gràfic&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.4.1.1&#10;&#10;---&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;- per fer:&#10;* visibilitat dels gràfics&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.4.1.1&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;---&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.4.2&#10;* en fer click a la data d'un resultat veure el dia en la pàgina principal&#10;&#10;** controlar que no es puguin entrar dades per no provocar un error: per exemple tornant a l'activity de resultats o mostrant un dialog dient que no estas a la data actual (MainActivity onResume i onPause)&#10;&#10;---&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
@@ -847,6 +848,7 @@
     <MESSAGE value="versió 0.5.0.5.1.0 (terminal OK!)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.0.5.1.0.1 RECUPERAT! (terminal OK!)&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUD ROCODROM i posteriors&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.0.5.1.2&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUDS&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
-    <option name="LAST_COMMIT_MESSAGE" value="versió 0.5.0.5.1.2&#10;* creació camp nom_roco_reduit (5 caracters màx)&#10;* ampliar font en els resultats diaris&#10;&#10;___&#10;* revisar CRUDS&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.0.5.2&#10;* revisar CRUDS&#10;&#10;---&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <option name="LAST_COMMIT_MESSAGE" value="versió 0.5.0.5.2&#10;* revisar CRUDS&#10;&#10;---&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
   </component>
 </project>
