@@ -5,9 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import com.google.android.material.shape.CutCornerTreatment;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -15,20 +12,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2; // Incremented version
 
     // Table names
-    private static final String TABLE_NAME = "climbing_data";
+    private static final String TABLE_CLIMBING_DATA = "climbing_data";
     private static final String TABLE_ROCODROMS = "rocodroms";
     private static final String TABLE_ZONES = "zones";
 
     // Columns for climbing_data
-    private static final String COL_ID = "ID";
+    private static final String COL_ID_CD = "ID_CD";
     private static final String COL_DATE = "DATE";
+    private static final String COL_ID_ZONA_FK = "ID_ZONA_FK";
     private static final String COL_DIFICULTAT = "DIFICULTAT";
-    private static final String COL_ZONA = "ZONA";
     private static final String COL_IFINTENT = "IFINTENT";
+    private static final String COL_DESCANSOS = "DESCANSOS";
 
     // Columns for rocodroms
     private static final String COL_ID_ROCO = "ID_ROCO";
     private static final String COL_NOM_ROCO = "NOM_ROCO";
+    private static final String COL_NOM_ROCO_REDUIT = "NOM_ROCO_REDUIT";
+    private static final String COL_POBLACIO = "POBLACIO";
 
     // Columns for zones
     private static final String COL_ID_ZONA = "ID_ZONA";
@@ -44,17 +44,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create climbing_data table
-        String createClimbingDataTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createClimbingDataTable = "CREATE TABLE " + TABLE_CLIMBING_DATA + " (" +
+                COL_ID_CD + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_DATE + " TEXT, " +
                 COL_DIFICULTAT + " TEXT, " +
-                COL_ZONA + " TEXT, " +
-                COL_IFINTENT + " INTEGER)";
+                COL_ID_ZONA_FK + " INTEGER, " +
+                COL_IFINTENT + " INTEGER," +
+                COL_DESCANSOS + " INTEGER," +
+                "FOREIGN KEY(" + COL_ID_ZONA_FK + ") REFERENCES " + TABLE_ZONES + "(" + COL_ID_ZONA + "))";
 
         // Create rocodroms table
         String createRocodromsTable = "CREATE TABLE " + TABLE_ROCODROMS + " (" +
                 COL_ID_ROCO + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_NOM_ROCO + " TEXT NOT NULL)";
+                COL_NOM_ROCO + " TEXT NOT NULL," +
+                COL_NOM_ROCO_REDUIT + " TEXT," +
+                COL_POBLACIO + " TEXT)";
 
         // Create zones table
         String createZonesTable = "CREATE TABLE " + TABLE_ZONES + " (" +
@@ -63,21 +67,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_ALTURA_ZONA + " INTEGER NOT NULL, " +
                 COL_ZONA_CORDA + " INTEGER DEFAULT 0, " +
                 COL_ID_ROCO_FK + " INTEGER NOT NULL, " +
-                "FOREIGN KEY(" + COL_ID_ROCO_FK + ") REFERENCES " + TABLE_ROCODROMS + "(" + COL_ID_ROCO + ") ON DELETE CASCADE)";
+                "FOREIGN KEY(" + COL_ID_ROCO_FK + ") REFERENCES " + TABLE_ROCODROMS + "(" + COL_ID_ROCO + "))";
 
         // Execute the SQL statements to create the tables
         db.execSQL(createClimbingDataTable);
         db.execSQL(createRocodromsTable);
         db.execSQL(createZonesTable);
 
-        insertInitialDataRocodroms(db);
+        //insertInitialDataRocodroms(db);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLIMBING_DATA);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROCODROMS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZONES);
             onCreate(db);
@@ -99,16 +103,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_DATE, dateISO);
         contentValues.put(COL_DIFICULTAT, dificultat);
-        contentValues.put(COL_ZONA, zona);
+        contentValues.put(COL_ID_ZONA_FK, zona);
         contentValues.put(COL_IFINTENT, ifIntent);
-        long result = db.insert(TABLE_NAME, null, contentValues);
+        long result = db.insert(TABLE_CLIMBING_DATA, null, contentValues);
         db.close();
         return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_DATE + " DESC", new String[]{});
+        return db.rawQuery("SELECT * FROM " + TABLE_CLIMBING_DATA + " ORDER BY " + COL_DATE + " DESC", new String[]{});
 
     }
 
@@ -117,7 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String dateISO = DateConverter.convertCustomToISO(date);
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ? ORDER BY ID DESC";
+        String query = "SELECT * FROM " + TABLE_CLIMBING_DATA + " WHERE " + COL_DATE + " = ? ORDER BY ID DESC";
         return db.rawQuery(query, new String[]{dateISO});
     }
 
@@ -137,16 +141,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_DATE, dateISO);
         contentValues.put(COL_DIFICULTAT, dificultat);
-        contentValues.put(COL_ZONA, zona);
+        contentValues.put(COL_ID_ZONA_FK, zona);
         contentValues.put(COL_IFINTENT, ifIntent);
-        int result = db.update(TABLE_NAME, contentValues, COL_ID + " = ?", new String[]{String.valueOf(id)});
+        int result = db.update(TABLE_CLIMBING_DATA, contentValues, COL_ID_CD + " = ?", new String[]{String.valueOf(id)});
         db.close();
         return result > 0; //retorna True si la actualització s'ha realitzat correctament
     }
 
     public Integer deleteData(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, COL_ID + " = ?", new String[]{String.valueOf(id)});
+        return db.delete(TABLE_CLIMBING_DATA, COL_ID_CD + " = ?", new String[]{String.valueOf(id)});
     }
 
     public Cursor getDataByDate(String date) {
@@ -154,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String dateISO = DateConverter.convertCustomToISO(date);
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_DATE + " = ? ";
+        String query = "SELECT * FROM " + TABLE_CLIMBING_DATA + " WHERE " + COL_DATE + " = ? ";
         return db.rawQuery(query, new String[]{dateISO});
     }
 
@@ -165,7 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " +
-                TABLE_NAME + " WHERE " + COL_DATE + " BETWEEN ? AND ? ORDER BY " + COL_DATE + " DESC";
+                TABLE_CLIMBING_DATA + " WHERE " + COL_DATE + " BETWEEN ? AND ? ORDER BY " + COL_DATE + " DESC";
         return db.rawQuery(query, new String[]{startDateISO, endDateISO});
     }
 
@@ -183,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
         try {
-            String query = "SELECT DISTINCT " + COL_DATE + " FROM " + TABLE_NAME +
+            String query = "SELECT DISTINCT " + COL_DATE + " FROM " + TABLE_CLIMBING_DATA +
                     " WHERE " + COL_DATE + " BETWEEN ? AND ? ORDER BY " + COL_DATE + " DESC ";
             cursor = db.rawQuery(query, new String[]{startDateISO, endDateISO});
         } catch (Exception e){
