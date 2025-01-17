@@ -83,7 +83,7 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         DatabaseHelper databaseHelper = new DatabaseHelper(context);
-                        databaseHelper.deleteData(id);
+                        databaseHelper.deleteDataCD(id);
                         climbingDataList.remove(position);
                         notifyItemRemoved(position);
                         ((MainActivity) context).loadDayData();//refrescar la vista de MainActivity

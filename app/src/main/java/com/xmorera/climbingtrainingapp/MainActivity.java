@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -533,10 +532,10 @@ public class MainActivity extends AppCompatActivity  {
      *
      * @param -String date, String via, String zona, int intent
      * */
-    private void insertData(String date, String dificultat, String zona, int ifIntent){
-        boolean insertSuccess = databaseHelper.insertData(date, dificultat, zona, ifIntent);
+    private void insertData(String date, String dificultat, int zona, int ifIntent, int descansos){
+        boolean insertSuccess = databaseHelper.insertDataCD(date, dificultat, zona, ifIntent, descansos);
         if (insertSuccess) {
-            //Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
             loadDayData();
         } else {
             Toast.makeText(MainActivity.this, "Error en guardar la via", Toast.LENGTH_SHORT).show();
@@ -577,7 +576,7 @@ public class MainActivity extends AppCompatActivity  {
         metres = 0.0;
         puntuacioDia = 0.0;
         climbingDataList.clear();
-        Cursor cursor = databaseHelper.getDayData(dateTextView.getText().toString());
+        Cursor cursor = databaseHelper.getDayDataCD(dateTextView.getText().toString());
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndexOrThrow("ID"));

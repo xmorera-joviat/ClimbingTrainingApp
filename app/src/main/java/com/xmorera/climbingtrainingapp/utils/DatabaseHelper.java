@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "climbing_training.db";
-    private static final int DATABASE_VERSION = 2; // Incremented version
+    private static final int DATABASE_VERSION = 3; // Incremented version
 
     // Table names
     private static final String TABLE_CLIMBING_DATA = "climbing_data";
@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_NOM_ZONA = "NOM_ZONA";
     private static final String COL_ALTURA_ZONA = "ALTURA_ZONA";
     private static final String COL_ZONA_CORDA = "ZONA_CORDA";
-    private static final String COL_ID_ROCO_FK = "ID_ROCO"; // Foreign key
+    private static final String COL_ID_ROCO_FK = "ID_ROCO_FK"; // Foreign key
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_ID_CD + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_DATE + " TEXT, " +
                 COL_DIFICULTAT + " TEXT, " +
-                COL_ID_ZONA_FK + " INTEGER, " +
+                COL_ID_ZONA_FK + " INTEGER NOT NULL, " +
                 COL_IFINTENT + " INTEGER," +
                 COL_DESCANSOS + " INTEGER," +
                 "FOREIGN KEY(" + COL_ID_ZONA_FK + ") REFERENCES " + TABLE_ZONES + "(" + COL_ID_ZONA + "))";
@@ -80,7 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
+        if (oldVersion < 3) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLIMBING_DATA);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROCODROMS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZONES);
@@ -95,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public boolean insertData(String date, String dificultat, String zona, int ifIntent) {
+    public boolean insertDataCD(String date, String dificultat, int zona, int ifIntent, int descansos) {
         //canviem el format de la data abans d'introduir-la a SQLite
         String dateISO = DateConverter.convertCustomToISO(date);
 
@@ -105,18 +105,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_DIFICULTAT, dificultat);
         contentValues.put(COL_ID_ZONA_FK, zona);
         contentValues.put(COL_IFINTENT, ifIntent);
+        contentValues.put(COL_DESCANSOS, descansos);
         long result = db.insert(TABLE_CLIMBING_DATA, null, contentValues);
         db.close();
         return result != -1;
     }
 
-    public Cursor getAllData() {
+    public Cursor getAllDataCD() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_CLIMBING_DATA + " ORDER BY " + COL_DATE + " DESC", new String[]{});
 
     }
 
-    public Cursor getDayData(String date) {
+    public Cursor getDayDataCD(String date) {
         //canviem el format de la data abans d'introduir-la a SQLite
         String dateISO = DateConverter.convertCustomToISO(date);
 
@@ -133,7 +134,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateData(int id, String date, String dificultat, String zona, int ifIntent){
+    public boolean updateDataCD(int id, String date, String dificultat, int zona, int ifIntent, int descansos){
         //canviem el format de la data abans d'introduir-la a SQLite
         String dateISO = DateConverter.convertCustomToISO(date);
 
@@ -143,17 +144,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_DIFICULTAT, dificultat);
         contentValues.put(COL_ID_ZONA_FK, zona);
         contentValues.put(COL_IFINTENT, ifIntent);
+        contentValues.put(COL_DESCANSOS, descansos);
         int result = db.update(TABLE_CLIMBING_DATA, contentValues, COL_ID_CD + " = ?", new String[]{String.valueOf(id)});
         db.close();
         return result > 0; //retorna True si la actualització s'ha realitzat correctament
     }
 
-    public Integer deleteData(int id){
+    public Integer deleteDataCD(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_CLIMBING_DATA, COL_ID_CD + " = ?", new String[]{String.valueOf(id)});
     }
 
-    public Cursor getDataByDate(String date) {
+    public Cursor getDataCDByDate(String date) {
         //canviem el format de la data abans d'introduir-la a SQLite
         String dateISO = DateConverter.convertCustomToISO(date);
 
@@ -162,7 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, new String[]{dateISO});
     }
 
-    public Cursor getDataBetweenDates(String startDate, String endDate){
+    public Cursor getDataCDBetweenDates(String startDate, String endDate){
         //canviem el format de la data abans d'introduir-la a SQLite
         String startDateISO = DateConverter.convertCustomToISO(startDate);
         String endDateISO = DateConverter.convertCustomToISO(endDate);
@@ -178,7 +180,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param startDate
      * @param endDate
      * @return Cursor amb cada una de les dates que tenen dades entre les dates senyalades */
-    public Cursor getUniqueDates(String startDate, String endDate){
+    public Cursor getUniqueDataCDDates(String startDate, String endDate){
         //canviem el format de la data abans d'introduir-la a SQLite
         String startDateISO = DateConverter.convertCustomToISO(startDate);
         String endDateISO = DateConverter.convertCustomToISO(endDate);
@@ -199,10 +201,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //////  CRUD ROCODROM  /////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean insertRocodrom(String nomRocodrom) {
+    public boolean insertRocodrom(String nomRocodrom, String nomRocodromReduit, String poblacio) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_NOM_ROCO, nomRocodrom);
+        contentValues.put(COL_NOM_ROCO_REDUIT, nomRocodromReduit);
+        contentValues.put(COL_POBLACIO, poblacio);
         long result = db.insert(TABLE_ROCODROMS, null, contentValues);
         db.close();
         return result != -1;
@@ -218,10 +222,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_ROCODROMS, COL_ID_ROCO+" = ?", new String[]{String.valueOf(id)});
     }
 
-    public boolean updateRocodrom(int id, String nomRocodrom){
+    public boolean updateRocodrom(int id, String nomRocodrom, String nomRocodromReduit, String poblacio){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_NOM_ROCO, nomRocodrom);
+        contentValues.put(COL_NOM_ROCO_REDUIT, nomRocodromReduit);
+        contentValues.put(COL_POBLACIO, poblacio);
         int result = db.update(TABLE_ROCODROMS, contentValues, COL_ID_ROCO+" = ?", new String[]{String.valueOf(id)});
         db.close();
         return result > 0;
@@ -267,51 +273,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void insertInitialDataRocodroms(SQLiteDatabase db) {
         // gravetat zero
         ContentValues gravetatZero = new ContentValues();
-        gravetatZero.put(COL_NOM_ROCO, "Gravetat Zero, Terrassa");
+        gravetatZero.put(COL_NOM_ROCO, "Gravetat Zero");
+        gravetatZero.put(COL_NOM_ROCO_REDUIT, "GZ");
+        gravetatZero.put(COL_POBLACIO, "Terrassa");
         int idGravetatZero = (int) db.insert(TABLE_ROCODROMS, null, gravetatZero);
 
-        // inserir Zones G0
+        // inserir Zones GZ
         ContentValues gravetatZeroAutos = new ContentValues();
         gravetatZeroAutos.put(COL_NOM_ZONA, "Autos");
         gravetatZeroAutos.put(COL_ALTURA_ZONA, 10);
-        gravetatZeroAutos.put(COL_ID_ROCO_FK, idGravetatZero);
         gravetatZeroAutos.put(COL_ZONA_CORDA, 0);
+        gravetatZeroAutos.put(COL_ID_ROCO_FK, idGravetatZero);
         db.insert(TABLE_ZONES, null, gravetatZeroAutos);
 
         ContentValues gravetatZeroCorda = new ContentValues();
         gravetatZeroCorda.put(COL_NOM_ZONA, "Corda");
         gravetatZeroCorda.put(COL_ALTURA_ZONA, 12);
-        gravetatZeroCorda.put(COL_ID_ROCO_FK, idGravetatZero);
         gravetatZeroCorda.put(COL_ZONA_CORDA, 1);
+        gravetatZeroCorda.put(COL_ID_ROCO_FK, idGravetatZero);
         db.insert(TABLE_ZONES, null, gravetatZeroCorda);
 
         ContentValues gravetatZeroShiny = new ContentValues();
         gravetatZeroShiny.put(COL_NOM_ZONA, "Shiny");
         gravetatZeroShiny.put(COL_ALTURA_ZONA, 12);
-        gravetatZeroShiny.put(COL_ID_ROCO_FK, idGravetatZero);
         gravetatZeroShiny.put(COL_ZONA_CORDA, 0);
+        gravetatZeroShiny.put(COL_ID_ROCO_FK, idGravetatZero);
         db.insert(TABLE_ZONES, null, gravetatZeroShiny);
 
         ContentValues gravetatZeroBloc = new ContentValues();
         gravetatZeroBloc.put(COL_NOM_ZONA, "Bloc");
         gravetatZeroBloc.put(COL_ALTURA_ZONA, 4);
-        gravetatZeroBloc.put(COL_ID_ROCO_FK, idGravetatZero);
         gravetatZeroBloc.put(COL_ZONA_CORDA, 0);
+        gravetatZeroBloc.put(COL_ID_ROCO_FK, idGravetatZero);
         db.insert(TABLE_ZONES, null, gravetatZeroBloc);
 
         // La panxa del bou
         ContentValues laPanxaDelBou = new ContentValues();
-        laPanxaDelBou.put(COL_NOM_ROCO, "La panxa del bou, Sabadell");
+        laPanxaDelBou.put(COL_NOM_ROCO, "La panxa del bou");
+        laPanxaDelBou.put(COL_NOM_ROCO_REDUIT, "LPB");
+        laPanxaDelBou.put(COL_POBLACIO, "Sabadell");
         int idLaPanxaDelBou = (int) db.insert(TABLE_ROCODROMS, null, laPanxaDelBou);
 
         // Climbat Barcelona
         ContentValues climbatBarcelona = new ContentValues();
-        climbatBarcelona.put(COL_NOM_ROCO, "Climbat, Barcelona");
+        climbatBarcelona.put(COL_NOM_ROCO, "Climbat");
+        climbatBarcelona.put(COL_NOM_ROCO_REDUIT, "CB");
+        climbatBarcelona.put(COL_POBLACIO, "Barcelona");
         int idClimbatBarcelona = (int) db.insert(TABLE_ROCODROMS, null, climbatBarcelona);
 
         // Sharma Gavà
         ContentValues sharmaGava = new ContentValues();
-        sharmaGava.put(COL_NOM_ROCO, "Sharma, Gavà");
+        sharmaGava.put(COL_NOM_ROCO, "Sharma");
+        sharmaGava.put(COL_NOM_ROCO_REDUIT, "SG");
+        sharmaGava.put(COL_POBLACIO, "Gavà");
         int idSharmaGava = (int) db.insert(TABLE_ROCODROMS, null, sharmaGava);
     }
 
