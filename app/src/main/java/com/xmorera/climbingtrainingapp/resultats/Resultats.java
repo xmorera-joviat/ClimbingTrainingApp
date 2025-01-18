@@ -45,9 +45,12 @@ import com.xmorera.climbingtrainingapp.utils.Preferencies;
 
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
+    private Button btnScores;
+
     private Button btnSetmanal;
     private Button btnMensual;
     private Button btnAnual;
+
 
     private LinearLayout layoutAltres;
 
@@ -81,6 +84,8 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         });
         layoutAltres = findViewById(R.id.layoutAltres);
 
+        btnScores = findViewById(R.id.btnScores);
+
         btnSetmanal = findViewById(R.id.btnSetmanal);
         btnMensual = findViewById(R.id.btnMensual);
         btnAnual = findViewById(R.id.btnAnual);
@@ -112,8 +117,12 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
         chartView = findViewById(R.id.chart_view);
 
-        // Inicialitzar la data final amb la data actual
-        updateDateTextView(endDateEditText);
+        // Inicialitzar la data final amb la data actual i la inicial 7 dies abans
+
+        //updateDate(startDateEditText, -7);
+        //calendar.setTime(new Date()); //reset a data actual
+        updateDate(endDateEditText, 0);
+        //performQuery();
 
         //creació de la custom marker view per veue la data en fer click en un node de la gràfica
         CustomMarkerView markerView = new CustomMarkerView(this, R.layout.custom_marker_view);
@@ -133,7 +142,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                 markerView.setVisibility(View.GONE);
             }
         });
-
 
     }
 
@@ -214,19 +222,23 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                         while (cursor2.moveToNext()) {
 
                             String dificultat = cursor2.getString(cursor2.getColumnIndexOrThrow("DIFICULTAT"));
-                            String zona = cursor2.getString(cursor2.getColumnIndexOrThrow("ZONA"));
+                            int id_zona_fk = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_ZONA_FK"));
+                            Cursor cursor3 = databaseHelper.getZonaById(id_zona_fk);
+                            cursor3.moveToNext();
+                            int metresZona = cursor3.getInt(cursor3.getColumnIndexOrThrow("ALTURA_ZONA"));
+                            cursor3.close();
                             int ifIntent = cursor2.getInt(cursor2.getColumnIndexOrThrow("IFINTENT"));
-
-                            // activació de les preferencies,
-                            // ja si l'activity Preferencies no s'ha obert mai les preferencies no estan disponibles
-                            if (preferencesGZero.getString(zona, "error").equals("error")) {
-                                startActivity(new Intent(this, Preferencies.class));
-                            }
+                            int descansos = cursor2.getInt(cursor2.getColumnIndexOrThrow("DESCANSOS"));
 
                             puntuacioDia += puntuacio.getPunts(dificultat);
-                            //puntuacioDia += Double.parseDouble(preferencesGZero.getString(dificultat, "0,0").replace(",", "."));
+                            if (ifIntent == 1) {
+                                puntuacioDia /= puntuacio.getIfIntent();
+                                metresZona *= puntuacio.getPenalitzacioMetres();
+                            } else if (descansos > 0) {
+                                puntuacioDia /= puntuacio.getPenalitzacioDescansos(descansos);
+                            }
                             viesDia += 1;
-                            metresDia += Double.parseDouble(preferencesGZero.getString(zona, "0,0").replace(",", "."));
+                            metresDia += metresZona;
 
                         }
                         cursor2.close();
@@ -234,7 +246,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                     }
                 }
                 cursor.close();
-                //Log.d("Resultats", "ResultatsDataList size: " + resultatsDataList.size());
                 resultatsDataAdapter.notifyDataSetChanged();
                 resultatsRecyclerView.setVisibility(View.VISIBLE);
                 if (resultatsDataList.isEmpty()) {
@@ -272,29 +283,29 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
         // Create LineDataSets with the entries
         LineDataSet routesDataSet = new LineDataSet(routesEntries, "Vies");
-        routesDataSet.setColor(ContextCompat.getColor(this, R.color.blue)); // Set line color for routes
+        routesDataSet.setColor(ContextCompat.getColor(this, R.color.blau_turquesa)); // Set line color for routes
         routesDataSet.setValueTextSize(10f);
         routesDataSet.setValueTextColor(Color.GRAY);
         routesDataSet.setDrawCircles(true);
-        routesDataSet.setCircleColor(ContextCompat.getColor(this, R.color.blue));
+        routesDataSet.setCircleColor(ContextCompat.getColor(this, R.color.blau_turquesa));
         routesDataSet.setLineWidth(2f);
         routesDataSet.setCircleRadius(5f);
 
         LineDataSet metersDataSet = new LineDataSet(metersEntries, "Metres");
-        metersDataSet.setColor(ContextCompat.getColor(this, R.color.green)); // Set line color for meters
+        metersDataSet.setColor(ContextCompat.getColor(this, R.color.blue)); // Set line color for meters
         metersDataSet.setValueTextSize(10f);
         metersDataSet.setValueTextColor(Color.GRAY);
         metersDataSet.setDrawCircles(true);
-        metersDataSet.setCircleColor(ContextCompat.getColor(this, R.color.green));
+        metersDataSet.setCircleColor(ContextCompat.getColor(this, R.color.blue));
         metersDataSet.setLineWidth(2f);
         metersDataSet.setCircleRadius(5f);
 
         LineDataSet scoreDataSet = new LineDataSet(scoreEntries, "Puntuació");
-        scoreDataSet.setColor(ContextCompat.getColor(this, R.color.red)); // Set line color for score
+        scoreDataSet.setColor(ContextCompat.getColor(this, R.color.green)); // Set line color for score
         scoreDataSet.setValueTextSize(10f);
         scoreDataSet.setValueTextColor(Color.GRAY);
         scoreDataSet.setDrawCircles(true);
-        scoreDataSet.setCircleColor(ContextCompat.getColor(this, R.color.red));
+        scoreDataSet.setCircleColor(ContextCompat.getColor(this, R.color.green));
         scoreDataSet.setLineWidth(2f);
         scoreDataSet.setCircleRadius(5f);
 

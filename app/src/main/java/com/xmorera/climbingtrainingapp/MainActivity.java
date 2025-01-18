@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,7 @@ import java.util.List;
  * @author Xavier Morera
  * */
 public class MainActivity extends AppCompatActivity  {
+
     TextView dateTextView; //mostrar la data i mostrar la via seleccionada
     Button diaAnterior, diaPosterior;
     Button btnAvui;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity  {
     LinearLayout entradaLayout;
     LinearLayout descansosLayout;
     Spinner rocodromSpinner;
+    Button btnAfegirRocoZona;
     HashMap<String, Integer> rocodromsHashMap;
     GridLayout zonesGrid;
     Spinner descansosSpinner;
@@ -182,6 +185,15 @@ public class MainActivity extends AppCompatActivity  {
 
         rocodromSpinner = findViewById(R.id.rocodromSpinner);
 
+        btnAfegirRocoZona = findViewById(R.id.btnAfegirRocoZona);
+        btnAfegirRocoZona.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // startActivity(new Intent(MainActivity.this, AfegirRocoZona.class));
+                Toast.makeText(MainActivity.this, "Afegir/Editar Roco/Zones", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         entradaLayout = findViewById(R.id.entradaLayout);
         entradaLayout.setVisibility(View.GONE);
         descansosLayout = findViewById(R.id.descansosLayout);
@@ -274,9 +286,6 @@ public class MainActivity extends AppCompatActivity  {
         mitjanaDiaTextView = findViewById(R.id.mitjanaDiaTextView);
         puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
 
-
-
-
         puntuacio = new Puntuacio();
 
         loadDayData(); //mostrar totes les dades de la bd
@@ -305,16 +314,13 @@ public class MainActivity extends AppCompatActivity  {
         if (selectedDate != null && firstTime) {
             // If a date was passed, set it to the dateTextView
             dateTextView.setText(selectedDate);
-            //controlar que no es puguin entrar dades per no provocar un error
-
         } else {
             // If no date was passed, set the current date
             updateDateTextView();
-
         }
         //carrega Spinner
         loadSpinnerRocodroms();
-        // loadDayData(); // Load data for the current date
+        loadDayData(); // Load data for the current date
 
     }
     /**
@@ -414,8 +420,36 @@ public class MainActivity extends AppCompatActivity  {
                         }
                         while (cursor2.moveToNext()) ;
                     }else {
-                        entradaLayout.setVisibility(View.GONE);
-                        Toast.makeText(MainActivity.this, "No hi ha zones definides per aquest rocòdrom.", Toast.LENGTH_LONG).show();
+                        //generar el Layout per inserir zones
+                        zonesGrid.removeAllViews();
+                        // Crear un TextView dinàmicament
+                        TextView textView = new TextView(MainActivity.this);
+                        GridLayout.LayoutParams textParams = new GridLayout.LayoutParams();
+                        textParams.setGravity(Gravity.CENTER); // Centrar el TextView
+                        textParams.setMargins(20, 0, 0, 0); // Margen superior para separar del TextView
+                        textView.setLayoutParams(textParams);
+                        textView.setTextSize(18);
+                        textView.setText("No hi ha zones definides \nper aquest rocòdrom");
+                        textView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange)); // Asegúrate de que el color esté definido
+
+                        // Crear un Button dinámicamente
+                        Button btnAfegirZona = new Button(MainActivity.this);
+                        GridLayout.LayoutParams buttonParams = new GridLayout.LayoutParams();
+                        buttonParams.setGravity(Gravity.CENTER); // Centrar el Button
+                        buttonParams.setMargins(30, 8, 0, 0); // Margen superior para separar del TextView
+                        btnAfegirZona.setLayoutParams(buttonParams);
+                        btnAfegirZona.setText("Afegir");
+
+                        // Establir l'esdeveniment de clic per al botó
+                        btnAfegirZona.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Gestionar el clic del botó
+                                Toast.makeText(MainActivity.this, "Afegir Zona", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        zonesGrid.addView(textView);
+                        zonesGrid.addView(btnAfegirZona);
                     }
                 }
                 cursor2.close();
