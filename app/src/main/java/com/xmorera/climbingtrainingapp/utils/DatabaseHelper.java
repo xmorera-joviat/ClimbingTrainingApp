@@ -9,12 +9,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "climbing_training.db";
-    private static final int DATABASE_VERSION = 4; // Incremented version
+    private static final int DATABASE_VERSION = 5; // Incremented version
 
     // Table names
     private static final String TABLE_CLIMBING_DATA = "climbing_data";
     private static final String TABLE_ROCODROMS = "rocodroms";
     private static final String TABLE_ZONES = "zones";
+    private static final String TABLE_RANKING = "ranking";
 
     // Columns for climbing_data
     private static final String COL_ID_CD = "ID_CD";
@@ -36,6 +37,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_ALTURA_ZONA = "ALTURA_ZONA";
     private static final String COL_ZONA_CORDA = "ZONA_CORDA";
     private static final String COL_ID_ROCO_FK = "ID_ROCO_FK"; // Foreign key
+
+    // Columns for ranking
+    private static final String COL_ID_RANKING = "ID_RANKING";
+    private static final String COL_DATE_RANKING = "DATE_RANKING";
+    private static final String COL_PUNTS_RANKING = "PUNTS_RANKING";
+    private static final String COL_VIES_RANKING = "VIES_RANKING";
+    private static final String COL_METRES_RANKING = "METRES_RANKING";
+    private static final String COL_MITJANA_RANKING = "MITJANA_RANKING";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -69,10 +78,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_ID_ROCO_FK + " INTEGER NOT NULL, " +
                 "FOREIGN KEY(" + COL_ID_ROCO_FK + ") REFERENCES " + TABLE_ROCODROMS + "(" + COL_ID_ROCO + "))";
 
+        // Cretae ranking table
+        String createRankingTable = "CREATE TABLE " + TABLE_RANKING + " (" +
+                COL_ID_RANKING + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_DATE_RANKING + " TEXT, " +
+                COL_PUNTS_RANKING + " REAL, " +
+                COL_VIES_RANKING + " INTEGER, " +
+                COL_METRES_RANKING + " INTEGER, " +
+                COL_MITJANA_RANKING + " REAL)";
+
+
         // Execute the SQL statements to create the tables
         db.execSQL(createClimbingDataTable);
         db.execSQL(createRocodromsTable);
         db.execSQL(createZonesTable);
+        db.execSQL(createRankingTable);
 
         insertInitialDataRocodroms(db);
 
@@ -80,20 +100,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 4) {
+        if (oldVersion < 5) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLIMBING_DATA);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROCODROMS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZONES);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_RANKING);
             onCreate(db);
 
         }
-        insertInitialDataRocodroms(db);
+        //insertInitialDataRocodroms(db);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /////// CRUD CLIMBING_DATA /////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     public boolean insertDataCD(String date, String dificultat, int zona, int ifIntent, int descansos) {
         //canviem el format de la data abans d'introduir-la a SQLite
@@ -125,7 +145,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + TABLE_CLIMBING_DATA + " WHERE " + COL_DATE + " = ? ORDER BY ID_CD DESC";
         return db.rawQuery(query, new String[]{dateISO});
     }
-
 
     public void closeDatabase(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -277,6 +296,87 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return result > 0;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //////  CRUD RANKING  //////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public boolean insertRanking(String dateRanking, double puntsRanking, int viesRanking, int metresRanking){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_DATE_RANKING, dateRanking);
+        contentValues.put(COL_PUNTS_RANKING, puntsRanking);
+        contentValues.put(COL_VIES_RANKING, viesRanking);
+        contentValues.put(COL_METRES_RANKING, metresRanking);
+        contentValues.put(COL_MITJANA_RANKING, puntsRanking/viesRanking);
+        long result = db.insert(TABLE_RANKING, null, contentValues);
+        db.close();
+        return result != -1;
+    }
+
+    public Cursor getAllRanking() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" ORDER BY "+COL_ID_RANKING+" DESC", new String[]{});
+    }
+
+    public Cursor getRankingByDate(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" = ?", new String[]{date});
+    }
+
+    public Cursor getRankingBetweenDates(String startDate, String endDate) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" BETWEEN ? AND ?", new String[]{startDate, endDate});
+    }
+
+    public Cursor getRankingByCriteri(String criteri, int limit) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        switch (criteri) {
+            case "puntsRanking":
+                criteri = COL_PUNTS_RANKING;
+                break;
+            case "viesRanking":
+                criteri = COL_VIES_RANKING;
+                break;
+            case "metresRanking":
+                criteri = COL_METRES_RANKING;
+                break;
+            case "mitjanaRanking":
+                criteri = COL_MITJANA_RANKING;
+                break;
+            default:
+                criteri = COL_PUNTS_RANKING;
+        }
+        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" ORDER BY "+criteri+" DESC LIMIT ?", new String[]{String.valueOf(limit)});
+    }
+
+    Cursor getRankingByCriteriBetweenDates(String startDate, String endDate, String criteri, int limit) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        switch (criteri) {
+            case "puntsRanking":
+                criteri = COL_PUNTS_RANKING;
+                break;
+            case "viesRanking":
+                criteri = COL_VIES_RANKING;
+                break;
+            case "metresRanking":
+                criteri = COL_METRES_RANKING;
+                break;
+            case "mitjanaRanking":
+                criteri = COL_MITJANA_RANKING;
+                break;
+            default:
+                criteri = COL_PUNTS_RANKING;
+        }
+        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" BETWEEN ? AND ? ORDER BY "+criteri+" DESC LIMIT ?", new String[]{startDate, endDate, String.valueOf(limit)});
+    }
+
+    public Integer deleteRanking(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_RANKING, COL_ID_RANKING+" = ?", new String[]{String.valueOf(id)});
+    }
+
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //////  introducció de dades inicials  /////////////////////////////////////////////////////////

@@ -46,13 +46,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.5.1.0&#10;&#10;&#10;---&#10;* eliminar les preferències i el menú&#10;* gestió de fragments&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
-      <change afterPath="$PROJECT_DIR$/.gitignore.old" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.5.1.0&#10;* error en el càlcul de punts de la activity resultats(solucionat)&#10;* actualització mètode de l'etiqueta del gràfic)&#10;&#10;---&#10;* nova taula per guardar els resultats diaris per als rànquings&#10;* en la gràfica modificar CustomMarkerView per mostrar el valor del punt seleccionat i controlar que si està a la dreta de la pantalla es mostri correctament&#10;* eliminar les preferències i el menú&#10;* gestió de fragments&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/Resultats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/Resultats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -390,14 +386,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734782226824</updated>
-    </task>
-    <task id="LOCAL-00031" summary="versió 0.1.2&#10;* implementar entrada per veu --&gt; branca ReconeixementDeVeu&#10;&#10;&#10;---&#10;&#10;per fer:&#10;* veure resultats per setmanes, mesos, i entre dues dates.&#10;* mostrar els resultats i mitjanes en gràfics&#10;* possibilitat de gravar vídeos&#10;* exportar/importar dades">
-      <option name="closed" value="true" />
-      <created>1735309540446</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1735309540446</updated>
     </task>
     <task id="LOCAL-00032" summary="versió 0.1.2.1&#10;&#10;treballant en l'activity Resultats per triar dates, mostrar resultats en un gràfic i Expotra/Importar&#10;&#10;&#10;---&#10;&#10;per fer:&#10;&#10;* possibilitat de gravar vídeos">
       <option name="closed" value="true" />
@@ -783,7 +771,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737216047113</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="versió 0.5.1.0&#10;* error en el càlcul de punts de la activity resultats(solucionat)&#10;* actualització mètode de l'etiqueta del gràfic)&#10;&#10;---&#10;* nova taula per guardar els resultats diaris per als rànquings&#10;* en la gràfica modificar CustomMarkerView per mostrar el valor del punt seleccionat i controlar que si està a la dreta de la pantalla es mostri correctament&#10;* eliminar les preferències i el menú&#10;* gestió de fragments&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1737359037349</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1737359037349</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -826,7 +822,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="versió 0.4.2.2&#10;* mostrar botó avui al costat de l'entrada manual en data diferent d'avui&#10;---&#10;* mostrar la mitjana de grau en els resultats&#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.4.2.3&#10;* ajustar data de tornada&#10;* creació de packages&#10;___&#10;* mostrar la mitjana de grau en els resultats&#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.4.3&#10;* mostrar la mitjana de grau en els resultats&#10;---&#10;* boto gràfics &#10;&#10;---&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.4.4&#10;* boto gràfics &#10;&#10;---&#10;&#10;* botó per obrir nova sessió&#10;* Expotra/Importar&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
@@ -851,6 +846,7 @@
     <MESSAGE value="versió 0.5.0.6&#10;* indicar(color) si una via es neta o intent/descansos&#10;* mida puntuació via + gran&#10;---&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.0.7&#10;* Mostrar resultats&#10;&#10;---&#10;&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.1&#10;* creació de botons per accedir a la gestió de rocòdroms i zones&#10;&#10;---&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
-    <option name="LAST_COMMIT_MESSAGE" value="versió 0.5.1&#10;* creació de botons per accedir a la gestió de rocòdroms i zones&#10;&#10;---&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.1.0&#10;* error en el càlcul de punts de la activity resultats(solucionat)&#10;* actualització mètode de l'etiqueta del gràfic)&#10;&#10;---&#10;* nova taula per guardar els resultats diaris per als rànquings&#10;* en la gràfica modificar CustomMarkerView per mostrar el valor del punt seleccionat i controlar que si està a la dreta de la pantalla es mostri correctament&#10;* eliminar les preferències i el menú&#10;* gestió de fragments&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <option name="LAST_COMMIT_MESSAGE" value="versió 0.5.1.0&#10;* error en el càlcul de punts de la activity resultats(solucionat)&#10;* actualització mètode de l'etiqueta del gràfic)&#10;&#10;---&#10;* nova taula per guardar els resultats diaris per als rànquings&#10;* en la gràfica modificar CustomMarkerView per mostrar el valor del punt seleccionat i controlar que si està a la dreta de la pantalla es mostri correctament&#10;* eliminar les preferències i el menú&#10;* gestió de fragments&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
   </component>
 </project>
