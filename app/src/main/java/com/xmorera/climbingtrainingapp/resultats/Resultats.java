@@ -124,9 +124,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         updateDate(endDateEditText, 0);
         //performQuery();
 
-        //creació de la custom marker view per veue la data en fer click en un node de la gràfica
+        //creació de la custom marker view per veure la data en fer click en un node de la gràfica
         CustomMarkerView markerView = new CustomMarkerView(this, R.layout.custom_marker_view);
-        chartView.setMarkerView(markerView);
+        chartView.setMarker(markerView);
 
         //set the value selected listener
         chartView.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -217,6 +217,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                     Cursor cursor2 = databaseHelper.getDayDataCD(dateCustom);
                     if (cursor2 != null) {
                         Double puntuacioDia = 0.0;
+                        Double puntuacioData = 0.0;
                         int viesDia = 0;
                         Double metresDia = 0.0;
                         while (cursor2.moveToNext()) {
@@ -230,7 +231,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                             int ifIntent = cursor2.getInt(cursor2.getColumnIndexOrThrow("IFINTENT"));
                             int descansos = cursor2.getInt(cursor2.getColumnIndexOrThrow("DESCANSOS"));
 
-                            puntuacioDia += puntuacio.getPunts(dificultat);
+                            puntuacioDia = puntuacio.getPunts(dificultat);
                             if (ifIntent == 1) {
                                 puntuacioDia /= puntuacio.getIfIntent();
                                 metresZona *= puntuacio.getPenalitzacioMetres();
@@ -239,10 +240,10 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                             }
                             viesDia += 1;
                             metresDia += metresZona;
-
+                            puntuacioData += puntuacioDia;
                         }
                         cursor2.close();
-                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.format("%,.1f",puntuacioDia).replace(".",","),puntuacioDia/viesDia));
+                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.format("%,.1f",puntuacioData).replace(".",","),puntuacioData/viesDia));
                     }
                 }
                 cursor.close();
