@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -37,6 +41,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
+import com.github.mikephil.charting.utils.MPPointF;
 import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
@@ -112,7 +118,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         resultatsRecyclerView.setAdapter(resultatsDataAdapter);
 
         databaseHelper = new DatabaseHelper(this);
-        preferencesGZero = getSharedPreferences("preferenciesGZero", MODE_PRIVATE);
         puntuacio = new Puntuacio();
 
         chartView = findViewById(R.id.chart_view);
@@ -322,7 +327,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
      * CustomMarkerView
      * classe auxiliar per a visualitzar la data d'un node en fer-ne click
      */
-    public class CustomMarkerView extends MarkerView{
+    public class CustomMarkerView extends MarkerView {
 
         private TextView tvDate;
 
@@ -336,21 +341,28 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             String date = getDateFromEntry(e);
             tvDate.setText(date);
             super.refreshContent(e, highlight);
+
         }
 
         private String getDateFromEntry(Entry e) {
             int index = (int) e.getX();
-            return resultatsDataList.get(resultatsDataList.size() -1 - index).getDate();
+            // Check if the index is valid
+            if (index < 0 || index >= resultatsDataList.size()) {
+                return ""; // Return an empty string if the index is invalid
+            }
+            return resultatsDataList.get(resultatsDataList.size() - 1 - index).getDate();
         }
 
-        public int getXOffset(float xpos) {
-            return -getWidth() / 2;
-        }
+        @Override
+        public MPPointF getOffset() {
+            int markerWidth = getWidth();
+            int markerHeight = getHeight();
 
-        public int getYOffset(float ypos) {
-            return -getHeight();
+            // Center the marker
+            float offsetX = -markerWidth / 1.45f; //Desplaçament etiqueta cap a l'esquerra'
+            float offsetY = markerHeight / 4 ; //Desplaçament cap avall
+
+            return MPPointF.getInstance(offsetX, offsetY); // Return an MPPointF instance
         }
     }
-
-
 }

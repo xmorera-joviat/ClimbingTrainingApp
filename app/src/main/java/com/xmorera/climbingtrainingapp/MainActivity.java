@@ -324,6 +324,7 @@ public class MainActivity extends AppCompatActivity  {
         loadDayData(); // Load data for the current date
 
     }
+
     /**
      * loadSpinnerRocodroms
      * Mostra els diferents rocodroms que tenim a la base de dades
@@ -475,27 +476,27 @@ public class MainActivity extends AppCompatActivity  {
      *
      * mostra el menú de la part superiot dreta (tres puntets)
      * */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    /**
-     * onOptionsItemSelected
-     * gestió dels botons de menu
-     * */
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        // si hi ha més elements s'ha de fer amb switch
-        if (id == R.id.menu_settings) {
-            startActivity(new Intent(this, Preferencies.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    /**
+//     * onOptionsItemSelected
+//     * gestió dels botons de menu
+//     * */
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        // si hi ha més elements s'ha de fer amb switch
+//        if (id == R.id.menu_settings) {
+//            startActivity(new Intent(this, Preferencies.class));
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     /**
      * updateDateTextView
