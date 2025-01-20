@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,7 +72,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
     private Calendar calendar = Calendar.getInstance(); // Únic Calendar per a amb dues dates
 
-    private SharedPreferences preferencesGZero;
     Puntuacio puntuacio;
 
     private LineChart chartView;
@@ -91,6 +91,12 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         layoutAltres = findViewById(R.id.layoutAltres);
 
         btnScores = findViewById(R.id.btnScores);
+        btnScores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayScoresFragment();
+            }
+        });
 
         btnSetmanal = findViewById(R.id.btnSetmanal);
         btnMensual = findViewById(R.id.btnMensual);
@@ -148,6 +154,23 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             }
         });
 
+    }
+
+    /**
+     * displayScoresFragment
+     */
+    private void displayScoresFragment() {
+        ScoresFragment scoresFragment = new ScoresFragment();
+        scoresFragment.show(getSupportFragmentManager(), "scoresFragment");
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+// Set custom animations
+        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+
+// Replace or add the fragment
+        transaction.replace(R.id.fragment_scores, new ScoresFragment());
+        transaction.addToBackStack(null); // Optional: to allow back navigation
+        transaction.commit();
     }
 
     @Override
