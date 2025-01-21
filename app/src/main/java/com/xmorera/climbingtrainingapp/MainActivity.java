@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity  {
     TextView puntuacioDiaTextView;
 
     // variables per al càlcul diari
-    int vies;
-    double metres;
+    int viesDia;
+    double metresDia;
     double puntuacioDia;
 
     //variables per a entrar les dades a la base de dades
@@ -539,28 +539,6 @@ public class MainActivity extends AppCompatActivity  {
                 } else {
                     ifIntent = 0;
                 }
-/*
-                String message =
-                        "Rocodrom: " + rocodromSpinner.getSelectedItem().toString() +
-                        "\nData: "+dateTextView.getText().toString()+
-                        "\nidZona: "+idZona+
-                        "\nZona: "+nomZona+
-                        "\nAltura:"+alturaZona+
-                        "\nDescansos: "+ descansos +
-                        "\nÉs intent: "+ifIntent+
-                        "\nDificultat: " + dificultat;
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Dades a introduir a la BD")
-                        .setMessage(message).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-*/
 
                 insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, descansos);
                 resetInput();
@@ -574,7 +552,7 @@ public class MainActivity extends AppCompatActivity  {
     /**
      * insertData
      *
-     * insereix les dades a la base de dades
+     * insereix les dades a la base de dades i carrega les dades del dia actual
      *
      * @param -String date, String via, int zona, int intent
      * */
@@ -619,8 +597,8 @@ public class MainActivity extends AppCompatActivity  {
      */
     public void loadDayData(){
 
-        vies = 0;
-        metres = 0.0;
+        viesDia = 0;
+        metresDia = 0.0;
         puntuacioDia = 0.0;
         climbingDataList.clear();
         String nomCurtRocodrom="";
@@ -665,17 +643,42 @@ public class MainActivity extends AppCompatActivity  {
                     ifIntent=1; // si hi ha descansos ho indicarem al tag intent/descansos de l'item
                 }
                 climbingDataList.add(new ClimbingData( id_cd, date, dificultat, nomZona, ifIntent, String.format("%.1f", puntsVia)));
-                vies += 1;
-                metres += metresVia;
+                viesDia += 1;
+                metresDia += metresVia;
                 puntuacioDia += puntsVia;
             }
             cursor.close();
         }
-        climbingDataAdapter.notifyDataSetChanged();//notificar a l'adaptador que hi ha hagut canvis
+
+        //introduir les dades al ranking
+        //primer busquem si hi ha dades per aquest dia
+        Cursor cursor4 = databaseHelper.getRankingByDate(dateTextView.getText().toString());
+        if (cursor4 != null && cursor4.moveToFirst()) {
+            //si hi ha dades actualitzem
+            int idRanking = cursor4.getInt(cursor4.getColumnIndexOrThrow("ID_RANKING"));
+            if(viesDia!=0) {
+                databaseHelper.updateRanking(idRanking, dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
+            } else {
+                databaseHelper.deleteRanking(idRanking);
+                Toast.makeText(this, "Ranking eliminat", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            //si no hi ha dades les afegim
+            databaseHelper.insertRanking(dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
+        }
+        cursor4.close();
+
+
+        //notifiquem a l'adaptador que hi ha hagut canvis i que ha de refrescar els valors
+        climbingDataAdapter.notifyDataSetChanged();
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
-        viesDiaTextView.setText(String.valueOf(vies));
-        metresDiaTextView.setText(String.valueOf(metres));
-        mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioDia/vies));
+        viesDiaTextView.setText(String.valueOf(viesDia));
+        metresDiaTextView.setText(String.valueOf(metresDia));
+        mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioDia/ viesDia));
+
+
+
+
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
         if (dateTextView.getText().toString().equals(avui)) {
             try {
@@ -688,7 +691,6 @@ public class MainActivity extends AppCompatActivity  {
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
             btnAvui.setVisibility(View.VISIBLE);
         }
-
     }
 
 

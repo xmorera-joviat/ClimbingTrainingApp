@@ -81,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Cretae ranking table
         String createRankingTable = "CREATE TABLE " + TABLE_RANKING + " (" +
                 COL_ID_RANKING + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL_DATE_RANKING + " TEXT, " +
+                COL_DATE_RANKING + " TEXT UNIQUE, " +
                 COL_PUNTS_RANKING + " REAL, " +
                 COL_VIES_RANKING + " INTEGER, " +
                 COL_METRES_RANKING + " INTEGER, " +
@@ -100,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 5) {
+        if (oldVersion < 6) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLIMBING_DATA);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROCODROMS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZONES);
@@ -302,9 +302,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean insertRanking(String dateRanking, double puntsRanking, int viesRanking, int metresRanking){
+        String dateRankingISO = DateConverter.convertCustomToISO(dateRanking);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DATE_RANKING, dateRanking);
+        contentValues.put(COL_DATE_RANKING, dateRankingISO);
         contentValues.put(COL_PUNTS_RANKING, puntsRanking);
         contentValues.put(COL_VIES_RANKING, viesRanking);
         contentValues.put(COL_METRES_RANKING, metresRanking);
@@ -314,19 +315,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean updateRanking(int id, String dateRanking, double puntsRanking, int viesRanking, int metresRanking) {
+        String dateRankingISO = DateConverter.convertCustomToISO(dateRanking);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_DATE_RANKING, dateRankingISO);
+        contentValues.put(COL_PUNTS_RANKING, puntsRanking);
+        contentValues.put(COL_VIES_RANKING, viesRanking);
+        contentValues.put(COL_METRES_RANKING, metresRanking);
+        contentValues.put(COL_MITJANA_RANKING, puntsRanking / viesRanking);
+        int result = db.update(TABLE_RANKING, contentValues, COL_ID_RANKING + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return result > 0;
+    }
+
     public Cursor getAllRanking() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" ORDER BY "+COL_ID_RANKING+" DESC", new String[]{});
     }
 
     public Cursor getRankingByDate(String date) {
+        String dateISO = DateConverter.convertCustomToISO(date);
+
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" = ?", new String[]{date});
+        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" = ?", new String[]{dateISO});
     }
 
     public Cursor getRankingBetweenDates(String startDate, String endDate) {
+        String startDateISO = DateConverter.convertCustomToISO(startDate);
+        String endDateISO = DateConverter.convertCustomToISO(endDate);
+
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" BETWEEN ? AND ?", new String[]{startDate, endDate});
+        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" BETWEEN ? AND ?", new String[]{startDateISO, endDateISO});
     }
 
     public Cursor getRankingByCriteri(String criteri, int limit) {
@@ -351,6 +371,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     Cursor getRankingByCriteriBetweenDates(String startDate, String endDate, String criteri, int limit) {
+        String startDateISO = DateConverter.convertCustomToISO(startDate);
+        String endDateISO = DateConverter.convertCustomToISO(endDate);
+
         SQLiteDatabase db = this.getReadableDatabase();
         switch (criteri) {
             case "puntsRanking":
@@ -368,7 +391,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             default:
                 criteri = COL_PUNTS_RANKING;
         }
-        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" BETWEEN ? AND ? ORDER BY "+criteri+" DESC LIMIT ?", new String[]{startDate, endDate, String.valueOf(limit)});
+        return db.rawQuery("SELECT * FROM "+TABLE_RANKING+" WHERE "+COL_DATE_RANKING+" BETWEEN ? AND ? ORDER BY "+criteri+" DESC LIMIT ?", new String[]{startDateISO, endDateISO, String.valueOf(limit)});
     }
 
     public Integer deleteRanking(int id){

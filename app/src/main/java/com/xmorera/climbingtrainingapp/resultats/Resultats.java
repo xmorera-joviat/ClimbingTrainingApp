@@ -223,71 +223,45 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
 
     private void performQuery() {
-
         String startDate = startDateEditText.getText().toString();
         String endDate = endDateEditText.getText().toString();
 
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
-
-            // Realitza la consulta a la base de dades i mostra els resultats
-
-            // esborrar dates anteriors
+            // Clear previous results
             resultatsDataList.clear();
 
-            Cursor cursor = databaseHelper.getUniqueDataCDDates(startDate, endDate);
+            // Query the database
+            Cursor cursor = databaseHelper.getRankingBetweenDates(startDate, endDate);
             if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    //obtenció de les dates que tenen dades
-                    String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
-                    String dateCustom = DateConverter.convertISOToCustom(date);
+                if (cursor != null) {
+                    try {
+                        while (cursor.moveToNext()) {
+                            // Process the cursor data
+                            String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE_RANKING"));
+                            String dateCustom = DateConverter.convertISOToCustom(date);
+                            double puntuacioData = cursor.getDouble(cursor.getColumnIndexOrThrow("PUNTS_RANKING"));
+                            int viesDia = cursor.getInt(cursor.getColumnIndexOrThrow("VIES_RANKING"));
+                            double metresDia = cursor.getDouble(cursor.getColumnIndexOrThrow("METRES_RANKING"));
 
-                    //per a cada data calcular el nombre de vies i la puntuació del dia
-                    Cursor cursor2 = databaseHelper.getDayDataCD(dateCustom);
-                    if (cursor2 != null) {
-                        Double puntuacioDia = 0.0;
-                        Double puntuacioData = 0.0;
-                        int viesDia = 0;
-                        Double metresDia = 0.0;
-                        while (cursor2.moveToNext()) {
-
-                            String dificultat = cursor2.getString(cursor2.getColumnIndexOrThrow("DIFICULTAT"));
-                            int id_zona_fk = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_ZONA_FK"));
-                            Cursor cursor3 = databaseHelper.getZonaById(id_zona_fk);
-                            cursor3.moveToNext();
-                            int metresZona = cursor3.getInt(cursor3.getColumnIndexOrThrow("ALTURA_ZONA"));
-                            cursor3.close();
-                            int ifIntent = cursor2.getInt(cursor2.getColumnIndexOrThrow("IFINTENT"));
-                            int descansos = cursor2.getInt(cursor2.getColumnIndexOrThrow("DESCANSOS"));
-
-                            puntuacioDia = puntuacio.getPunts(dificultat);
-                            if (ifIntent == 1) {
-                                puntuacioDia /= puntuacio.getIfIntent();
-                                metresZona *= puntuacio.getPenalitzacioMetres();
-                            } else if (descansos > 0) {
-                                puntuacioDia /= puntuacio.getPenalitzacioDescansos(descansos);
-                            }
-                            viesDia += 1;
-                            metresDia += metresZona;
-                            puntuacioData += puntuacioDia;
+                            resultatsDataList.add(new ResultatsData(dateCustom, String.valueOf(viesDia), String.valueOf(metresDia).replace(".", ","), String.format("%,.1f", puntuacioData).replace(".", ","), puntuacioData / viesDia));
                         }
-                        cursor2.close();
-                        resultatsDataList.add(new ResultatsData(dateCustom,String.valueOf(viesDia),String.valueOf(metresDia).replace(".",","),String.format("%,.1f",puntuacioData).replace(".",","),puntuacioData/viesDia));
+                    } finally {
+                        cursor.close(); // Ensure the cursor is closed after processing
                     }
+                } else {
+                    Toast.makeText(this, "Selecciona les dates, inicial i final", Toast.LENGTH_SHORT).show();
                 }
-                cursor.close();
+
+                // Notify the adapter and generate the chart
                 resultatsDataAdapter.notifyDataSetChanged();
                 resultatsRecyclerView.setVisibility(View.VISIBLE);
                 if (resultatsDataList.isEmpty()) {
                     Toast.makeText(this, "No hi ha dades per mostrar", Toast.LENGTH_SHORT).show();
                 }
 
-                // Generació del gràfic
+                // Generate the chart
                 generateChart();
             }
-
-        } else {
-            Toast.makeText(this, "Selecciona les dates, inicial i final", Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -297,17 +271,17 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         ArrayList<Entry> metersEntries = new ArrayList<>();
         ArrayList<Entry> scoreEntries = new ArrayList<>();
 
-        // Loop through the resultatsDataList to create entries for the chart
-        for (int i = resultatsDataList.size() - 1; i >= 0; i--) {
+        // Loop through the resultatsDataList to create entries for the chart in original order
+        for (int i = 0; i < resultatsDataList.size(); i++) {
             // Assuming the score, number of routes, and meters are what you want to plot
             double score = Double.parseDouble(resultatsDataList.get(i).getPuntuacio().replace(",", "."));
             int routes = Integer.parseInt(resultatsDataList.get(i).getVies());
             double meters = Double.parseDouble(resultatsDataList.get(i).getMetres().replace(",", "."));
 
-            routesEntries.add(new Entry(resultatsDataList.size() - 1 - i, (float) routes)); // X-axis is the index in reverse order
-            metersEntries.add(new Entry(resultatsDataList.size() - 1 - i, (float) meters)); // X-axis is the index in reverse order
-            scoreEntries.add(new Entry(resultatsDataList.size() - 1 - i, (float) score)); // X-axis is the index in reverse order
-
+            // Use 'i' for the x-axis to maintain original order
+            routesEntries.add(new Entry(i, (float) routes)); // X-axis is the index in original order
+            metersEntries.add(new Entry(i, (float) meters)); // X-axis is the index in original order
+            scoreEntries.add(new Entry(i, (float) score)); // X-axis is the index in original order
         }
 
         // Create LineDataSets with the entries
@@ -339,13 +313,12 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         scoreDataSet.setCircleRadius(5f);
 
         // Create LineData object with all datasets
-        LineData lineData = new LineData( routesDataSet, metersDataSet, scoreDataSet);
+        LineData lineData = new LineData(routesDataSet, metersDataSet, scoreDataSet);
 
         // Set data to the chart
         chartView.setData(lineData);
         chartView.invalidate(); // Refresh the chart
     }
-
     /**
      * CustomMarkerView
      * classe auxiliar per a visualitzar la data d'un node en fer-ne click
@@ -364,7 +337,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             String date = getDateFromEntry(e);
             tvDate.setText(date);
             super.refreshContent(e, highlight);
-
         }
 
         private String getDateFromEntry(Entry e) {
@@ -373,7 +345,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             if (index < 0 || index >= resultatsDataList.size()) {
                 return ""; // Return an empty string if the index is invalid
             }
-            return resultatsDataList.get(resultatsDataList.size() - 1 - index).getDate();
+            // Adjust this line based on your chart's data order
+            //return resultatsDataList.get(resultatsDataList.size() - 1 - index).getDate(); // For reverse order
+             return resultatsDataList.get(index).getDate(); // For original order
         }
 
         @Override
@@ -382,8 +356,8 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             int markerHeight = getHeight();
 
             // Center the marker
-            float offsetX = -markerWidth / 1.45f; //Desplaçament etiqueta cap a l'esquerra'
-            float offsetY = markerHeight / 4 ; //Desplaçament cap avall
+            float offsetX = -markerWidth / 1.45f; // Shift marker to the left
+            float offsetY = markerHeight / 4; // Shift marker down
 
             return MPPointF.getInstance(offsetX, offsetY); // Return an MPPointF instance
         }
