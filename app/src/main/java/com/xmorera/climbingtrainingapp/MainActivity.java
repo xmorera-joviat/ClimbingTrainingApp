@@ -1,18 +1,13 @@
 package com.xmorera.climbingtrainingapp;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -35,13 +29,13 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.xmorera.climbingtrainingapp.RocodromsZones.GestioRocosZones;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingData;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingDataAdapter;
 
 import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.resultats.Resultats;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
-import com.xmorera.climbingtrainingapp.utils.Preferencies;
 import com.xmorera.climbingtrainingapp.utils.Utilitats;
 
 import java.text.ParseException;
@@ -68,7 +62,7 @@ public class MainActivity extends AppCompatActivity  {
     LinearLayout entradaLayout;
     LinearLayout descansosLayout;
     Spinner rocodromSpinner;
-    Button btnAfegirRocoZona;
+    Button btnGestionarRocosZones;
     HashMap<String, Integer> rocodromsHashMap;
     GridLayout zonesGrid;
     Spinner descansosSpinner;
@@ -185,12 +179,11 @@ public class MainActivity extends AppCompatActivity  {
 
         rocodromSpinner = findViewById(R.id.rocodromSpinner);
 
-        btnAfegirRocoZona = findViewById(R.id.btnAfegirRocoZona);
-        btnAfegirRocoZona.setOnClickListener(new View.OnClickListener() {
+        btnGestionarRocosZones = findViewById(R.id.btnGestionarRocosZones);
+        btnGestionarRocosZones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // startActivity(new Intent(MainActivity.this, AfegirRocoZona.class));
-                Toast.makeText(MainActivity.this, "Afegir/Editar Roco/Zones", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, GestioRocosZones.class));
 
             }
         });
