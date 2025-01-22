@@ -539,9 +539,9 @@ public class MainActivity extends AppCompatActivity  {
                 } else {
                     ifIntent = 0;
                 }
-                resetInput();
-                insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, descansos);
 
+                insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, descansos);
+                resetInput();
             }
         });
     }
