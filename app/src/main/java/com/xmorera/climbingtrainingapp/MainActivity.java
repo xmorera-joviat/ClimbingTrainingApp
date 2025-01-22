@@ -427,11 +427,11 @@ public class MainActivity extends AppCompatActivity  {
                         textView.setText("No hi ha zones definides \nper aquest rocòdrom");
                         textView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange)); // Asegúrate de que el color esté definido
 
-                        // Crear un Button dinámicamente
+                        // Crear un Button dinámicament
                         Button btnAfegirZona = new Button(MainActivity.this);
                         GridLayout.LayoutParams buttonParams = new GridLayout.LayoutParams();
                         buttonParams.setGravity(Gravity.CENTER); // Centrar el Button
-                        buttonParams.setMargins(30, 8, 0, 0); // Margen superior para separar del TextView
+                        buttonParams.setMargins(30, 8, 0, 0); // Marge superior para separar del TextView
                         btnAfegirZona.setLayoutParams(buttonParams);
                         btnAfegirZona.setText("Afegir");
 
@@ -539,22 +539,19 @@ public class MainActivity extends AppCompatActivity  {
                 } else {
                     ifIntent = 0;
                 }
-
-                insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, descansos);
                 resetInput();
+                insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, descansos);
+
             }
         });
     }
-
-
-
 
     /**
      * insertData
      *
      * insereix les dades a la base de dades i carrega les dades del dia actual
      *
-     * @param -String date, String via, int zona, int intent
+     * @param -String date, String dificultat, int zona, int intent i int descansos
      * */
     private void insertData(String date, String dificultat, int zona, int ifIntent, int descansos){
         boolean insertSuccess = databaseHelper.insertDataCD(date, dificultat, zona, ifIntent, descansos);
@@ -660,7 +657,6 @@ public class MainActivity extends AppCompatActivity  {
                 databaseHelper.updateRanking(idRanking, dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
             } else {
                 databaseHelper.deleteRanking(idRanking);
-                Toast.makeText(this, "Ranking eliminat", Toast.LENGTH_SHORT).show();
             }
         } else {
             //si no hi ha dades les afegim
@@ -675,8 +671,6 @@ public class MainActivity extends AppCompatActivity  {
         viesDiaTextView.setText(String.valueOf(viesDia));
         metresDiaTextView.setText(String.valueOf(metresDia));
         mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioDia/ viesDia));
-
-
 
 
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies

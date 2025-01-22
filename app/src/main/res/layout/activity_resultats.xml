@@ -73,27 +73,12 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnScores"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/scoring50"
-                tools:ignore="SpeakableTextPresentCheck" />
-
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/fragment_scores"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:orientation="horizontal">
 
             <Button
@@ -101,21 +86,54 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Setmana"/>
+                android:text="1s"
+                android:textAllCaps="false"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <Button
                 android:id="@+id/btnMensual"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Mes"/>
+                android:text="1m"
+                android:textAllCaps="false"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnTrimestral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="3m"
+                android:textAllCaps="false"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnSemestral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="6m"
+                android:textAllCaps="false"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <Button
                 android:id="@+id/btnAnual"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Any"/>
+                android:text="1a"
+                android:textAllCaps="false"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tot"
+                android:textAllCaps="false"
+                tools:ignore="TouchTargetSizeCheck" />
 
 
         </LinearLayout>
@@ -125,7 +143,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="4dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -162,6 +180,65 @@
                 android:textStyle="bold"
                 android:gravity="center"
                 android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutOrdenar"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnOrdData"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@null"
+                android:drawableTop="@drawable/up_and_down_arrow20"
+                android:gravity="center"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnOrdVies"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/up_and_down_arrow20"
+                android:gravity="center"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnOrdMetres"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/up_and_down_arrow20"
+                android:gravity="center"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnOrdPunts"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/up_and_down_arrow20"
+
+                android:gravity="center"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnOrdMitjana"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/up_and_down_arrow20"
+                android:gravity="center"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         </LinearLayout>
 

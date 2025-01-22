@@ -3,16 +3,10 @@ package com.xmorera.climbingtrainingapp.resultats;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,15 +41,16 @@ import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
-import com.xmorera.climbingtrainingapp.utils.Preferencies;
 
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
-    private Button btnScores;
 
     private Button btnSetmanal;
     private Button btnMensual;
+    private Button btnTrimestral;
+    private Button btnSemestral;
     private Button btnAnual;
+    private Button btnTotal;
 
 
     private LinearLayout layoutAltres;
@@ -90,20 +84,20 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         });
         layoutAltres = findViewById(R.id.layoutAltres);
 
-        btnScores = findViewById(R.id.btnScores);
-        btnScores.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                displayScoresFragment();
-            }
-        });
+
 
         btnSetmanal = findViewById(R.id.btnSetmanal);
         btnMensual = findViewById(R.id.btnMensual);
+        btnTrimestral = findViewById(R.id.btnTrimestral);
+        btnSemestral = findViewById(R.id.btnSemestral);
         btnAnual = findViewById(R.id.btnAnual);
+        btnTotal = findViewById(R.id.btnTotal);
         btnSetmanal.setOnClickListener(this);
         btnMensual.setOnClickListener(this);
+        btnTrimestral.setOnClickListener(this);
+        btnSemestral.setOnClickListener(this);
         btnAnual.setOnClickListener(this);
+        btnTotal.setOnClickListener(this);
 
         startDateEditText = findViewById(R.id.start_date);
         endDateEditText = findViewById(R.id.end_date);
@@ -156,22 +150,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
     }
 
-    /**
-     * displayScoresFragment
-     */
-    private void displayScoresFragment() {
-        ScoresFragment scoresFragment = new ScoresFragment();
-        scoresFragment.show(getSupportFragmentManager(), "scoresFragment");
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-// Set custom animations
-        transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-
-// Replace or add the fragment
-        transaction.replace(R.id.fragment_scores, new ScoresFragment());
-        transaction.addToBackStack(null); // Optional: to allow back navigation
-        transaction.commit();
-    }
 
     @Override
     public void onClick(View view) {
@@ -180,12 +159,20 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         if (view.getId() == R.id.btnSetmanal) {
             daysToSubstract = -7;
         }
-
         if (view.getId() == R.id.btnMensual) {
             daysToSubstract = -30;
         }
+        if (view.getId() == R.id.btnTrimestral) {
+            daysToSubstract = -90;
+        }
+        if (view.getId() == R.id.btnSemestral) {
+            daysToSubstract = -180;
+        }
         if (view.getId() == R.id.btnAnual) {
             daysToSubstract = -365;
+        }
+        if (view.getId() == R.id.btnTotal) {
+            daysToSubstract = -10000;
         }
 
         updateDate(startDateEditText, daysToSubstract);
