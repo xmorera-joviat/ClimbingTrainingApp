@@ -3,9 +3,11 @@ package com.xmorera.climbingtrainingapp.resultats;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +45,7 @@ import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
+import com.xmorera.climbingtrainingapp.utils.Utilitats;
 
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
@@ -53,6 +56,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     private Button btnSemestral;
     private Button btnAnual;
     private Button btnTotal;
+
 
 
     private LinearLayout layoutAltres;
@@ -107,6 +111,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         btnSemestral = findViewById(R.id.btnSemestral);
         btnAnual = findViewById(R.id.btnAnual);
         btnTotal = findViewById(R.id.btnTotal);
+
         btnSetmanal.setOnClickListener(this);
         btnMensual.setOnClickListener(this);
         btnTrimestral.setOnClickListener(this);
@@ -150,10 +155,10 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
         // Inicialitzar la data final amb la data actual i la inicial 7 dies abans
 
-        //updateDate(startDateEditText, -7);
-        //calendar.setTime(new Date()); //reset a data actual
+
+        updateDate(startDateEditText, 0);
         updateDate(endDateEditText, 0);
-        //performQuery();
+        performQuery();
 
         //creació de la custom marker view per veure la data en fer click en un node de la gràfica
         CustomMarkerView markerView = new CustomMarkerView(this, R.layout.custom_marker_view);
@@ -238,6 +243,10 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     private void performQuery() {
         String startDate = startDateEditText.getText().toString();
         String endDate = endDateEditText.getText().toString();
+
+        DateConverter dates = new DateConverter();
+        int dies = dates.getDaysBetweenDates(startDate, endDate);
+        updateTextColorBtnPeriodes(-dies);
 
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
             // Clear previous results
@@ -420,6 +429,55 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                 break;
         }
         resultatsDataAdapter.notifyDataSetChanged();
+    }
+
+    private boolean isDarkTheme(){
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    private void resetTextColorBtnPeriodes(){
+        int textColor;
+
+        if(isDarkTheme()){
+            textColor= ContextCompat.getColor(this, R.color.white);
+        }
+        else{
+            textColor= ContextCompat.getColor(this, R.color.black);
+        }
+        btnSetmanal.setTextColor(textColor);
+        btnMensual.setTextColor(textColor);
+        btnTrimestral.setTextColor(textColor);
+        btnSemestral.setTextColor(textColor);
+        btnAnual.setTextColor(textColor);
+        btnTotal.setTextColor(textColor);
+    }
+
+    private void updateTextColorBtnPeriodes(int initialDateOffset){
+        resetTextColorBtnPeriodes();
+        switch (initialDateOffset){
+            case -7:
+                btnSetmanal.setTextColor(ContextCompat.getColor(this, R.color.orange));
+                break;
+            case -30:
+                btnMensual.setTextColor(ContextCompat.getColor(this, R.color.orange));
+                break;
+            case -90:
+                btnTrimestral.setTextColor(ContextCompat.getColor(this, R.color.orange));
+                break;
+            case -180:
+                btnSemestral.setTextColor(ContextCompat.getColor(this, R.color.orange));
+                break;
+            case -365:
+                btnAnual.setTextColor(ContextCompat.getColor(this, R.color.orange));
+                break;
+            case -10000:
+                btnTotal.setTextColor(ContextCompat.getColor(this, R.color.orange));
+                break;
+            default:
+                resetTextColorBtnPeriodes();
+                break;
+        }
     }
 
 

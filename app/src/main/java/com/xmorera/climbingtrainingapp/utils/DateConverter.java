@@ -2,6 +2,10 @@ package com.xmorera.climbingtrainingapp.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -49,5 +53,33 @@ public class DateConverter {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static int getDaysBetweenDates(String date1, String date2) {
+        // Convert the custom date format to ISO format
+        date1 = convertCustomToISO(date1);
+        date2 = convertCustomToISO(date2);
+
+        SimpleDateFormat isoDateFormat = new SimpleDateFormat(ISO_DATE_FORMAT);
+        try {
+            // Parse the ISO formatted strings into Date objects
+            Date startDate = isoDateFormat.parse(date1);
+            Date endDate = isoDateFormat.parse(date2);
+
+            // Use Calendar to calculate the difference in days
+            Calendar startCalendar = Calendar.getInstance();
+            Calendar endCalendar = Calendar.getInstance();
+            startCalendar.setTime(startDate);
+            endCalendar.setTime(endDate);
+
+            // Calculate the difference in milliseconds
+            long diffInMillis = endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis();
+
+            // Convert milliseconds to days
+            return (int) (diffInMillis / (1000 * 60 * 60 * 24));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0; // or throw an exception, or handle it as needed
+        }
     }
 }
