@@ -26,7 +26,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.MarkerView;
@@ -57,6 +59,19 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
     private EditText startDateEditText;
     private EditText endDateEditText;
+
+    private Button btnOrdData;
+    private Button btnOrdVies;
+    private Button btnOrdMetres;
+    private Button btnOrdPunts;
+    private Button btnOrdMitjana;
+
+    //variables per mantenir l'estat d'ordenació
+    private boolean isDataAscending = true;
+    private boolean isViesAscending = true;
+    private boolean isMetresAscending = true;
+    private boolean isPuntsAscending = true;
+    private boolean isMitjanaAscending = true;
 
     private RecyclerView resultatsRecyclerView;
     private ResultatsDataAdapter resultatsDataAdapter;
@@ -109,6 +124,17 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
         startDateEditText.setOnClickListener(v -> showDatePicker(startDateEditText));
         endDateEditText.setOnClickListener(v -> showDatePicker(endDateEditText));
+
+        btnOrdData = findViewById(R.id.btnOrdData);
+        btnOrdData.setOnClickListener(v -> sortResults("data"));
+        btnOrdVies = findViewById(R.id.btnOrdVies);
+        btnOrdVies.setOnClickListener(v -> sortResults("vies"));
+        btnOrdMetres = findViewById(R.id.btnOrdMetres);
+        btnOrdMetres.setOnClickListener(v -> sortResults("metres"));
+        btnOrdPunts = findViewById(R.id.btnOrdPunts);
+        btnOrdPunts.setOnClickListener(v -> sortResults("punts"));
+        btnOrdMitjana = findViewById(R.id.btnOrdMitjana);
+        btnOrdMitjana.setOnClickListener(v -> sortResults("mitjana"));
 
         resultatsRecyclerView = findViewById(R.id.resultats_view);
         resultatsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -334,7 +360,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             }
             // Adjust this line based on your chart's data order
             //return resultatsDataList.get(resultatsDataList.size() - 1 - index).getDate(); // For reverse order
-             return resultatsDataList.get(index).getDate(); // For original order
+            return resultatsDataList.get(index).getDate(); // For original order
         }
 
         @Override
@@ -349,4 +375,52 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             return MPPointF.getInstance(offsetX, offsetY); // Return an MPPointF instance
         }
     }
+
+    private void sortResults(String criteria){
+        switch (criteria){
+            case "data":
+                if (isDataAscending) {
+                    resultatsDataList.sort((r1, r2) -> r1.getDate().compareTo(r2.getDate()));
+                } else{
+                    resultatsDataList.sort((r1, r2) -> r2.getDate().compareTo(r1.getDate()));
+                }
+                isDataAscending = !isDataAscending;
+                break;
+            case "vies":
+                if (isViesAscending) {
+                    resultatsDataList.sort((r1, r2) -> r1.getVies().compareTo(r2.getVies()));
+                } else{
+                    resultatsDataList.sort((r1, r2) -> r2.getVies().compareTo(r1.getVies()));
+                }
+                isViesAscending = !isViesAscending;
+                break;
+            case "metres":
+                if (isMetresAscending) {
+                    resultatsDataList.sort((r1, r2) -> r1.getMetres().compareTo(r2.getMetres()));
+                } else{
+                    resultatsDataList.sort((r1, r2) -> r2.getMetres().compareTo(r1.getMetres()));
+                }
+                isMetresAscending = !isMetresAscending;
+                break;
+            case "punts":
+                if (isPuntsAscending) {
+                    resultatsDataList.sort((r1, r2) -> r1.getPuntuacio().compareTo(r2.getPuntuacio()));
+                }else {
+                    resultatsDataList.sort((r1, r2) -> r2.getPuntuacio().compareTo(r1.getPuntuacio()));
+                }
+                isPuntsAscending= !isPuntsAscending;
+                break;
+            case "mitjana":
+                if (isMitjanaAscending) {
+                    resultatsDataList.sort((r1, r2) -> r1.getMitjana().compareTo(r2.getMitjana()));
+                }else {
+                    resultatsDataList.sort((r1, r2) -> r2.getMitjana().compareTo(r1.getMitjana()));
+                }
+                isMitjanaAscending= !isMitjanaAscending;
+                break;
+        }
+        resultatsDataAdapter.notifyDataSetChanged();
+    }
+
+
 }
