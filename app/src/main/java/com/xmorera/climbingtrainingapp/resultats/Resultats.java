@@ -57,8 +57,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     private Button btnAnual;
     private Button btnTotal;
 
-
-
     private LinearLayout layoutAltres;
 
     private EditText startDateEditText;
@@ -102,8 +100,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             return insets;
         });
         layoutAltres = findViewById(R.id.layoutAltres);
-
-
 
         btnSetmanal = findViewById(R.id.btnSetmanal);
         btnMensual = findViewById(R.id.btnMensual);
@@ -153,11 +149,12 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
 
         chartView = findViewById(R.id.chart_view);
 
-        // Inicialitzar la data final amb la data actual i la inicial 7 dies abans
+        // Estableix la data inicial a 7 dies abans de la data actual
+        calendar.setTime(new Date()); // Estableix la data actual
+        updateDate(startDateEditText, -7); // Data inicial: 7 dies abans
+        updateDate(endDateEditText, 7); // Data final: data actual
 
-
-        updateDate(startDateEditText, 0);
-        updateDate(endDateEditText, 0);
+        // Realitza la consulta inicial
         performQuery();
 
         //creació de la custom marker view per veure la data en fer click en un node de la gràfica

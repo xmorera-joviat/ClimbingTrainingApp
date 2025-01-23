@@ -29,7 +29,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xmorera.climbingtrainingapp.RocodromsZones.GestioRocosZones;
+import com.xmorera.climbingtrainingapp.RocodromsZones.NouRocodrom;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingData;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingDataAdapter;
 
@@ -53,37 +53,33 @@ import java.util.List;
  * */
 public class MainActivity extends AppCompatActivity  {
 
-    TextView dateTextView; //mostrar la data i mostrar la via seleccionada
-    Button diaAnterior, diaPosterior;
-    Button btnAvui;
-    Button btnResultats;
-    Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    LinearLayout entradaLayout;
-    LinearLayout descansosLayout;
-    Spinner rocodromSpinner;
-    Button btnGestionarRocosZones;
-    HashMap<String, Integer> rocodromsHashMap;
-    GridLayout zonesGrid;
-    Spinner descansosSpinner;
-    Button btnIV, btnIVPlus,btnV, btnVPlus;
-    Button btn6a, btn6aPlus,btn6b, btn6bPlus,btn6c, btn6cPlus;
-    Button btn7a, btn7aPlus,btn7b, btn7bPlus,btn7c, btn7cPlus;
-    Button btn8a, btn8aPlus,btn8b, btn8bPlus,btn8c, btn8cPlus;
-    CheckBox chkIntent;
+    // Elements de la interfície d'usuari
+    private TextView dateTextView; //mostrar la data i mostrar la via seleccionada
+    private Button diaAnterior, diaPosterior, btnAvui, btnResultats, btnNouRocodrom;
+    private Spinner rocodromSpinner, descansosSpinner;
+    private GridLayout zonesGrid;
+    private LinearLayout entradaLayout, descansosLayout;
+    private Button btnIV, btnIVPlus,btnV, btnVPlus;
+    private Button btn6a, btn6aPlus,btn6b, btn6bPlus,btn6c, btn6cPlus;
+    private Button btn7a, btn7aPlus,btn7b, btn7bPlus,btn7c, btn7cPlus;
+    private Button btn8a, btn8aPlus,btn8b, btn8bPlus,btn8c, btn8cPlus;
+    private RecyclerView recyclerView;
+    private CheckBox chkIntent;
 
-    DatabaseHelper databaseHelper;//auxiliar de la base de dades
+     // Variables per gestionar la data
+    private Calendar calendar = Calendar.getInstance();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private String avui;
 
-    RecyclerView recyclerView;
-    ClimbingDataAdapter climbingDataAdapter;
-    List<ClimbingData> climbingDataList;
+    // variables per a gestionar la selecció de zones i dificultats
+    private HashMap<String, Integer> rocodromsHashMap;
+    private List<Button> botonsZona = new ArrayList<>();//llista per guardar els botons de zona que es generen en temps d'execució
 
-    Puntuacio puntuacio;
-
-    TextView viesDiaTextView;
-    TextView metresDiaTextView;
-    TextView mitjanaDiaTextView;
-    TextView puntuacioDiaTextView;
+    // variables per gestionar les dades de l'escalaa
+    private DatabaseHelper databaseHelper;
+    private ClimbingDataAdapter climbingDataAdapter;
+    private List<ClimbingData> climbingDataList;
+    private Puntuacio puntuacio;
 
     // variables per al càlcul diari
     int viesDia;
@@ -91,109 +87,126 @@ public class MainActivity extends AppCompatActivity  {
     double puntuacioDia;
 
     //variables per a entrar les dades a la base de dades
-    int idZona;
-    String nomZona;
-    String dificultat;
-    int alturaZona;
-    int esCorda;
-    int ifIntent;
-    int descansos;
-    int rocodromZona;
+    private int idZona, alturaZona, esCorda, ifIntent, descansos, rocodromZona;
+    private String nomZona, dificultat;
 
-    String avui;
+    // elements per mostrar els resultat diaris
+    private TextView viesDiaTextView, metresDiaTextView, mitjanaDiaTextView, puntuacioDiaTextView;
 
-    //llista per guardar els botons de zona que es generen en temps d'execució
-    List<Button> botonsZona = new ArrayList<>();
-
-
+    // variable per controlar que quan es torna a l'inici es mostri la data actual
+    boolean firstTime = true;
 
     /**
      * onCreate
      *
-     * mapeig dels elements de la pantalla a variables,
+     * Mapeig dels elements de la pantalla a variables,
      * inicialitza els listeners dels botons de dificultat, zona i intent,
-     * insereix la data actual al TextView de la data
-     * implementa el listener de la data per selecionar una data qualsevol
-     * carrega i mostra en un recyclerView les dades de la base de dades pel dia que indica el TextView
-     * */
+     * insereix la data actual al TextView de la data,
+     * implementa el listener de la data per seleccionar una data qualsevol,
+     * carrega i mostra en un recyclerView les dades de la base de dades pel dia que indica el TextView.
+     */
     @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
+        setContentView(R.layout.activity_main);
+
+        // Configuració de la interfície d'usuari
+        configurarUI();
+
+        // Inicialització de la data actual
+        inicialitzarDataActual();
+
+        // Configuració dels listeners
+        configurarListeners();
+
+        // Inicialització del RecyclerView
+        inicialitzarRecyclerView();
+
+        // Carregar les dades del dia actual
+        loadDayData();
+    }
+
+    /**
+     * Configura la interfície d'usuari mapejant els elements a variables.
+     */
+    private void configurarUI() {
         dateTextView = findViewById(R.id.dateTextView);
-        //data actual, la posem a l'inici de l'aplicació
+        diaAnterior = findViewById(R.id.diaAnterior);
+        diaPosterior = findViewById(R.id.diaPosterior);
+        btnAvui = findViewById(R.id.btnAvui);
+        btnResultats = findViewById(R.id.btnResultats);
+        zonesGrid = findViewById(R.id.zonesGrid);
+        rocodromSpinner = findViewById(R.id.rocodromSpinner);
+        btnNouRocodrom = findViewById(R.id.btnNouRocodrom);
+        entradaLayout = findViewById(R.id.entradaLayout);
+        descansosLayout = findViewById(R.id.descansosLayout);
+        descansosSpinner = findViewById(R.id.descansosSpinner);
+        recyclerView = findViewById(R.id.recyclerView);
+        viesDiaTextView = findViewById(R.id.viesDiaTextView);
+        metresDiaTextView = findViewById(R.id.metresDiaTextView);
+        mitjanaDiaTextView = findViewById(R.id.mitjanaDiaTextView);
+        puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
+
+        // Configuració de la visibilitat dels layouts
+        entradaLayout.setVisibility(View.GONE);
+        descansosLayout.setVisibility(View.GONE);
+    }
+
+    /**
+     * Inicialitza la data actual i actualitza el TextView corresponent.
+     */
+    private void inicialitzarDataActual() {
         updateDateTextView();
         avui = dateTextView.getText().toString();
+    }
 
-        // selecció d'una data mitjançant el calendari en pantalla
-        dateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePicker();
-            }
-        });
-        diaAnterior = findViewById(R.id.diaAnterior);
-        diaAnterior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calendar.add(Calendar.DAY_OF_MONTH, -1);
-                updateDateTextView();
-                loadDayData();
-            }
-        });
-        diaPosterior = findViewById(R.id.diaPosterior);
-        diaPosterior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calendar.add(Calendar.DAY_OF_MONTH, 1);
-                updateDateTextView();
-                loadDayData();
-            }
+    /**
+     * Configura els listeners per als botons i altres elements interactius.
+     */
+    private void configurarListeners() {
+        dateTextView.setOnClickListener(v -> showDatePicker());
+
+        diaAnterior.setOnClickListener(view -> {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            actualitzarData();
         });
 
-        btnAvui = findViewById(R.id.btnAvui);
-        btnAvui.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dateTextView.setText(avui);
-                loadDayData();
-            }
+        diaPosterior.setOnClickListener(view -> {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+            actualitzarData();
         });
 
-        btnResultats = findViewById(R.id.btnResultats);
-        btnResultats.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, Resultats.class));
-            }
-        });
-        zonesGrid = findViewById(R.id.zonesGrid);
-
-        rocodromSpinner = findViewById(R.id.rocodromSpinner);
-
-        btnGestionarRocosZones = findViewById(R.id.btnGestionarRocosZones);
-        btnGestionarRocosZones.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, GestioRocosZones.class));
-
-            }
+        btnAvui.setOnClickListener(view -> {
+            dateTextView.setText(avui);
+            loadDayData();
         });
 
-        entradaLayout = findViewById(R.id.entradaLayout);
-        entradaLayout.setVisibility(View.GONE);
-        descansosLayout = findViewById(R.id.descansosLayout);
-        descansosLayout.setVisibility(View.GONE);
+        btnResultats.setOnClickListener(view ->
+                startActivity(new Intent(MainActivity.this, Resultats.class))
+        );
 
-        descansosSpinner = findViewById(R.id.descansosSpinner);
+        btnNouRocodrom.setOnClickListener(view ->
+                startActivity(new Intent(MainActivity.this, NouRocodrom.class))
+        );
+
+        configurarSpinnerDescansos();
+        configurarBotonsDificultat();
+    }
+
+    /**
+     * Actualitza el TextView de la data i carrega les dades del dia.
+     */
+    private void actualitzarData() {
+        updateDateTextView();
+        loadDayData();
+    }
+
+    /**
+     * Configura el Spinner per seleccionar el nombre de descansos.
+     */
+    private void configurarSpinnerDescansos() {
         String[] descansos = {"0", "1", "2", "3", "4", "5"};
         ArrayAdapter<String> adapterDescansos = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, descansos);
         adapterDescansos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -205,88 +218,76 @@ public class MainActivity extends AppCompatActivity  {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-
-        //mapeig de botons
-        {
-            btnIV = findViewById(R.id.btnIV);
-            btnIVPlus = findViewById(R.id.btnIVPlus);
-            btnV = findViewById(R.id.btnV);
-            btnVPlus = findViewById(R.id.btnVPlus);
-            btn6a = findViewById(R.id.btn6a);
-            btn6aPlus = findViewById(R.id.btn6aPlus);
-            btn6b = findViewById(R.id.btn6b);
-            btn6bPlus = findViewById(R.id.btn6bPlus);
-            btn6c = findViewById(R.id.btn6c);
-            btn6cPlus = findViewById(R.id.btn6cPlus);
-            btn7a = findViewById(R.id.btn7a);
-            btn7aPlus = findViewById(R.id.btn7aPlus);
-            btn7b = findViewById(R.id.btn7b);
-            btn7bPlus = findViewById(R.id.btn7bPlus);
-            btn7c = findViewById(R.id.btn7c);
-            btn7cPlus = findViewById(R.id.btn7cPlus);
-            btn8a = findViewById(R.id.btn8a);
-            btn8aPlus = findViewById(R.id.btn8aPlus);
-            btn8b = findViewById(R.id.btn8b);
-            btn8bPlus = findViewById(R.id.btn8bPlus);
-            btn8c = findViewById(R.id.btn8c);
-            btn8cPlus = findViewById(R.id.btn8cPlus);
-
-            //establiment dels listeners pels botons de via
-            setDificultatListener(btnIV);
-            setDificultatListener(btnIVPlus);
-            setDificultatListener(btnV);
-            setDificultatListener(btnVPlus);
-            setDificultatListener(btn6a);
-            setDificultatListener(btn6aPlus);
-            setDificultatListener(btn6b);
-            setDificultatListener(btn6bPlus);
-            setDificultatListener(btn6c);
-            setDificultatListener(btn6cPlus);
-            setDificultatListener(btn7a);
-            setDificultatListener(btn7aPlus);
-            setDificultatListener(btn7b);
-            setDificultatListener(btn7bPlus);
-            setDificultatListener(btn7c);
-            setDificultatListener(btn7cPlus);
-            setDificultatListener(btn8a);
-            setDificultatListener(btn8aPlus);
-            setDificultatListener(btn8b);
-            setDificultatListener(btn8bPlus);
-            setDificultatListener(btn8c);
-            setDificultatListener(btn8cPlus);
-
-            chkIntent = findViewById(R.id.chkIntent);
-
-
-            //listeners pels botons de dificultat per entrar les dades
-
-        }
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        climbingDataList = new ArrayList<>();
-        climbingDataAdapter = new ClimbingDataAdapter(this, climbingDataList);
-        recyclerView.setAdapter(climbingDataAdapter);
-
-        databaseHelper = new DatabaseHelper(this);
-
-        viesDiaTextView = findViewById(R.id.viesDiaTextView);
-        metresDiaTextView = findViewById(R.id.metresDiaTextView);
-        mitjanaDiaTextView = findViewById(R.id.mitjanaDiaTextView);
-        puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
-
-        puntuacio = new Puntuacio();
-
-        loadDayData(); //mostrar totes les dades de la bd
     }
 
     /**
-     * visibilitatGraus
+     * Configura els botons de dificultat.
+     */
+    private void configurarBotonsDificultat() {
+        // Mapeig de botons de dificultat
+        btnIV = findViewById(R.id.btnIV);
+        btnIVPlus = findViewById(R.id.btnIVPlus);
+        btnV = findViewById(R.id.btnV);
+        btnVPlus = findViewById(R.id.btnVPlus);
+        btn6a = findViewById(R.id.btn6a);
+        btn6aPlus = findViewById(R.id.btn6aPlus);
+        btn6b = findViewById(R.id.btn6b);
+        btn6bPlus = findViewById(R.id.btn6bPlus);
+        btn6c = findViewById(R.id.btn6c);
+        btn6cPlus = findViewById(R.id.btn6cPlus);
+        btn7a = findViewById(R.id.btn7a);
+        btn7aPlus = findViewById(R.id.btn7aPlus);
+        btn7b = findViewById(R.id.btn7b);
+        btn7bPlus = findViewById(R.id.btn7bPlus);
+        btn7c = findViewById(R.id.btn7c);
+        btn7cPlus = findViewById(R.id.btn7cPlus);
+        btn8a = findViewById(R.id.btn8a);
+        btn8aPlus = findViewById(R.id.btn8aPlus);
+        btn8b = findViewById(R.id.btn8b);
+        btn8bPlus = findViewById(R.id.btn8bPlus);
+        btn8c = findViewById(R.id.btn8c);
+        btn8cPlus = findViewById(R.id.btn8cPlus);
+
+        // Establiment dels listeners pels botons de dificultat
+        setDificultatListener(btnIV);
+        setDificultatListener(btnIVPlus);
+        setDificultatListener(btnV);
+        setDificultatListener(btnVPlus);
+        setDificultatListener(btn6a);
+        setDificultatListener(btn6aPlus);
+        setDificultatListener(btn6b);
+        setDificultatListener(btn6bPlus);
+        setDificultatListener(btn6c);
+        setDificultatListener(btn6cPlus);
+        setDificultatListener(btn7a);
+        setDificultatListener(btn7aPlus);
+        setDificultatListener(btn7b);
+        setDificultatListener(btn7bPlus);
+        setDificultatListener(btn7c);
+        setDificultatListener(btn7cPlus);
+        setDificultatListener(btn8a);
+        setDificultatListener(btn8aPlus);
+        setDificultatListener(btn8b);
+        setDificultatListener(btn8bPlus);
+        setDificultatListener(btn8c);
+        setDificultatListener(btn8cPlus);
+    }
+
+    /**
+     * Inicialitza el RecyclerView per mostrar les dades d'escalada.
+     */
+    private void inicialitzarRecyclerView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        climbingDataList = new ArrayList<>();
+        climbingDataAdapter = new ClimbingDataAdapter(this, climbingDataList);
+        recyclerView.setAdapter(climbingDataAdapter);
+        databaseHelper = new DatabaseHelper(this);
+        puntuacio = new Puntuacio();
+    }
+
+    /**
      * amaga o mostra el panell de dades introduïdes manualment
      * @param 'View.GONE
      * @param 'View.VISIBLE
@@ -295,10 +296,9 @@ public class MainActivity extends AppCompatActivity  {
         entradaLayout.setVisibility(visibilitat);
     }
 
-    boolean firstTime = true;// variable per controlar que quan es torna a l'inici es mostri la data actual
+
+
     /**
-     * onResume
-     *
      * recarrega les dades del  dia actual en el recyclerView
      * */
     @Override

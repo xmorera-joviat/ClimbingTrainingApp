@@ -101,7 +101,7 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <Button
-                android:id="@+id/btnGestionarRocosZones"
+                android:id="@+id/btnNouRocodrom"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
                 android:layout_weight="1"

@@ -231,6 +231,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean getRocodromsByNameAndCity(String nom, String poblacio) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_ROCODROMS + " WHERE " + COL_NOM_ROCO + " = ? AND " + COL_POBLACIO + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{nom, poblacio});
+        return cursor.getCount() > 0;
+    }
+
+
     public Cursor getRocodromById(int idRocodrom) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM "+TABLE_ROCODROMS+" WHERE "+COL_ID_ROCO+" = ?", new String[]{String.valueOf(idRocodrom)});
