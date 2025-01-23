@@ -302,17 +302,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean insertRanking(String dateRanking, double puntsRanking, int viesRanking, int metresRanking){
-        String dateRankingISO = DateConverter.convertCustomToISO(dateRanking);
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DATE_RANKING, dateRankingISO);
-        contentValues.put(COL_PUNTS_RANKING, puntsRanking);
-        contentValues.put(COL_VIES_RANKING, viesRanking);
-        contentValues.put(COL_METRES_RANKING, metresRanking);
-        contentValues.put(COL_MITJANA_RANKING, puntsRanking/viesRanking);
-        long result = db.insert(TABLE_RANKING, null, contentValues);
-        db.close();
-        return result != -1;
+        if (puntsRanking == 0 || viesRanking == 0 || metresRanking == 0){
+            return false;
+        } else {
+            String dateRankingISO = DateConverter.convertCustomToISO(dateRanking);
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COL_DATE_RANKING, dateRankingISO);
+            contentValues.put(COL_PUNTS_RANKING, puntsRanking);
+            contentValues.put(COL_VIES_RANKING, viesRanking);
+            contentValues.put(COL_METRES_RANKING, metresRanking);
+            contentValues.put(COL_MITJANA_RANKING, puntsRanking / viesRanking);
+            long result = db.insert(TABLE_RANKING, null, contentValues);
+            db.close();
+            return result != -1;
+        }
     }
 
     public boolean updateRanking(int id, String dateRanking, double puntsRanking, int viesRanking, int metresRanking) {
