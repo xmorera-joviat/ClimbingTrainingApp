@@ -15,6 +15,9 @@
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".RocodromsZones.Rocodroms"
+            android:exported="false" />
+        <activity
             android:name=".RocodromsZones.NouRocodrom"
             android:exported="false" />
         <activity

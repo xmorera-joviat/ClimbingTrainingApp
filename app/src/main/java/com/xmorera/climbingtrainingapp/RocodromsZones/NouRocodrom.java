@@ -1,6 +1,7 @@
 package com.xmorera.climbingtrainingapp.RocodromsZones;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -49,8 +50,10 @@ public class NouRocodrom extends AppCompatActivity {
         btnGuardarCrearZones.setOnClickListener(v -> {
             //comprovacions , que estiguin tots els camps plens i que no existeixi
             if(insertRocoDatabase()) {
-                // crear zones
-                Toast.makeText(this, "crear zones", Toast.LENGTH_SHORT).show();
+                //obtenir l'id del rocodrom creat i adjuntar-lo a l'intent
+                Intent intent = new Intent(this, Rocodroms.class);
+                intent.putExtra("idRoco", db.getLastRocodromId());
+                startActivity(intent);
             }
 
         });

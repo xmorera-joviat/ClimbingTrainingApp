@@ -265,6 +265,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result > 0;
     }
 
+    public int getLastRocodromId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + COL_ID_ROCO + ") FROM " + TABLE_ROCODROMS, null);
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+        return -1;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //////  CRUD ZONES  ////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////

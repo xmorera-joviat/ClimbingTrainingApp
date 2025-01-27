@@ -8,6 +8,8 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,16 +22,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xmorera.climbingtrainingapp.RocodromsZones.NouRocodrom;
+import com.xmorera.climbingtrainingapp.RocodromsZones.Rocodroms;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingData;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingDataAdapter;
 
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity  {
 
     // Elements de la interfície d'usuari
     private TextView dateTextView; //mostrar la data i mostrar la via seleccionada
-    private Button diaAnterior, diaPosterior, btnAvui, btnResultats, btnNouRocodrom;
+    private Button diaAnterior, diaPosterior, btnAvui, btnResultats;
     private Spinner rocodromSpinner, descansosSpinner;
     private GridLayout zonesGrid;
     private LinearLayout entradaLayout, descansosLayout;
@@ -65,6 +64,8 @@ public class MainActivity extends AppCompatActivity  {
     private Button btn8a, btn8aPlus,btn8b, btn8bPlus,btn8c, btn8cPlus;
     private RecyclerView recyclerView;
     private CheckBox chkIntent;
+
+    private MenuItem menu_rocodroms;
 
      // Variables per gestionar la data
     private Calendar calendar = Calendar.getInstance();
@@ -139,7 +140,6 @@ public class MainActivity extends AppCompatActivity  {
         btnResultats = findViewById(R.id.btnResultats);
         zonesGrid = findViewById(R.id.zonesGrid);
         rocodromSpinner = findViewById(R.id.rocodromSpinner);
-        btnNouRocodrom = findViewById(R.id.btnNouRocodrom);
         entradaLayout = findViewById(R.id.entradaLayout);
         descansosLayout = findViewById(R.id.descansosLayout);
         descansosSpinner = findViewById(R.id.descansosSpinner);
@@ -152,6 +152,10 @@ public class MainActivity extends AppCompatActivity  {
         // Configuració de la visibilitat dels layouts
         entradaLayout.setVisibility(View.GONE);
         descansosLayout.setVisibility(View.GONE);
+
+        // mapeig dels menús
+        menu_rocodroms = findViewById(R.id.menu_rocodroms);
+
     }
 
     /**
@@ -185,10 +189,6 @@ public class MainActivity extends AppCompatActivity  {
 
         btnResultats.setOnClickListener(view ->
                 startActivity(new Intent(MainActivity.this, Resultats.class))
-        );
-
-        btnNouRocodrom.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, NouRocodrom.class))
         );
 
         configurarSpinnerDescansos();
@@ -296,8 +296,6 @@ public class MainActivity extends AppCompatActivity  {
         entradaLayout.setVisibility(visibilitat);
     }
 
-
-
     /**
      * recarrega les dades del  dia actual en el recyclerView
      * */
@@ -356,8 +354,7 @@ public class MainActivity extends AppCompatActivity  {
                 editor.apply();
 
                 //generar les zones del rocòdrom seleccionat
-                DatabaseHelper databaseHelper2 = new DatabaseHelper(MainActivity.this);
-                Cursor cursor2 = databaseHelper2.getZonesByRocodrom(rocodromsHashMap.get(adapterView.getItemAtPosition(posicio))); //recuperem les zones del rocodrom seleccionat per id guardada a posicio
+                Cursor cursor2 = databaseHelper.getZonesByRocodrom(rocodromsHashMap.get(adapterView.getItemAtPosition(posicio))); //recuperem les zones del rocodrom seleccionat per id guardada a posicio
                 zonesGrid.removeAllViews(); //buidar GridLayout zonesGrid
                 if (cursor2 != null) {
                     if (cursor2.moveToFirst()) {
@@ -421,30 +418,24 @@ public class MainActivity extends AppCompatActivity  {
                         TextView textView = new TextView(MainActivity.this);
                         GridLayout.LayoutParams textParams = new GridLayout.LayoutParams();
                         textParams.setGravity(Gravity.CENTER); // Centrar el TextView
-                        textParams.setMargins(20, 0, 0, 0); // Margen superior para separar del TextView
+                        textParams.setMargins(20, 0, 0, 0); // Marge superior per separar del TextView
                         textView.setLayoutParams(textParams);
                         textView.setTextSize(18);
-                        textView.setText("No hi ha zones definides \nper aquest rocòdrom");
+                        textView.setText("No hi ha zones definides per aquest rocòdrom");
                         textView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange)); // Asegúrate de que el color esté definido
 
-                        // Crear un Button dinámicament
-                        Button btnAfegirZona = new Button(MainActivity.this);
-                        GridLayout.LayoutParams buttonParams = new GridLayout.LayoutParams();
-                        buttonParams.setGravity(Gravity.CENTER); // Centrar el Button
-                        buttonParams.setMargins(30, 8, 0, 0); // Marge superior para separar del TextView
-                        btnAfegirZona.setLayoutParams(buttonParams);
-                        btnAfegirZona.setText("Afegir");
-
-                        // Establir l'esdeveniment de clic per al botó
-                        btnAfegirZona.setOnClickListener(new View.OnClickListener() {
+                        //afegim un listener per crear zones per aquest rocòdrom
+                        textView.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
-                                // Gestionar el clic del botó
-                                Toast.makeText(MainActivity.this, "Afegir Zona", Toast.LENGTH_SHORT).show();
+                            public void onClick(View view) {
+                                Intent intent = new Intent(MainActivity.this, Rocodroms.class);
+                                //passem l'id del rocòdrom
+                                intent.putExtra("idRoco", rocodromsHashMap.get(adapterView.getItemAtPosition(posicio)));
+                                startActivity(intent);
                             }
                         });
+
                         zonesGrid.addView(textView);
-                        zonesGrid.addView(btnAfegirZona);
                     }
                 }
                 cursor2.close();
@@ -469,27 +460,21 @@ public class MainActivity extends AppCompatActivity  {
      *
      * mostra el menú de la part superiot dreta (tres puntets)
      * */
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    /**
-//     * onOptionsItemSelected
-//     * gestió dels botons de menu
-//     * */
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        // si hi ha més elements s'ha de fer amb switch
-//        if (id == R.id.menu_settings) {
-//            startActivity(new Intent(this, Preferencies.class));
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_rocodroms, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_rocodroms) {
+            startActivity(new Intent(MainActivity.this, Rocodroms.class));
+            return true;
+        }
+        // Si cap ítem coincideix, crida al mètode de la superclasse
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * updateDateTextView

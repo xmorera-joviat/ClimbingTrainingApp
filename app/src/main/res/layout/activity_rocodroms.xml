@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="80dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonAddRocodrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="nou rocodrom"/>
+
+            <Spinner
+                android:id="@+id/spinner_rocodroms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/zonesGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:columnCount="4"
+            android:gravity="center">
+
+        </GridLayout>
+
+
+        <LinearLayout
+            android:id="@+id/zonesLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Afegir zona"
+                android:textColor="@color/orange"
+                android:textSize="20sp"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/btnEliminarRoco"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:text="Eliminar Rocodrom"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/editZones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp">
+
+            <EditText
+                android:id="@+id/editTextZoneName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nom de la zona"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <EditText
+                android:id="@+id/editTextZoneHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Altura de la zona (en metres)"
+                android:inputType="numberDecimal"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <CheckBox
+                android:id="@+id/checkBoxEsCord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zona de corda"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="25dp">
+
+                <Button
+                    android:id="@+id/btnAfegirZona"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:text="Nova zona"
+                    tools:ignore="SpeakableTextPresentCheck" />
+                <Button
+                    android:id="@+id/btnModificarZona"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:text="Modificar zona"
+                    android:visibility="gone"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+                <Button
+                    android:id="@+id/btnCancelar"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Sortir" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

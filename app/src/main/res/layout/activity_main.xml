@@ -100,19 +100,6 @@
                 android:paddingEnd="20dp"
                 tools:ignore="TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/btnNouRocodrom"
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:drawableTop="@drawable/plus20"
-                android:gravity="bottom"
-                android:layout_marginRight="15dp"
-                android:minWidth="45dp"
-                android:minHeight="45dp"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
         </LinearLayout>
 
         <GridLayout
