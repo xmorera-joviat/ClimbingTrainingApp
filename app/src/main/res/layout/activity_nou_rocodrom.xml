@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -9,100 +9,110 @@
     android:padding="16dp"
     tools:context=".RocodromsZones.NouRocodrom">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nou Rocòdrom"
-        android:textSize="24sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="12dp"/>
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="20dp"
-        android:background="@android:color/darker_gray" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nom del Rocòdrom"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
-
-    <EditText
-        android:id="@+id/editTextNom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Introdueix el nom"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Com Curt"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="16dp"/>
-
-    <EditText
-        android:id="@+id/editTextComCurt"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:hint="NCR"
-        android:maxLength="3"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Població"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="16dp"/>
-
-    <EditText
-        android:id="@+id/editTextPoblacio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Introdueix la població"
-        tools:ignore="TouchTargetSizeCheck" />
-
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnGuardar"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nou Rocòdrom"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp"/>
+
+        <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Guardar"
-            android:layout_marginTop="24dp"/>
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/darker_gray" />
 
-        <Button
-            android:id="@+id/btnGuardarCrearZones"
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom del Rocòdrom"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editTextNom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Guardar i Crear Zones"
-            android:layout_marginTop="24dp"/>
+            android:layout_height="wrap_content"
+            android:hint="Introdueix el nom"
+            tools:ignore="TouchTargetSizeCheck" />
 
-        <Button
-            android:id="@+id/btnCancelar"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Com Curt"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editTextComCurt"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:hint="NCR"
+            android:maxLength="3"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Població"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editTextPoblacio"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="24dp"
-            android:layout_weight="1"
-            android:text="Cancelar"
-            android:textColor="@color/red" />
+            android:layout_height="wrap_content"
+            android:hint="Introdueix la població"
+            tools:ignore="TouchTargetSizeCheck" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Guardar"
+                android:layout_marginTop="24dp"/>
+
+            <Button
+                android:id="@+id/btnGuardarCrearZones"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Guardar i Crear Zones"
+                android:layout_marginTop="24dp"/>
+
+            <Button
+                android:id="@+id/btnCancelar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
+                android:layout_weight="1"
+                android:text="Cancelar"
+                android:textColor="@color/red" />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:orientation="horizontal"/>
 
     </LinearLayout>
 
-
-</LinearLayout>
+</ScrollView>

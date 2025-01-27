@@ -62,17 +62,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.5.4.1&#10;* menú rocòdroms&#10;* nou rocòdrom&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/RocodromsZones/Rocodroms.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_rocodroms.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_rocodroms.xml" afterDir="false" />
+    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.5.5&#10;* correcció errors Rocodroms&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/RocodromsZones/NouRocodrom.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/RocodromsZones/NouRocodrom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_nou_rocodrom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_nou_rocodrom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_rocodroms.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_rocodroms.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +76,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=11412645)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\user\.android\avd\Pixel_6a_API_29.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -163,7 +156,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="_Designer_Tab" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -423,14 +416,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734782226824</updated>
-    </task>
-    <task id="LOCAL-00042" summary="versió 0.3.1&#10;&#10;---&#10;&#10;per fer:&#10;* botons per avançar/retrocedir 1 dia&#10;* mostrar vies, metres, mitjana de grau i puntuació de resultats&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* tancar sessió&#10;&#10;&#10;* possibilitat de gravar vídeos">
-      <option name="closed" value="true" />
-      <created>1736255827989</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1736255827989</updated>
     </task>
     <task id="LOCAL-00043" summary="versió 0.3.1&#10;* botons per avançar/retrocedir 1 dia&#10;---&#10;&#10;per fer:&#10;* mostrar vies, metres, mitjana de grau i puntuació de resultats&#10;* mostrar resultats en un gràfic&#10;* Expotra/Importar&#10;* tancar sessió&#10;&#10;&#10;* possibilitat de gravar vídeos">
       <option name="closed" value="true" />
@@ -816,7 +801,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737663967801</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="versió 0.5.4.1&#10;* menú rocòdroms&#10;* nou rocòdrom&#10;* Gestió de rocodroms i zones&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1738012281000</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1738012281001</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -859,7 +852,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="versió 0.5.0.1.2&#10;* selecció del tema genèric a utilitzar&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.0.2.1&#10;* visibilitat i estil botons de zona&#10;-----&#10;&#10;* reimplementar la lògica dels botons de grau&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.0.3&#10;* preparació de dades per entrar a la BD&#10;-----&#10;&#10;* introducció de dades a la BD&#10;* gestionar penalitzacions intents i reposos&#10;* gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.0.4&#10;* introducció de dades a la BD&#10;* gestionar penalitzacions intents i reposos&#10;&#10;---&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
@@ -884,6 +876,7 @@
     <MESSAGE value="versió 0.5.3.4.1&#10;* en obrir les activitats es veu el gràfic de la data actual&#10;* el botó corresponent (1s, 1m,3m...) queda ressaltat quan està seleccionat&#10;&#10;---&#10;&#10;&#10;&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.3.4.2&#10;* Corregit! error en introduir valors 0 a la taula ranking&#10;&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.4&#10;* nou rocòdrom&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
-    <option name="LAST_COMMIT_MESSAGE" value="versió 0.5.4&#10;* nou rocòdrom&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.5.4.1&#10;* menú rocòdroms&#10;* nou rocòdrom&#10;* Gestió de rocodroms i zones&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <option name="LAST_COMMIT_MESSAGE" value="versió 0.5.4.1&#10;* menú rocòdroms&#10;* nou rocòdrom&#10;* Gestió de rocodroms i zones&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
   </component>
 </project>
