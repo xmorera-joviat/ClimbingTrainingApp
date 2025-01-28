@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity  {
         metresDiaTextView = findViewById(R.id.metresDiaTextView);
         mitjanaDiaTextView = findViewById(R.id.mitjanaDiaTextView);
         puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
+        chkIntent = findViewById(R.id.chkIntent);
 
         // Configuració de la visibilitat dels layouts
         entradaLayout.setVisibility(View.GONE);
