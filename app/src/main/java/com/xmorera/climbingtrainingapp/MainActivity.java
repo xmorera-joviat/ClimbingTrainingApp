@@ -58,10 +58,6 @@ public class MainActivity extends AppCompatActivity  {
     private Spinner rocodromSpinner, descansosSpinner;
     private GridLayout zonesGrid;
     private LinearLayout entradaLayout, descansosLayout;
-    private Button btnIV, btnIVPlus,btnV, btnVPlus;
-    private Button btn6a, btn6aPlus,btn6b, btn6bPlus,btn6c, btn6cPlus;
-    private Button btn7a, btn7aPlus,btn7b, btn7bPlus,btn7c, btn7cPlus;
-    private Button btn8a, btn8aPlus,btn8b, btn8bPlus,btn8c, btn8cPlus;
     private RecyclerView recyclerView;
     private CheckBox chkIntent;
 
@@ -227,53 +223,26 @@ public class MainActivity extends AppCompatActivity  {
      * Configura els botons de dificultat.
      */
     private void configurarBotonsDificultat() {
-        // Mapeig de botons de dificultat
-        btnIV = findViewById(R.id.btnIV);
-        btnIVPlus = findViewById(R.id.btnIVPlus);
-        btnV = findViewById(R.id.btnV);
-        btnVPlus = findViewById(R.id.btnVPlus);
-        btn6a = findViewById(R.id.btn6a);
-        btn6aPlus = findViewById(R.id.btn6aPlus);
-        btn6b = findViewById(R.id.btn6b);
-        btn6bPlus = findViewById(R.id.btn6bPlus);
-        btn6c = findViewById(R.id.btn6c);
-        btn6cPlus = findViewById(R.id.btn6cPlus);
-        btn7a = findViewById(R.id.btn7a);
-        btn7aPlus = findViewById(R.id.btn7aPlus);
-        btn7b = findViewById(R.id.btn7b);
-        btn7bPlus = findViewById(R.id.btn7bPlus);
-        btn7c = findViewById(R.id.btn7c);
-        btn7cPlus = findViewById(R.id.btn7cPlus);
-        btn8a = findViewById(R.id.btn8a);
-        btn8aPlus = findViewById(R.id.btn8aPlus);
-        btn8b = findViewById(R.id.btn8b);
-        btn8bPlus = findViewById(R.id.btn8bPlus);
-        btn8c = findViewById(R.id.btn8c);
-        btn8cPlus = findViewById(R.id.btn8cPlus);
+        // Array de IDs dels botons de dificultat
+        int[] buttonIds = {
+                R.id.btnIV, R.id.btnIVPlus,
+                R.id.btnV, R.id.btnVPlus,
+                R.id.btn6a, R.id.btn6aPlus,
+                R.id.btn6b, R.id.btn6bPlus,
+                R.id.btn6c, R.id.btn6cPlus,
+                R.id.btn7a, R.id.btn7aPlus,
+                R.id.btn7b, R.id.btn7bPlus,
+                R.id.btn7c, R.id.btn7cPlus,
+                R.id.btn8a, R.id.btn8aPlus,
+                R.id.btn8b, R.id.btn8bPlus,
+                R.id.btn8c, R.id.btn8cPlus
+        };
 
-        // Establiment dels listeners pels botons de dificultat
-        setDificultatListener(btnIV);
-        setDificultatListener(btnIVPlus);
-        setDificultatListener(btnV);
-        setDificultatListener(btnVPlus);
-        setDificultatListener(btn6a);
-        setDificultatListener(btn6aPlus);
-        setDificultatListener(btn6b);
-        setDificultatListener(btn6bPlus);
-        setDificultatListener(btn6c);
-        setDificultatListener(btn6cPlus);
-        setDificultatListener(btn7a);
-        setDificultatListener(btn7aPlus);
-        setDificultatListener(btn7b);
-        setDificultatListener(btn7bPlus);
-        setDificultatListener(btn7c);
-        setDificultatListener(btn7cPlus);
-        setDificultatListener(btn8a);
-        setDificultatListener(btn8aPlus);
-        setDificultatListener(btn8b);
-        setDificultatListener(btn8bPlus);
-        setDificultatListener(btn8c);
-        setDificultatListener(btn8cPlus);
+        // Iterar sobre els IDs per inicialitzar els botons i establir els listeners
+        for (int id : buttonIds) {
+            Button button = findViewById(id);
+            setDificultatListener(button);
+        }
     }
 
     /**
@@ -666,9 +635,9 @@ public class MainActivity extends AppCompatActivity  {
             } catch (ParseException e){
                 e.printStackTrace();
             }
-            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
-        } else {
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
+        } else {
+            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
             btnAvui.setVisibility(View.VISIBLE);
         }
     }
