@@ -146,6 +146,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, new String[]{dateISO});
     }
 
+    public Cursor getJoinDayDataCD(String date) {
+        //canviem el format de la data abans d'introduir-la a SQLite
+        String dateISO = DateConverter.convertCustomToISO(date);
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT cd.*, z." + COL_NOM_ZONA + ", z." + COL_ALTURA_ZONA + ", r." + COL_NOM_ROCO_REDUIT +
+                " FROM " + TABLE_CLIMBING_DATA + " cd " +
+                " JOIN " + TABLE_ZONES + " z ON cd." + COL_ID_ZONA_FK + " = z." + COL_ID_ZONA +
+                " JOIN " + TABLE_ROCODROMS + " r ON z." + COL_ID_ROCO_FK + " = r." + COL_ID_ROCO +
+                " WHERE cd." + COL_DATE + " = ? ORDER BY cd." + COL_ID_CD + " DESC";
+        return db.rawQuery(query, new String[]{dateISO});
+    }
+
     public void closeDatabase(){
         SQLiteDatabase db = this.getWritableDatabase();
         if (db != null && db.isOpen()) {

@@ -14,7 +14,6 @@ public class Puntuacio {
     // 2.856 --> 4 graus
     // 3.713 --> 5 graus
     private double penalitzacioIntent = 2.197;
-    private double penalitzacioDescansos = 1.3;
     private double penalitzacioMetres = 0.5;
 
     public Puntuacio(){

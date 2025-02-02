@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private MenuItem menu_rocodroms;
 
-     // Variables per gestionar la data
+    // Variables per gestionar la data
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String avui;
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity  {
         inicialitzarRecyclerView();
 
         // Carregar les dades del dia actual
-        loadDayData();
+        carregarDadesDia();
     }
 
     /**
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity  {
 
         btnAvui.setOnClickListener(view -> {
             dateTextView.setText(avui);
-            loadDayData();
+            carregarDadesDia();
         });
 
         btnResultats.setOnClickListener(view ->
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity  {
      */
     private void actualitzarData() {
         updateDateTextView();
-        loadDayData();
+        carregarDadesDia();
     }
 
     /**
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity  {
         }
         //carrega Spinner
         loadSpinnerRocodroms();
-        loadDayData(); // Load data for the current date
+        carregarDadesDia(); // Load data for the current date
 
     }
 
@@ -473,7 +473,7 @@ public class MainActivity extends AppCompatActivity  {
                         calendar.set(Calendar.MONTH, month);
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         updateDateTextView(); // Update TextView with new date
-                        loadDayData(); // Reload data for the selected date
+                        carregarDadesDia(); // Reload data for the selected date
                     }
                 }, year, month, day);
         datePickerDialog.show();
@@ -512,7 +512,7 @@ public class MainActivity extends AppCompatActivity  {
         boolean insertSuccess = databaseHelper.insertDataCD(date, dificultat, zona, ifIntent, descansos);
         if (insertSuccess) {
             //Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
-            loadDayData();
+            carregarDadesDia();
         } else {
             Toast.makeText(MainActivity.this, "Error en guardar la via", Toast.LENGTH_SHORT).show();
         }
@@ -547,77 +547,79 @@ public class MainActivity extends AppCompatActivity  {
      *
      * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
      */
-    public void loadDayData(){
+    public void carregarDadesDia(){
 
         viesDia = 0;
         metresDia = 0.0;
         puntuacioDia = 0.0;
         climbingDataList.clear();
-        String nomCurtRocodrom="";
 
-        Cursor cursor = databaseHelper.getDayDataCD(dateTextView.getText().toString());
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String id_cd = cursor.getString(cursor.getColumnIndexOrThrow("ID_CD"));
-                String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
-                String dificultat = cursor.getString(cursor.getColumnIndexOrThrow("DIFICULTAT"));
-                idZona = cursor.getInt(cursor.getColumnIndexOrThrow("ID_ZONA_FK"));
-                int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
-                int descansos = cursor.getInt(cursor.getColumnIndexOrThrow("DESCANSOS"));
+        Cursor cursor = null;
+        Cursor cursor2 = null;
 
-                //recuperem les dades de la zona
-                Cursor cursor2 = databaseHelper.getZonaById(idZona);
-                if (cursor2 != null) {
-                    if (cursor2.moveToFirst()) {
-                        nomZona = cursor2.getString(cursor2.getColumnIndexOrThrow("NOM_ZONA"));
-                        alturaZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ALTURA_ZONA"));
-                        rocodromZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_ROCO_FK"));
+        try {
+            cursor = databaseHelper.getJoinDayDataCD(dateTextView.getText().toString());
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String id_cd = cursor.getString(cursor.getColumnIndexOrThrow("ID_CD"));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow("DATE"));
+                    String dificultat = cursor.getString(cursor.getColumnIndexOrThrow("DIFICULTAT"));
+                    idZona = cursor.getInt(cursor.getColumnIndexOrThrow("ID_ZONA_FK"));
+                    int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
+                    int descansos = cursor.getInt(cursor.getColumnIndexOrThrow("DESCANSOS"));
+                    nomZona = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ZONA"));
+                    alturaZona = cursor.getInt(cursor.getColumnIndexOrThrow("ALTURA_ZONA"));
+                    String nomCurtRocodrom = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ROCO_REDUIT"));
+
+                    nomZona = nomZona + " (" + nomCurtRocodrom + ")";
+                    double puntsVia = puntuacio.getPunts(dificultat);
+                    double metresVia = alturaZona; //convertim el metres a double per si hi ha penalitzacions
+                    if (ifIntent == 1) { //en el cas d'un inent apliquem el coeficient de dificultat i contem la mitat de metres de la zona
+                        puntsVia /= puntuacio.getIfIntent();// veure Puntuacio.java
+                        metresVia *= puntuacio.getPenalitzacioMetres();
+                    } else if (descansos > 0) {
+                        puntsVia /= puntuacio.getPenalitzacioDescansos(descansos);
+                        ifIntent = 1; // si hi ha descansos ho indicarem al tag intent/descansos de l'item
                     }
-                    cursor2.close();
+                    climbingDataList.add(new ClimbingData(id_cd, date, dificultat, nomZona, ifIntent, String.format("%.1f", puntsVia)));
+                    viesDia += 1;
+                    metresDia += metresVia;
+                    puntuacioDia += puntsVia;
                 }
-                //recuperem el nom reduit del rocodrom de la zona
-                Cursor cursor3 = databaseHelper.getRocodromById(rocodromZona);
-                if (cursor3 != null) {
-                    if (cursor3.moveToFirst()) {
-                        nomCurtRocodrom = cursor3.getString(cursor3.getColumnIndexOrThrow("NOM_ROCO_REDUIT"));
-                    }
-                    cursor3.close();
-                } else { nomCurtRocodrom = ""; }
-
-                nomZona = nomZona + " (" + nomCurtRocodrom + ")";
-                double puntsVia = puntuacio.getPunts(dificultat);
-                double metresVia = alturaZona; //convertim el metres a Double per si hi ha penalitzacions
-                if(ifIntent == 1){ //en el cas d'un inent apliquem el coeficient de dificultat i contem la mitat de metres de la zona
-                    puntsVia /= puntuacio.getIfIntent();// veure Puntuacio.java
-                    metresVia *= puntuacio.getPenalitzacioMetres();
-                } else if (descansos > 0){
-                    puntsVia /= puntuacio.getPenalitzacioDescansos(descansos);
-                    ifIntent=1; // si hi ha descansos ho indicarem al tag intent/descansos de l'item
-                }
-                climbingDataList.add(new ClimbingData( id_cd, date, dificultat, nomZona, ifIntent, String.format("%.1f", puntsVia)));
-                viesDia += 1;
-                metresDia += metresVia;
-                puntuacioDia += puntsVia;
             }
-            cursor.close();
+        }catch (Exception e){
+            e.printStackTrace();
+            showError("Error al carregar dades del dia: " + e.getMessage());
+        } finally {
+            if (cursor != null){
+                cursor.close();
+            }
         }
 
         //introduir les dades al ranking
         //primer busquem si hi ha dades per aquest dia
-        Cursor cursor4 = databaseHelper.getRankingByDate(dateTextView.getText().toString());
-        if (cursor4 != null && cursor4.moveToFirst()) {
-            //si hi ha dades actualitzem
-            int idRanking = cursor4.getInt(cursor4.getColumnIndexOrThrow("ID_RANKING"));
-            if(viesDia!=0) {
-                databaseHelper.updateRanking(idRanking, dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
+        try{
+            cursor2 = databaseHelper.getRankingByDate(dateTextView.getText().toString());
+            if (cursor2 != null && cursor2.moveToFirst()) {
+                //si hi ha dades actualitzem
+                int idRanking = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_RANKING"));
+                if(viesDia!=0) {
+                    databaseHelper.updateRanking(idRanking, dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
+                } else {
+                    databaseHelper.deleteRanking(idRanking);
+                }
             } else {
-                databaseHelper.deleteRanking(idRanking);
+                //si no hi ha dades les afegim
+                databaseHelper.insertRanking(dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
             }
-        } else {
-            //si no hi ha dades les afegim
-            databaseHelper.insertRanking(dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
+        }catch (Exception e){
+            e.printStackTrace();
+            showError("Error al carregar dades del ranking: " + e.getMessage());
+        } finally {
+            if (cursor2 != null){
+                cursor2.close();
+            }
         }
-        cursor4.close();
 
 
         //notifiquem a l'adaptador que hi ha hagut canvis i que ha de refrescar els valors
@@ -634,6 +636,7 @@ public class MainActivity extends AppCompatActivity  {
                 calendar.setTime(dateFormat.parse(avui));
             } catch (ParseException e){
                 e.printStackTrace();
+                showError("Error al processar la data: " + e.getMessage());
             }
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
         } else {
@@ -642,5 +645,8 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
+    private void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
 }
