@@ -291,133 +291,180 @@ public class MainActivity extends AppCompatActivity  {
      * Mostra els diferents rocodroms que tenim a la base de dades
      * */
     private void loadSpinnerRocodroms() {
+        // Inicialitzar el HashMap per emmagatzemar els rocòdroms
         rocodromsHashMap = new HashMap<>();
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
+
+        // Carregar els rocòdroms des de la base de dades
+        carregarRocodroms(databaseHelper);
+
+        // Configurar l'adaptador per al spinner
+        configurarSpinner();
+
+        // Recuperar l'últim rocòdrom seleccionat
+        recuperarUltimRocodrom();
+
+        // Configurar el listener per gestionar les seleccions del spinner
+        configurarListenerSpinner(databaseHelper);
+    }
+
+    private void carregarRocodroms(DatabaseHelper databaseHelper) {
         Cursor cursor = databaseHelper.getAllRocodroms();
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow("ID_ROCO"));
-                String nom = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ROCO"))+", "+cursor.getString(cursor.getColumnIndexOrThrow("POBLACIO"));
-
+                String nom = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ROCO")) + ", " +
+                        cursor.getString(cursor.getColumnIndexOrThrow("POBLACIO"));
                 rocodromsHashMap.put(nom, id);
             }
             cursor.close();
         }
+    }
 
-// Adaptador per l'spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, rocodromsHashMap.keySet().toArray(new String[0]));
+    private void configurarSpinner() {
+        // Crear l'adaptador per al spinner amb els noms dels rocòdroms
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,
+                rocodromsHashMap.keySet().toArray(new String[0]));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         rocodromSpinner.setAdapter(adapter);
+    }
 
-// Últim rocòdrom seleccionat
+    private void recuperarUltimRocodrom() {
+        // Recuperar l'últim rocòdrom seleccionat de les preferències
         SharedPreferences prefs = getSharedPreferences("Rocodrom", MODE_PRIVATE);
         int ultimRocodrom = prefs.getInt("ultimRocodrom", 0);
         rocodromSpinner.setSelection(ultimRocodrom);
+    }
 
-// Listener per gestionar les opcions
+    private void configurarListenerSpinner(DatabaseHelper databaseHelper) {
+        // Configurar el listener per gestionar les opcions seleccionades
         rocodromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int posicio, long id) {
-                //guardar l'últim rocodrom seleccionat
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putInt("ultimRocodrom", posicio);
-                editor.apply();
+                // Guardar l'últim rocòdrom seleccionat
+                guardarUltimRocodrom(posicio);
 
-                //generar les zones del rocòdrom seleccionat
-                Cursor cursor2 = databaseHelper.getZonesByRocodrom(rocodromsHashMap.get(adapterView.getItemAtPosition(posicio))); //recuperem les zones del rocodrom seleccionat per id guardada a posicio
-                zonesGrid.removeAllViews(); //buidar GridLayout zonesGrid
-                if (cursor2 != null) {
-                    if (cursor2.moveToFirst()) {
-                        do{
-                            //recuperem les dades de la zona
-                            idZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_ZONA"));
-                            nomZona = cursor2.getString(cursor2.getColumnIndexOrThrow("NOM_ZONA"));
-                            alturaZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ALTURA_ZONA"));
-                            esCorda = cursor2.getInt(cursor2.getColumnIndexOrThrow("ZONA_CORDA"));
-                            rocodromZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_ROCO_FK"));
-
-                            Bundle infoBoto = new Bundle();
-                            infoBoto.putInt("idZona", idZona);
-                            infoBoto.putString("nomZona", nomZona);
-                            infoBoto.putInt("alturaZona", alturaZona);
-                            infoBoto.putInt("esCorda", esCorda);
-                            infoBoto.putInt("rocodromZona", rocodromZona);
-
-                            //generar botons de zona
-                            Button btnZona = new Button(MainActivity.this);
-                            btnZona.setText(nomZona);
-                            btnZona.setTag(infoBoto);
-                            botonsZona.add(btnZona);
-
-                            //listener del botó de zona
-                            btnZona.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    //restaura el color de tots els botons de zona
-                                    resetBotonsZona();
-                                    //resetejar els descansos
-                                    descansos =0;
-                                    descansosSpinner.setSelection(0);
-
-                                    //canvi de color pel boto seleccionat
-                                    view.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
-
-                                    Bundle infoBoto = (Bundle) view.getTag();
-                                    idZona = infoBoto.getInt("idZona");
-                                    nomZona = infoBoto.getString("nomZona");
-                                    alturaZona = infoBoto.getInt("alturaZona");
-                                    esCorda = infoBoto.getInt("esCorda");
-                                    rocodromZona = infoBoto.getInt("rocodromZona");
-                                    entradaLayout.setVisibility(View.VISIBLE);
-
-                                    if (esCorda == 1) {
-                                        descansosLayout.setVisibility(View.VISIBLE);
-                                    } else {
-                                        descansosLayout.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
-                            zonesGrid.addView(btnZona);
-
-                        }
-                        while (cursor2.moveToNext()) ;
-                    }else {
-                        //generar el Layout per inserir zones
-                        zonesGrid.removeAllViews();
-                        // Crear un TextView dinàmicament
-                        TextView textView = new TextView(MainActivity.this);
-                        GridLayout.LayoutParams textParams = new GridLayout.LayoutParams();
-                        textParams.setGravity(Gravity.CENTER); // Centrar el TextView
-                        textParams.setMargins(20, 0, 0, 0); // Marge superior per separar del TextView
-                        textView.setLayoutParams(textParams);
-                        textView.setTextSize(18);
-                        textView.setText("No hi ha zones definides per aquest rocòdrom");
-                        textView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange)); // Asegúrate de que el color esté definido
-
-                        //afegim un listener per crear zones per aquest rocòdrom
-                        textView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(MainActivity.this, Rocodroms.class);
-                                //passem l'id del rocòdrom
-                                intent.putExtra("idRoco", rocodromsHashMap.get(adapterView.getItemAtPosition(posicio)));
-                                startActivity(intent);
-                            }
-                        });
-
-                        zonesGrid.addView(textView);
-                    }
-                }
-                cursor2.close();
+                // Generar les zones del rocòdrom seleccionat
+                generarZones(databaseHelper, adapterView, posicio);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                // Optional: Handle the case when no item is selected
+                // Opcional: gestionar el cas quan no es selecciona cap element
             }
         });
     }
 
+    private void guardarUltimRocodrom(int posicio) {
+        // Guardar la posició de l'últim rocòdrom seleccionat a les preferències
+        SharedPreferences prefs = getSharedPreferences("Rocodrom", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("ultimRocodrom", posicio);
+        editor.apply();
+    }
+
+    private void generarZones(DatabaseHelper databaseHelper, AdapterView<?> adapterView, int posicio) {
+        // Recuperar les zones del rocòdrom seleccionat
+        Cursor cursor2 = databaseHelper.getZonesByRocodrom(rocodromsHashMap.get(adapterView.getItemAtPosition(posicio)));
+        zonesGrid.removeAllViews(); // Buidar el GridLayout zonesGrid
+
+        if (cursor2 != null) {
+            if (cursor2.moveToFirst()) {
+                do {
+                    crearBotonsZona(cursor2);
+                } while (cursor2.moveToNext());
+            } else {
+                mostrarMissatgeSenseZones(adapterView, posicio);
+            }
+            cursor2.close();
+        }
+    }
+
+    private void crearBotonsZona(Cursor cursor2) {
+        // Recuperar les dades de la zona
+        int idZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_ZONA"));
+        String nomZona = cursor2.getString(cursor2.getColumnIndexOrThrow("NOM_ZONA"));
+        int alturaZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ALTURA_ZONA"));
+        int esCorda = cursor2.getInt(cursor2.getColumnIndexOrThrow("ZONA_CORDA"));
+        int rocodromZona = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_ROCO_FK"));
+
+        // Crear un Bundle amb la informació del botó
+        Bundle infoBoto = new Bundle();
+        infoBoto.putInt("idZona", idZona);
+        infoBoto.putString("nomZona", nomZona);
+        infoBoto.putInt("alturaZona", alturaZona);
+        infoBoto.putInt("esCorda", esCorda);
+        infoBoto.putInt("rocodromZona", rocodromZona);
+
+        // Crear el botó de la zona
+        Button btnZona = new Button(MainActivity.this);
+        btnZona.setText(nomZona);
+        btnZona.setTag(infoBoto);
+        botonsZona.add(btnZona);
+
+        // Configurar el listener del botó de zona
+        btnZona.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gestionarClickBotonZona(view);
+            }
+        });
+        zonesGrid.addView(btnZona);
+    }
+
+    private void gestionarClickBotonZona(View view) {
+        // Restaura el color de tots els botons de zona
+        resetBotonsZona();
+        // Resetejar els descansos
+        descansos = 0;
+        descansosSpinner.setSelection(0);
+
+        // Canvi de color pel botó seleccionat
+        view.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
+
+        // Recuperar la informació del botó seleccionat
+        Bundle infoBoto = (Bundle) view.getTag();
+        int idZona = infoBoto.getInt("idZona");
+        String nomZona = infoBoto.getString("nomZona");
+        int alturaZona = infoBoto.getInt("alturaZona");
+        int esCorda = infoBoto.getInt("esCorda");
+        int rocodromZona = infoBoto.getInt("rocodromZona");
+        entradaLayout.setVisibility(View.VISIBLE);
+
+        // Mostrar o amagar el layout de descansos segons el tipus de zona
+        if (esCorda == 1) {
+            descansosLayout.setVisibility(View.VISIBLE);
+        } else {
+            descansosLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void mostrarMissatgeSenseZones(AdapterView<?> adapterView, int posicio) {
+        // Generar el Layout per inserir zones si no hi ha zones definides
+        zonesGrid.removeAllViews();
+        TextView textView = new TextView(MainActivity.this);
+        GridLayout.LayoutParams textParams = new GridLayout.LayoutParams();
+        textParams.setGravity(Gravity.CENTER); // Centrar el TextView
+        textParams.setMargins(20, 0, 0, 0); // Marge superior per separar del TextView
+        textView.setLayoutParams(textParams);
+        textView.setTextSize(18);
+        textView.setText("No hi ha zones definides per aquest rocòdrom");
+        textView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
+
+        // Afegir un listener per crear zones per aquest rocòdrom
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Rocodroms.class);
+                // Passar l'id del rocòdrom
+                intent.putExtra("idRoco", rocodromsHashMap.get(adapterView.getItemAtPosition(posicio)));
+                startActivity(intent);
+            }
+        });
+
+        zonesGrid.addView(textView);
+    }
     @Override
     protected void onPause() {
         super.onPause();
