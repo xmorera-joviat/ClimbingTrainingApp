@@ -128,15 +128,47 @@
                 android:gravity="center"
                 android:paddingHorizontal="10dp">
 
-                <CheckBox
-                    android:id="@+id/chkIntent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"
-                    android:text="intent"
-                    android:buttonTint="@color/orange"
-                    tools:ignore="TouchTargetSizeCheck" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+                    <CheckBox
+                        android:id="@+id/chkIntent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""
+                        android:buttonTint="@color/orange"
+                        tools:ignore="TouchTargetSizeCheck" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Intent"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+                    <CheckBox
+                        android:id="@+id/chkEscalfament"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=""
+                        android:buttonTint="@color/blue"
+                        tools:ignore="TouchTargetSizeCheck" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Escalfament"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/descansosLayout"
@@ -166,26 +198,27 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_gravity="right"
                             android:layout_weight="2"
                             android:gravity="right"
-                            android:layout_gravity="right"
                             android:paddingStart="2dp"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:text="(zona de corda):"/>
+                            android:text="(corda):"
+                            android:textColor="?android:attr/textColorPrimary" />
 
                     </LinearLayout>
 
                     <Spinner
                         android:id="@+id/descansosSpinner"
-                        android:layout_width="0dp"
+                        android:layout_width="10dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:paddingLeft="25dp"
+                        android:paddingLeft="15dp"
                         android:layout_marginLeft="10dp"
                         android:background="@color/orange"
                         tools:ignore="TouchTargetSizeCheck" />
 
                 </LinearLayout>
+
             </LinearLayout>
 
             <GridLayout

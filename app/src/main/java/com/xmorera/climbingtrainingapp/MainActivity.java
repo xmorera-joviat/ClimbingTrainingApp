@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity  {
     private GridLayout zonesGrid;
     private LinearLayout entradaLayout, descansosLayout;
     private RecyclerView recyclerView;
-    private CheckBox chkIntent;
+    private CheckBox chkIntent, chkEscalfament;
 
     private MenuItem menu_rocodroms;
 
@@ -80,11 +80,13 @@ public class MainActivity extends AppCompatActivity  {
 
     // variables per al càlcul diari
     int viesDia;
+    int viesGrauDia;
     double metresDia;
     double puntuacioDia;
+    double puntuacioGrauDia; // s'utilitza per a calcular la mitjana de grau de la sessió
 
     //variables per a entrar les dades a la base de dades
-    private int idZona, alturaZona, esCorda, ifIntent, descansos, rocodromZona;
+    private int idZona, alturaZona, esCorda, ifIntent, ifEscalfament, descansos, rocodromZona;
     private String nomZona, dificultat;
 
     // elements per mostrar els resultat diaris
@@ -145,6 +147,7 @@ public class MainActivity extends AppCompatActivity  {
         mitjanaDiaTextView = findViewById(R.id.mitjanaDiaTextView);
         puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
         chkIntent = findViewById(R.id.chkIntent);
+        chkEscalfament = findViewById(R.id.chkEscalfament);
 
         // Configuració de la visibilitat dels layouts
         entradaLayout.setVisibility(View.GONE);
@@ -541,8 +544,13 @@ public class MainActivity extends AppCompatActivity  {
                 } else {
                     ifIntent = 0;
                 }
+                if (chkEscalfament.isChecked()) {
+                    ifEscalfament = 1;
+                } else {
+                    ifEscalfament = 0;
+                }
 
-                insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, descansos);
+                insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, ifEscalfament, descansos);
                 resetInput();
             }
         });
@@ -553,10 +561,10 @@ public class MainActivity extends AppCompatActivity  {
      *
      * insereix les dades a la base de dades i carrega les dades del dia actual
      *
-     * @param -String date, String dificultat, int zona, int intent i int descansos
+     * @param -String date, String dificultat, int zona, int intent int ifEscalfament i int descansos
      * */
-    private void insertData(String date, String dificultat, int zona, int ifIntent, int descansos){
-        boolean insertSuccess = databaseHelper.insertDataCD(date, dificultat, zona, ifIntent, descansos);
+    private void insertData(String date, String dificultat, int zona, int ifIntent, int ifEscalfament, int descansos){
+        boolean insertSuccess = databaseHelper.insertDataCD(date, dificultat, zona, ifIntent, ifEscalfament, descansos);
         if (insertSuccess) {
             //Toast.makeText(this, "Via guardada correctament", Toast.LENGTH_SHORT).show();
             carregarDadesDia();
@@ -572,7 +580,9 @@ public class MainActivity extends AppCompatActivity  {
     private void resetInput() {
         //reset pantalla introducció de dades
         chkIntent.setChecked(false);
+        chkEscalfament.setChecked(false);
         ifIntent = 0;
+        ifEscalfament = 0;
         descansos = 0;
         visibilitatGraus(View.GONE);
         //restaura el color de tots els botons de zona
@@ -597,8 +607,10 @@ public class MainActivity extends AppCompatActivity  {
     public void carregarDadesDia(){
 
         viesDia = 0;
+        viesGrauDia = 0;
         metresDia = 0.0;
         puntuacioDia = 0.0;
+        puntuacioGrauDia = 0.0;
         climbingDataList.clear();
 
         Cursor cursor = null;
@@ -613,6 +625,7 @@ public class MainActivity extends AppCompatActivity  {
                     String dificultat = cursor.getString(cursor.getColumnIndexOrThrow("DIFICULTAT"));
                     idZona = cursor.getInt(cursor.getColumnIndexOrThrow("ID_ZONA_FK"));
                     int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
+                    int ifEscalfament = cursor.getInt(cursor.getColumnIndexOrThrow("IFESCALFAMENT"));
                     int descansos = cursor.getInt(cursor.getColumnIndexOrThrow("DESCANSOS"));
                     nomZona = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ZONA"));
                     alturaZona = cursor.getInt(cursor.getColumnIndexOrThrow("ALTURA_ZONA"));
@@ -620,18 +633,31 @@ public class MainActivity extends AppCompatActivity  {
 
                     nomZona = nomZona + " (" + nomCurtRocodrom + ")";
                     double puntsVia = puntuacio.getPunts(dificultat);
+                    double puntsGrau = puntsVia;
                     double metresVia = alturaZona; //convertim el metres a double per si hi ha penalitzacions
+                    int viaGrau = 1;
+
                     if (ifIntent == 1) { //en el cas d'un inent apliquem el coeficient de dificultat i contem la mitat de metres de la zona
                         puntsVia /= puntuacio.getIfIntent();// veure Puntuacio.java
                         metresVia *= puntuacio.getPenalitzacioMetres();
+                        puntsGrau = 0; //si és un intent no es comptabilitzen els punts per a calcular la mitjana de grau de la sessió
+                        viaGrau=0;
                     } else if (descansos > 0) {
                         puntsVia /= puntuacio.getPenalitzacioDescansos(descansos);
+                        puntsGrau = 0;
                         ifIntent = 1; // si hi ha descansos ho indicarem al tag intent/descansos de l'item
+                        viaGrau = 0;
                     }
-                    climbingDataList.add(new ClimbingData(id_cd, date, dificultat, nomZona, ifIntent, String.format("%.1f", puntsVia)));
+                    if (ifEscalfament == 1){
+                        puntsGrau = 0; //en aquest cas tampoc es comptabilitzen els punts per a calcular la mitjana de grau de la sessió
+                        viaGrau = 0;
+                    }
+                    climbingDataList.add(new ClimbingData(id_cd, date, dificultat, nomZona, ifIntent, ifEscalfament, String.format("%.1f", puntsVia)));
                     viesDia += 1;
+                    viesGrauDia += viaGrau;
                     metresDia += metresVia;
                     puntuacioDia += puntsVia;
+                    puntuacioGrauDia += puntsGrau;
                 }
             }
         }catch (Exception e){
@@ -651,13 +677,13 @@ public class MainActivity extends AppCompatActivity  {
                 //si hi ha dades actualitzem
                 int idRanking = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_RANKING"));
                 if(viesDia!=0) {
-                    databaseHelper.updateRanking(idRanking, dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
+                    databaseHelper.updateRanking(idRanking, dateTextView.getText().toString(), puntuacioDia, puntuacioGrauDia, viesDia, (int) viesGrauDia, (int) metresDia);
                 } else {
                     databaseHelper.deleteRanking(idRanking);
                 }
             } else {
                 //si no hi ha dades les afegim
-                databaseHelper.insertRanking(dateTextView.getText().toString(), puntuacioDia, viesDia, (int) metresDia);
+                databaseHelper.insertRanking(dateTextView.getText().toString(), puntuacioDia, puntuacioGrauDia, viesDia, viesGrauDia, (int) metresDia);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -674,7 +700,7 @@ public class MainActivity extends AppCompatActivity  {
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
         viesDiaTextView.setText(String.valueOf(viesDia));
         metresDiaTextView.setText(String.valueOf(metresDia));
-        mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioDia/ viesDia));
+        mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
 
 
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies

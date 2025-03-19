@@ -261,8 +261,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                             double puntuacioData = cursor.getDouble(cursor.getColumnIndexOrThrow("PUNTS_RANKING"));
                             int viesDia = cursor.getInt(cursor.getColumnIndexOrThrow("VIES_RANKING"));
                             double metresDia = cursor.getDouble(cursor.getColumnIndexOrThrow("METRES_RANKING"));
+                            double mitjanaDia = cursor.getDouble(cursor.getColumnIndexOrThrow("MITJANA_RANKING"));
 
-                            resultatsDataList.add(new ResultatsData(dateCustom, String.valueOf(viesDia), String.valueOf(metresDia).replace(".", ","), String.format("%,.1f", puntuacioData).replace(".", ","), puntuacioData / viesDia));
+                            resultatsDataList.add(new ResultatsData(dateCustom, String.valueOf(viesDia), String.valueOf(metresDia).replace(".", ","), String.format("%,.1f", puntuacioData).replace(".", ","), mitjanaDia));
                         }
                     } finally {
                         cursor.close(); // Ensure the cursor is closed after processing

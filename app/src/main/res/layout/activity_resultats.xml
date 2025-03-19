@@ -257,7 +257,8 @@
                 android:id="@+id/resultats_view"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                tools:ignore="SpeakableTextPresentCheck" />
 
 
             <com.github.mikephil.charting.charts.LineChart

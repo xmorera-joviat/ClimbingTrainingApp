@@ -46,6 +46,10 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
             holder.puntuacioTextView.setTextColor(ContextCompat.getColor(context, R.color.orange));
             holder.ifIntentTextView.setTextColor(ContextCompat.getColor(context, R.color.orange));
             holder.ifIntentTextView.setText("Intent/Descansos");
+        } else if (data.getIfEscalfament() == 1){
+            holder.puntuacioTextView.setTextColor(ContextCompat.getColor(context, R.color.blue));
+            holder.ifIntentTextView.setTextColor(ContextCompat.getColor(context, R.color.blue));
+            holder.ifIntentTextView.setText("Escalfament");
         } else {
             holder.puntuacioTextView.setTextColor(ContextCompat.getColor(context, R.color.green));
             holder.ifIntentTextView.setTextColor(ContextCompat.getColor(context, R.color.green));

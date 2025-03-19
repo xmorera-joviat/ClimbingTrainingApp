@@ -23,6 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_ID_ZONA_FK = "ID_ZONA_FK";
     private static final String COL_DIFICULTAT = "DIFICULTAT";
     private static final String COL_IFINTENT = "IFINTENT";
+    private static final String COL_IFESCALFAMENT = "IFESCALFAMENT";
     private static final String COL_DESCANSOS = "DESCANSOS";
 
     // Columns for rocodroms
@@ -44,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_PUNTS_RANKING = "PUNTS_RANKING";
     private static final String COL_VIES_RANKING = "VIES_RANKING";
     private static final String COL_METRES_RANKING = "METRES_RANKING";
-    private static final String COL_MITJANA_RANKING = "MITJANA_RANKING";
+    private static final String COL_MITJANA_RANKING = "MITJANA_RANKING"; //no es tenen en comte els intents, els descansos ni els escalfaments.
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -59,6 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_DIFICULTAT + " TEXT, " +
                 COL_ID_ZONA_FK + " INTEGER NOT NULL, " +
                 COL_IFINTENT + " INTEGER," +
+                COL_IFESCALFAMENT + " INTEGER," +
                 COL_DESCANSOS + " INTEGER," +
                 "FOREIGN KEY(" + COL_ID_ZONA_FK + ") REFERENCES " + TABLE_ZONES + "(" + COL_ID_ZONA + "))";
 
@@ -115,7 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /////// CRUD CLIMBING_DATA /////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public boolean insertDataCD(String date, String dificultat, int zona, int ifIntent, int descansos) {
+    public boolean insertDataCD(String date, String dificultat, int zona, int ifIntent, int ifEscalfament, int descansos) {
         //canviem el format de la data abans d'introduir-la a SQLite
         String dateISO = DateConverter.convertCustomToISO(date);
 
@@ -125,6 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_DIFICULTAT, dificultat);
         contentValues.put(COL_ID_ZONA_FK, zona);
         contentValues.put(COL_IFINTENT, ifIntent);
+        contentValues.put(COL_IFESCALFAMENT, ifEscalfament);
         contentValues.put(COL_DESCANSOS, descansos);
         long result = db.insert(TABLE_CLIMBING_DATA, null, contentValues);
         db.close();
@@ -165,7 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateDataCD(int id, String date, String dificultat, int zona, int ifIntent, int descansos){
+    public boolean updateDataCD(int id, String date, String dificultat, int zona, int ifIntent, int ifEscalfament, int descansos){
         //canviem el format de la data abans d'introduir-la a SQLite
         String dateISO = DateConverter.convertCustomToISO(date);
 
@@ -175,6 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_DIFICULTAT, dificultat);
         contentValues.put(COL_ID_ZONA_FK, zona);
         contentValues.put(COL_IFINTENT, ifIntent);
+        contentValues.put(COL_IFESCALFAMENT, ifEscalfament);
         contentValues.put(COL_DESCANSOS, descansos);
         int result = db.update(TABLE_CLIMBING_DATA, contentValues, COL_ID_CD + " = ?", new String[]{String.valueOf(id)});
         db.close();
@@ -330,7 +334,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //////  CRUD RANKING  //////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public boolean insertRanking(String dateRanking, double puntsRanking, int viesRanking, int metresRanking){
+    public boolean insertRanking(String dateRanking, double puntsRanking, double puntsRankingGrau, int viesRanking, int viesRankingGrau, int metresRanking){
         if (puntsRanking == 0 || viesRanking == 0 || metresRanking == 0){
             return false;
         } else {
@@ -341,14 +345,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(COL_PUNTS_RANKING, puntsRanking);
             contentValues.put(COL_VIES_RANKING, viesRanking);
             contentValues.put(COL_METRES_RANKING, metresRanking);
-            contentValues.put(COL_MITJANA_RANKING, puntsRanking / viesRanking);
+            contentValues.put(COL_MITJANA_RANKING, puntsRankingGrau / viesRankingGrau); // no es tenen en compte els intents ni escalfament
             long result = db.insert(TABLE_RANKING, null, contentValues);
             db.close();
             return result != -1;
         }
     }
 
-    public boolean updateRanking(int id, String dateRanking, double puntsRanking, int viesRanking, int metresRanking) {
+    public boolean updateRanking(int id, String dateRanking, double puntsRanking, double puntsRankingGrau, int viesRanking, int viesRankingGrau, int metresRanking) {
         String dateRankingISO = DateConverter.convertCustomToISO(dateRanking);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -356,7 +360,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_PUNTS_RANKING, puntsRanking);
         contentValues.put(COL_VIES_RANKING, viesRanking);
         contentValues.put(COL_METRES_RANKING, metresRanking);
-        contentValues.put(COL_MITJANA_RANKING, puntsRanking / viesRanking);
+        contentValues.put(COL_MITJANA_RANKING, puntsRankingGrau / viesRankingGrau);
         int result = db.update(TABLE_RANKING, contentValues, COL_ID_RANKING + " = ?", new String[]{String.valueOf(id)});
         db.close();
         return result > 0;
