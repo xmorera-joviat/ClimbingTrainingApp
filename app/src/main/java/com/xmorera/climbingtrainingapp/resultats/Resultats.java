@@ -3,6 +3,7 @@ package com.xmorera.climbingtrainingapp.resultats;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -39,8 +40,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-
 import com.github.mikephil.charting.utils.MPPointF;
+
 import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
@@ -57,6 +58,7 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     private Button btnAnual;
     private Button btnTotal;
 
+
     private LinearLayout layoutAltres;
 
     private EditText startDateEditText;
@@ -67,6 +69,8 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     private Button btnOrdMetres;
     private Button btnOrdPunts;
     private Button btnOrdMitjana;
+
+    private Button btnGraficZoom;
 
     //variables per mantenir l'estat d'ordenació
     private boolean isDataAscending = true;
@@ -136,6 +140,14 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         btnOrdPunts.setOnClickListener(v -> sortResults("punts"));
         btnOrdMitjana = findViewById(R.id.btnOrdMitjana);
         btnOrdMitjana.setOnClickListener(v -> sortResults("mitjana"));
+
+        btnGraficZoom = findViewById(R.id.btnGraficZoom);
+        btnGraficZoom.setOnClickListener(v -> {
+            Intent intent = new Intent(Resultats.this, GraficaZoom.class);
+            intent.putExtra("dataInicial", startDateEditText.getText().toString());
+            intent.putExtra("dataFinal", endDateEditText.getText().toString());
+            startActivity(intent);
+        });
 
         resultatsRecyclerView = findViewById(R.id.resultats_view);
         resultatsRecyclerView.setLayoutManager(new LinearLayoutManager(this));

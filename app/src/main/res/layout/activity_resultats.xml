@@ -260,6 +260,15 @@
                 android:layout_marginTop="5dp"
                 tools:ignore="SpeakableTextPresentCheck" />
 
+<!--            afegir un botó per veure el gràfic a pantalla completa apaisat-->
+            <Button
+                android:id="@+id/btnGraficZoom"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_gravity="right"
+                android:background="@null"
+                android:drawableTop="@drawable/zoom20"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chart_view"
