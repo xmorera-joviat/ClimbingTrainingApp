@@ -1,9 +1,12 @@
 package com.xmorera.climbingtrainingapp.resultats;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -48,6 +51,25 @@ public class GraficaZoom extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         chartView = findViewById(R.id.chart_view);
         performQuey();
+
+        //creació de la custom marker view per veure la data en fer click en un node de la gràfica
+        GraficaZoom.CustomMarkerView markerView = new GraficaZoom.CustomMarkerView(this, R.layout.custom_marker_view);
+        chartView.setMarker(markerView);
+
+        //set the value selected listener
+        chartView.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                //mostrar el marcador quan un valor es sellecionat
+                markerView.refreshContent(e, h);
+                markerView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected() {
+                markerView.setVisibility(View.GONE);
+            }
+        });
 
     }
 
@@ -145,5 +167,50 @@ public class GraficaZoom extends AppCompatActivity {
         chartView.invalidate(); // Refresh the chart
 
     }
+
+    /**
+     * CustomMarkerView
+     * classe auxiliar per a visualitzar la data d'un node en fer-ne click
+     */
+    public class CustomMarkerView extends MarkerView {
+
+        private TextView tvDate;
+
+        public CustomMarkerView(Context context, int layoutResource) {
+            super(context, layoutResource);
+            tvDate = findViewById(R.id.tvDate);
+        }
+
+        @Override
+        public void refreshContent(Entry e, Highlight highlight) {
+            String date = getDateFromEntry(e);
+            tvDate.setText(date);
+            super.refreshContent(e, highlight);
+        }
+
+        private String getDateFromEntry(Entry e) {
+            int index = (int) e.getX();
+            // Check if the index is valid
+            if (index < 0 || index >= resultatsDataList.size()) {
+                return ""; // Return an empty string if the index is invalid
+            }
+            // Adjust this line based on your chart's data order
+            //return resultatsDataList.get(resultatsDataList.size() - 1 - index).getDate(); // For reverse order
+            return resultatsDataList.get(index).getDate(); // For original order
+        }
+
+        @Override
+        public MPPointF getOffset() {
+            int markerWidth = getWidth();
+            int markerHeight = getHeight();
+
+            // Center the marker
+            float offsetX = -markerWidth / 1.45f; // Shift marker to the left
+            float offsetY = markerHeight / 4; // Shift marker down
+
+            return MPPointF.getInstance(offsetX, offsetY); // Return an MPPointF instance
+        }
+    }
+
 
 }

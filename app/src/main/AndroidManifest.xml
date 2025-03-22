@@ -19,7 +19,8 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="DiscouragedApi" />
         <activity
             android:name=".RocodromsZones.Rocodroms"
             android:exported="false" />
@@ -28,7 +29,9 @@
             android:exported="false" />
         <activity
             android:name=".resultats.Resultats"
-            android:exported="false" />
+            android:screenOrientation="portrait"
+            android:exported="false"
+            tools:ignore="DiscouragedApi" />
         <activity
             android:name=".utils.Preferencies"
             android:exported="false" />
