@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -173,10 +172,9 @@ public class MainActivity extends AppCompatActivity  {
         // mapeig dels menús
         menu_rocodroms = findViewById(R.id.menu_rocodroms);
 
+        //mapeig icones per l'activació del cronometre
         chrono30 = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30);
         chrono30_carbassa = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30_carbassa);
-
-
     }
 
     /**
@@ -191,6 +189,7 @@ public class MainActivity extends AppCompatActivity  {
      * Configura els listeners per als botons i altres elements interactius.
      */
     private void configurarListeners() {
+        //gestió d les dates
         dateTextView.setOnClickListener(v -> showDatePicker());
 
         diaAnterior.setOnClickListener(view -> {
@@ -221,6 +220,7 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        //mostrar resultats i gràfics
         btnResultats.setOnClickListener(view ->
                 startActivity(new Intent(MainActivity.this, Resultats.class))
         );
@@ -444,13 +444,13 @@ public class MainActivity extends AppCompatActivity  {
         btnZona.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gestionarClickBotonZona(view);
+                gestionarClickBotoZona(view);
             }
         });
         zonesGrid.addView(btnZona);
     }
 
-    private void gestionarClickBotonZona(View view) {
+    private void gestionarClickBotoZona(View view) {
         // Restaura el color de tots els botons de zona
         resetBotonsZona();
         // Resetejar els descansos
@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity  {
 
         // Recuperar la informació del botó seleccionat
         Bundle infoBoto = (Bundle) view.getTag();
-        int idZona = infoBoto.getInt("idZona");
+        idZona = infoBoto.getInt("idZona");//int idZona = infoBoto.getInt("idZona");
         String nomZona = infoBoto.getString("nomZona");
         int alturaZona = infoBoto.getInt("alturaZona");
         int esCorda = infoBoto.getInt("esCorda");

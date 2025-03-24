@@ -67,16 +67,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.5.7&#10;* botó &quot;+&quot; per mostrar el gràfic apaisat i en pantalla completa (igual que zepp)&#10;&#10;---&#10;* taula puntuació graus&#10;* incorporació d'un crono&#10;&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/chrono30_carbassa.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
+    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.6.0&#10;* incorporació d'un crono&#10;** error en introducció vies, no grava la zona **&#10;---&#10;&#10;* taula puntuació graus&#10;&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/GraficaZoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/GraficaZoom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_grafica_zoom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_grafica_zoom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -911,12 +904,12 @@
       <map>
         <entry key="com.xmorera.climbingtrainingapp">
           <value>
-            <CheckInfo lastCheckTimestamp="1742633198311" />
+            <CheckInfo lastCheckTimestamp="1742838114601" />
           </value>
         </entry>
         <entry key="com.xmorera.climbingtrainingapp.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1742633198312" />
+            <CheckInfo lastCheckTimestamp="1742838114599" />
           </value>
         </entry>
       </map>
