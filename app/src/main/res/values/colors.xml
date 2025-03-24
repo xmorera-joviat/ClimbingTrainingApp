@@ -10,6 +10,7 @@
     <color name="blue">#FF0000FF</color>    <!-- Blau -->
     <color name="light_gray">#FFD3D3D3</color> <!-- Gris clar -->
     <color name="gray">#FF808080</color> <!-- Gris mitjà -->
+    <color name="gris_icones">#FF838585</color> <!-- Gris icones -->
     <color name="dark_gray">#FF404040</color> <!-- Gris fosc -->
     <color name="charcoal_gray">#FF333333</color> <!-- Gris antracita -->
     <color name="blau_turquesa">#80CBC4</color> <!-- Blau turquesa -->"

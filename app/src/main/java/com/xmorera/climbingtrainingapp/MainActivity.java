@@ -1,12 +1,16 @@
 package com.xmorera.climbingtrainingapp;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,9 +56,10 @@ import java.util.List;
  * */
 public class MainActivity extends AppCompatActivity  {
 
+
     // Elements de la interfície d'usuari
     private TextView dateTextView; //mostrar la data i mostrar la via seleccionada
-    private Button diaAnterior, diaPosterior, btnAvui, btnResultats;
+    private Button diaAnterior, diaPosterior, btnAvui, btnChrono, btnResultats;
     private Spinner rocodromSpinner, descansosSpinner;
     private GridLayout zonesGrid;
     private LinearLayout entradaLayout, descansosLayout;
@@ -94,6 +99,17 @@ public class MainActivity extends AppCompatActivity  {
 
     // variable per controlar que quan es torna a l'inici es mostri la data actual
     boolean firstTime = true;
+
+    //gestió del  cronometre
+    boolean chrono = false;
+    AlertDialog cronoDialog;
+    private static final long MAX_TIME = 5 * 60 * 1000; // 5 min en milisegons ;
+    Drawable chrono30;
+    Drawable chrono30_carbassa;
+    private boolean cronometre;
+    private long startTime = 0L;
+    private Handler handler = new Handler();
+
 
     /**
      * onCreate
@@ -135,6 +151,7 @@ public class MainActivity extends AppCompatActivity  {
         diaAnterior = findViewById(R.id.diaAnterior);
         diaPosterior = findViewById(R.id.diaPosterior);
         btnAvui = findViewById(R.id.btnAvui);
+        btnChrono = findViewById(R.id.btnChrono);
         btnResultats = findViewById(R.id.btnResultats);
         zonesGrid = findViewById(R.id.zonesGrid);
         rocodromSpinner = findViewById(R.id.rocodromSpinner);
@@ -155,6 +172,10 @@ public class MainActivity extends AppCompatActivity  {
 
         // mapeig dels menús
         menu_rocodroms = findViewById(R.id.menu_rocodroms);
+
+        chrono30 = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30);
+        chrono30_carbassa = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30_carbassa);
+
 
     }
 
@@ -185,6 +206,19 @@ public class MainActivity extends AppCompatActivity  {
         btnAvui.setOnClickListener(view -> {
             dateTextView.setText(avui);
             carregarDadesDia();
+        });
+
+        // actviar/desactivar el crono. canviar el color de la icona.
+        btnChrono.setOnClickListener(view -> {
+
+            chrono = !chrono;
+            if (chrono) {
+                Toast.makeText(MainActivity.this, "Chrono activat", Toast.LENGTH_SHORT).show();
+                btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30_carbassa, null, null);
+            } else {
+                Toast.makeText(MainActivity.this, "Chrono desactivat", Toast.LENGTH_SHORT).show();
+                btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30, null, null);
+            }
         });
 
         btnResultats.setOnClickListener(view ->
@@ -549,11 +583,69 @@ public class MainActivity extends AppCompatActivity  {
                 } else {
                     ifEscalfament = 0;
                 }
-
                 insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, ifEscalfament, descansos);
+
+                //mostrar un alertdialog amb el cronometre si està activat
+                if(chrono){
+                    showChronoDialog();
+                }
                 resetInput();
             }
         });
+    }
+    @SuppressLint("MissingInflatedId")
+    private void showChronoDialog() {
+        //inflem el layout del dialog
+        View cronoView = getLayoutInflater().inflate(R.layout.chrono_dialog, null);
+        TextView cronoTextView = cronoView.findViewById(R.id.cronoTextView);
+        Button btnStop = cronoView.findViewById(R.id.btnStop);
+
+        //creem i mostrem el dialog
+        cronoDialog = new AlertDialog.Builder(this)
+                .setView(cronoView)
+                .setCancelable(false)
+                .create();
+        cronoDialog.show();
+
+        //engeguem el cronometre
+        startCronometre(cronoTextView);
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cronoDialog.dismiss();
+                cronometre = false;
+            }
+        });
+    }
+
+    private void startCronometre(TextView cronoTextView) {
+        cronometre = true;
+        startTime = System.currentTimeMillis();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (cronometre) {
+                    long elapsedTime = System.currentTimeMillis() - startTime;
+                    updateTimer(cronoTextView, elapsedTime);
+                    //tancar el crono després del temps establert
+                    if (elapsedTime >= MAX_TIME) {
+                        cronoDialog.dismiss();
+                        cronometre = false;
+                    } else {
+                        handler.postDelayed(this, 1000);
+                    }
+                }
+            }
+        }, 1000);
+    }
+
+    private void updateTimer(TextView cronoTextView, long elapsedTime) {
+        int segons = (int) (elapsedTime / 1000) %60;
+        int minuts = (int) ((elapsedTime / (1000 * 60)) % 60);
+        String temps = String.format("%02d:%02d", minuts, segons);
+        cronoTextView.setText(temps);
     }
 
     /**

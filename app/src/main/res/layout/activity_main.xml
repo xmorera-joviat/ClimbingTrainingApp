@@ -26,19 +26,19 @@
                 <Button
                     android:id="@+id/diaAnterior"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
                     android:background="@null"
                     android:contentDescription="Dia anterior"
                     android:drawableTop="@drawable/left_arrow"
-                    android:minWidth="45dp"
-                    android:minHeight="45dp"
+                    android:minWidth="35dp"
+                    android:minHeight="35dp"
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView
                     android:id="@+id/dateTextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:layout_gravity="top"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
@@ -49,7 +49,7 @@
                 <Button
                     android:id="@+id/diaPosterior"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
                     android:background="@null"
                     android:contentDescription="Dia posterior"
@@ -61,7 +61,7 @@
                 <Button
                     android:id="@+id/btnAvui"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="right"
                     android:background="@null"
                     android:drawableTop="@drawable/today30"
@@ -69,12 +69,26 @@
                     android:minHeight="25dp"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
+
+
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnChrono"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:layout_gravity="right"
+                android:background="@null"
+                android:drawableTop="@drawable/chrono30"
+                android:minWidth="25dp"
+                android:minHeight="25dp"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
 
             <Button
                 android:id="@+id/btnResultats"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
+                android:layout_height="35dp"
                 android:layout_gravity="end"
                 android:layout_weight="1"
                 android:background="@null"
