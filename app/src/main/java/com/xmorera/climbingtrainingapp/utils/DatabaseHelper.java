@@ -9,7 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "climbing_training.db";
-    private static final int DATABASE_VERSION = 6; // Incremented version
+    private static final int DATABASE_VERSION = 7; // Incremented version
+    private static final int DATABASE_OLD_VERSION = DATABASE_VERSION+1;
 
     // Table names
     private static final String TABLE_CLIMBING_DATA = "climbing_data";
@@ -102,7 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 7) {
+        if (oldVersion < DATABASE_OLD_VERSION) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLIMBING_DATA);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROCODROMS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZONES);

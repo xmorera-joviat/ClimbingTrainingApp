@@ -67,9 +67,12 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.6.0&#10;* incorporació d'un crono&#10;** error en introducció vies, no grava la zona **&#10;---&#10;&#10;* taula puntuació graus&#10;&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.6.1&#10;*(SOLVED) error en introducció vies, no grava la zona *&#10;---&#10;&#10;* taula puntuació graus&#10;&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/Utilitats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/Utilitats.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +83,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\user\.android\avd\Pixel_6a_API_29.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\user\.android\avd\Pixel_8a.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -904,12 +907,12 @@
       <map>
         <entry key="com.xmorera.climbingtrainingapp">
           <value>
-            <CheckInfo lastCheckTimestamp="1742838114601" />
+            <CheckInfo lastCheckTimestamp="1742971428344" />
           </value>
         </entry>
         <entry key="com.xmorera.climbingtrainingapp.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1742838114599" />
+            <CheckInfo lastCheckTimestamp="1742971428345" />
           </value>
         </entry>
       </map>
