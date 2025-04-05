@@ -23,7 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -54,9 +56,8 @@ import java.util.List;
  * */
 public class MainActivity extends AppCompatActivity  {
 
-
+    public static final int MAX_REST_CHRONO = 3599000; //temps màxim del crono parcial de descansos en milisegons (59':59")
     // Elements de la interfície d'usuari
-    private TextView mainChronoTextViewTitle, mainCronoTextView;
     private TextView dateTextView; //mostrar la data i mostrar la via seleccionada
     private Button diaAnterior, diaPosterior, btnAvui, btnChrono, btnResultats;
     private LinearLayout dateLayout;
@@ -100,15 +101,29 @@ public class MainActivity extends AppCompatActivity  {
     // variable per controlar que quan es torna a l'inici es mostri la data actual
     boolean firstTime = true;
 
-    //gestió del  cronometre
+    //gestió del  cronometre principal (sessió)
     private boolean chrono;//per mostrar o ocultar la icona i el seu color
     Drawable chrono30;
     Drawable chrono30_carbassa;
+
+    private TextView mainChronoTextViewTitle, mainCronoTextView;
     private Handler mainChronoHandler = new Handler();
     private Runnable mainChronoRunnable;
     private long startTimeMainChrono = 0; //temps inicial en milisegons
     private boolean runningMainChrono = false; //estat del cronòmetre
     long mainChronoElapsedTime=0; //temps transcorregut en milisegons
+
+    // crono parcial (descans)
+    private boolean allowRestChrono; //si la data és la del dia actual activaem el crono dels descansos
+    private TextView restChronoTextViewTitle, restCronoTextView;
+    private Handler restChronoHandler = new Handler();
+    private Runnable restChronoRunnable;
+    //private long startTimeRestChrono = 0; //temps inicial en milisegons
+    private boolean runningRestChrono = false; //estat del cronòmetre
+
+    //booleana utilitzada per assegurar que no tanquem l'app per equivocació quan anem enrrere
+    private boolean doubleBackToExitPressedOnce = false;
+
 
 
     /**
@@ -144,7 +159,52 @@ public class MainActivity extends AppCompatActivity  {
 
         chrono=false;
 
+        setupBackPressHandler();
 
+    }
+
+    /**
+     * setupBackPressHandler
+     * Aquest mètode conté tota la lògica per configurar el comportament del botó "Enrere" utilitzant OnBackPressedCallback.
+     * S'encarrega de crear el callback, gestionar el Double Back Press i registrar el callback amb OnBackPressedDispatcher.
+     * així s'evita que anant amb el botó enrere es tanqui l'app
+     */
+    private void setupBackPressHandler() {
+        // Configura el OnBackPressedCallback
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Verifica si l'activitat actual és l'arrel de la tasca
+                if (isTaskRoot()) {
+                    // Aplica el Double Back Press només si és l'últim "Back"
+                    if (doubleBackToExitPressedOnce) {
+                        // Si l'usuari prem el botó "Enrere" dues vegades, tanca l'aplicació
+                        finish();
+                        return;
+                    }
+
+                    // Marca que el botó "Enrere" s'ha premut una vegada
+                    doubleBackToExitPressedOnce = true;
+                    Toast.makeText(MainActivity.this, "Prem una altra vegada per tancar l'aplicació", Toast.LENGTH_SHORT).show();
+
+                    // Reinicia el flag després de 2 segons
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000); // 2 segons
+                } else {
+                    // Si no és l'arrel, permet que el botó "Enrere" funcioni normalment
+                    setEnabled(false); // Desactiva temporalment el callback
+                    getOnBackPressedDispatcher().onBackPressed(); // Executa el comportament per defecte del botó "Enrere"
+                    setEnabled(true); // Reactiva el callback
+                }
+            }
+        };
+
+        // Registra el callback amb OnBackPressedDispatcher
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
 
@@ -152,8 +212,6 @@ public class MainActivity extends AppCompatActivity  {
      * Configura la interfície d'usuari mapejant els elements a variables.
      */
     private void configurarUI() {
-        mainCronoTextView = findViewById(R.id.mainCronoTextView);
-        mainChronoTextViewTitle = findViewById(R.id.mainChronoTextViewTitle);
         dateLayout = findViewById(R.id.dateLayout);
         dateTextView = findViewById(R.id.dateTextView);
         diaAnterior = findViewById(R.id.diaAnterior);
@@ -184,6 +242,12 @@ public class MainActivity extends AppCompatActivity  {
         //mapeig icones per l'activació del cronometre
         chrono30 = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30);
         chrono30_carbassa = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30_carbassa);
+
+        //cronometres
+        mainCronoTextView = findViewById(R.id.mainCronoTextView);
+        mainChronoTextViewTitle = findViewById(R.id.mainChronoTextViewTitle);
+        restCronoTextView = findViewById(R.id.restCronoTextView);
+        restChronoTextViewTitle = findViewById(R.id.restChronoTextViewTitle);
     }
 
     /**
@@ -221,20 +285,16 @@ public class MainActivity extends AppCompatActivity  {
 
             chrono = !chrono;
             if (chrono) {
-                //Toast.makeText(MainActivity.this, "Chrono activat", Toast.LENGTH_SHORT).show();
                 startMainChrono();
                 btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30_carbassa, null, null);
                 mainChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
                 mainCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
-
-
-
             } else {
-                //Toast.makeText(MainActivity.this, "Chrono desactivat", Toast.LENGTH_SHORT).show();
                 stopMainChrono();
                 btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30, null, null);
                 mainChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
                 mainCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
+
             }
         });
 
@@ -603,6 +663,8 @@ public class MainActivity extends AppCompatActivity  {
                 }
                 insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, ifEscalfament, descansos);
 
+                stopRestChrono();
+                startRestChrono();
 
                 resetInput();
             }
@@ -767,10 +829,12 @@ public class MainActivity extends AppCompatActivity  {
             }
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
             btnChrono.setVisibility(View.VISIBLE);
+            allowRestChrono = true;
         } else {
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
             btnAvui.setVisibility(View.VISIBLE);
             btnChrono.setVisibility(View.GONE);
+            allowRestChrono = false;
 
         }
     }
@@ -809,8 +873,8 @@ public class MainActivity extends AppCompatActivity  {
         if(runningMainChrono){
             runningMainChrono = false;
             mainChronoHandler.removeCallbacks(mainChronoRunnable);//atura el crono
-
-            // resetMainChrono();
+            //si parem el crono principal també pararem el crono de descansos
+            stopRestChrono();
         }
     }
 
@@ -828,12 +892,129 @@ public class MainActivity extends AppCompatActivity  {
         // Actualitza el TextView
         mainCronoTextView.setText(timeFormated);
     }
+
     /**
-     * Reset del cronòmetre principal
+     * Inicia el cronòmetre parcial i actualitza el TextView cada segon
      * */
-    private void resetMainChrono(){
-        mainCronoTextView.setText("00:00:00");
-        startTimeMainChrono = 0;
+    private void startRestChrono() {
+        if(allowRestChrono){// si estem en el dia actual podrem iniciar el cronòmetre parcial
+            if(!runningRestChrono){
+                long startTimeRestChrono = System.currentTimeMillis();//reiniciem el crono
+                runningRestChrono = true;
+                //vivibilitzar els TextView
+                restChronoTextViewTitle.setVisibility(View.VISIBLE);
+                restCronoTextView.setVisibility(View.VISIBLE);
+                restCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.green));
+                stopBlinking(restCronoTextView);
+
+                // defineix el runnable que actualitza el crono cada segon
+                restChronoRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (runningRestChrono) {
+                            long restChronoElapsedTime = System.currentTimeMillis() - startTimeRestChrono;
+                            //Aturar el crono al cap de 59minuts i 59 segons
+                            if (restChronoElapsedTime >= MAX_REST_CHRONO) {
+                                stopRestChrono();
+                                updateRestChronoTextView(MAX_REST_CHRONO);
+                                //el posem de color vermell per indicar que ha passat el marge de temps i fa pampellugues
+                                restCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.red));
+                                startBlinking(restCronoTextView);
+
+                            }else {
+                                updateRestChronoTextView(restChronoElapsedTime);//actualitza el text del crono
+                                restChronoHandler.postDelayed(this, 1000);
+                            }
+                        }
+                    }
+                };
+                //inicia el crono
+                restChronoHandler.post(restChronoRunnable);
+            }
+        }
+
+    }
+
+    /**
+     * Actualitza el TextView del cronòmetre parcial
+     * @param elapsedTime - temps transcorregut en milisegons
+     * */
+    private void updateRestChronoTextView(long elapsedTime) {
+        //long hours = elapsedTime / (1000 * 60 * 60)RestChrono;
+        long minutes = (elapsedTime % (1000 * 60 * 60)) / (1000 * 60);
+        long seconds = (elapsedTime % (1000 * 60)) / 1000;
+
+        //formata el temps en 00:00:00
+        String timeFormated = String.format("%02d:%02d", minutes, seconds);
+        // Actualitza el TextView
+        restCronoTextView.setText(timeFormated);
+    }
+
+    /**
+     * Atura el cronòmetre parcial
+     * */
+    private void stopRestChrono(){
+        if(runningRestChrono){
+            runningRestChrono = false;
+            restChronoHandler.removeCallbacks(restChronoRunnable);//atura el crono
+            updateRestChronoTextView(0);
+
+        }
+    }
+
+    //////////////////////////////////////
+    ///
+    /// text que fa pampellugues
+    ///
+    //////////////////////////////////////
+    private Handler blinkHandler = new Handler();
+    private Runnable blinkRunnable;
+    private boolean isBlinking = false;
+
+    private void startBlinking(TextView textView) {
+        if (!isBlinking) {
+            isBlinking = true;
+
+            blinkRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (textView.getVisibility() == View.VISIBLE) {
+                        textView.setVisibility(View.INVISIBLE);
+                    } else {
+                       textView.setVisibility(View.VISIBLE);
+                    }
+                    // Reprograma el runnable per executar-se cada 500 mil·lisegons
+                    blinkHandler.postDelayed(this, 500);
+                }
+            };
+
+            // Inicia el pampallugueig
+            blinkHandler.post(blinkRunnable);
+        }
+
+    }
+
+    private void stopBlinking(TextView textView) {
+        if (isBlinking) {
+            isBlinking = false;
+            blinkHandler.removeCallbacks(blinkRunnable); // Atura el pampallugueig
+            textView.setVisibility(View.VISIBLE); // Assegura't que el TextView sigui visible
+        }
+    }
+
+    ///////////////////////////////////////////////////////////
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //aturar els cronometres si encara estan funcionant
+        if (runningMainChrono) {
+            stopMainChrono();
+        }
+        if (runningRestChrono) {
+            stopRestChrono();
+        }
     }
 
 }
