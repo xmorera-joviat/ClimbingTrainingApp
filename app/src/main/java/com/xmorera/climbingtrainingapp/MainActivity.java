@@ -1,7 +1,6 @@
 package com.xmorera.climbingtrainingapp;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -57,8 +56,10 @@ public class MainActivity extends AppCompatActivity  {
 
 
     // Elements de la interfície d'usuari
+    private TextView mainChronoTextViewTitle, mainCronoTextView;
     private TextView dateTextView; //mostrar la data i mostrar la via seleccionada
     private Button diaAnterior, diaPosterior, btnAvui, btnChrono, btnResultats;
+    private LinearLayout dateLayout;
     private Spinner rocodromSpinner, descansosSpinner;
     private GridLayout zonesGrid;
     private LinearLayout entradaLayout, descansosLayout;
@@ -100,14 +101,14 @@ public class MainActivity extends AppCompatActivity  {
     boolean firstTime = true;
 
     //gestió del  cronometre
-    boolean chrono = false;
-    AlertDialog cronoDialog;
-    private static final long MAX_TIME = 5 * 60 * 1000; // 5 min en milisegons ;
+    private boolean chrono;//per mostrar o ocultar la icona i el seu color
     Drawable chrono30;
     Drawable chrono30_carbassa;
-    private boolean cronometre;
-    private long startTime = 0L;
-    private Handler handler = new Handler();
+    private Handler mainChronoHandler = new Handler();
+    private Runnable mainChronoRunnable;
+    private long startTimeMainChrono = 0; //temps inicial en milisegons
+    private boolean runningMainChrono = false; //estat del cronòmetre
+    long mainChronoElapsedTime=0; //temps transcorregut en milisegons
 
 
     /**
@@ -140,12 +141,20 @@ public class MainActivity extends AppCompatActivity  {
 
         // Carregar les dades del dia actual
         carregarDadesDia();
+
+        chrono=false;
+
+
     }
+
 
     /**
      * Configura la interfície d'usuari mapejant els elements a variables.
      */
     private void configurarUI() {
+        mainCronoTextView = findViewById(R.id.mainCronoTextView);
+        mainChronoTextViewTitle = findViewById(R.id.mainChronoTextViewTitle);
+        dateLayout = findViewById(R.id.dateLayout);
         dateTextView = findViewById(R.id.dateTextView);
         diaAnterior = findViewById(R.id.diaAnterior);
         diaPosterior = findViewById(R.id.diaPosterior);
@@ -212,11 +221,20 @@ public class MainActivity extends AppCompatActivity  {
 
             chrono = !chrono;
             if (chrono) {
-                Toast.makeText(MainActivity.this, "Chrono activat", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Chrono activat", Toast.LENGTH_SHORT).show();
+                startMainChrono();
                 btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30_carbassa, null, null);
+                mainChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
+                mainCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
+
+
+
             } else {
-                Toast.makeText(MainActivity.this, "Chrono desactivat", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Chrono desactivat", Toast.LENGTH_SHORT).show();
+                stopMainChrono();
                 btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30, null, null);
+                mainChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
+                mainCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
             }
         });
 
@@ -585,68 +603,12 @@ public class MainActivity extends AppCompatActivity  {
                 }
                 insertData(dateTextView.getText().toString(), dificultat, idZona, ifIntent, ifEscalfament, descansos);
 
-                //mostrar un alertdialog amb el cronometre si està activat
-                if(chrono){
-                    showChronoDialog();
-                }
+
                 resetInput();
             }
         });
     }
-    @SuppressLint("MissingInflatedId")
-    private void showChronoDialog() {
-        //inflem el layout del dialog
-        View cronoView = getLayoutInflater().inflate(R.layout.chrono_dialog, null);
-        TextView cronoTextView = cronoView.findViewById(R.id.cronoTextView);
-        Button btnStop = cronoView.findViewById(R.id.btnStop);
 
-        //creem i mostrem el dialog
-        cronoDialog = new AlertDialog.Builder(this)
-                .setView(cronoView)
-                .setCancelable(false)
-                .create();
-        cronoDialog.show();
-
-        //engeguem el cronometre
-        startCronometre(cronoTextView);
-
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cronoDialog.dismiss();
-                cronometre = false;
-            }
-        });
-    }
-
-    private void startCronometre(TextView cronoTextView) {
-        cronometre = true;
-        startTime = System.currentTimeMillis();
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (cronometre) {
-                    long elapsedTime = System.currentTimeMillis() - startTime;
-                    updateTimer(cronoTextView, elapsedTime);
-                    //tancar el crono després del temps establert
-                    if (elapsedTime >= MAX_TIME) {
-                        cronoDialog.dismiss();
-                        cronometre = false;
-                    } else {
-                        handler.postDelayed(this, 1000);
-                    }
-                }
-            }
-        }, 1000);
-    }
-
-    private void updateTimer(TextView cronoTextView, long elapsedTime) {
-        int segons = (int) (elapsedTime / 1000) %60;
-        int minuts = (int) ((elapsedTime / (1000 * 60)) % 60);
-        String temps = String.format("%02d:%02d", minuts, segons);
-        cronoTextView.setText(temps);
-    }
 
     /**
      * insertData
@@ -804,14 +766,74 @@ public class MainActivity extends AppCompatActivity  {
                 showError("Error al processar la data: " + e.getMessage());
             }
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
+            btnChrono.setVisibility(View.VISIBLE);
         } else {
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
             btnAvui.setVisibility(View.VISIBLE);
+            btnChrono.setVisibility(View.GONE);
+
         }
     }
 
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Inicia el cronòmetre principal i actualitza el TextView cada segon
+     * */
+    private void startMainChrono() {
+        if(!runningMainChrono){
+            startTimeMainChrono = System.currentTimeMillis()-mainChronoElapsedTime;//el crono continuarà sense resetejar-se
+            runningMainChrono = true;
+            // defineix el runnable que actualitza el crono cada segon
+            mainChronoRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (runningMainChrono) {
+                        mainChronoElapsedTime = System.currentTimeMillis() - startTimeMainChrono;
+                        updateMainChronoTextView(mainChronoElapsedTime);//actualitza el text del crono
+                        mainChronoHandler.postDelayed(this, 1000);
+                    }
+                }
+            };
+            //inicia el crono
+            mainChronoHandler.post(mainChronoRunnable);
+        }
+    }
+
+    /**
+     * Atura el cronòmetre principal
+     * */
+    private void stopMainChrono(){
+        if(runningMainChrono){
+            runningMainChrono = false;
+            mainChronoHandler.removeCallbacks(mainChronoRunnable);//atura el crono
+
+            // resetMainChrono();
+        }
+    }
+
+    /**
+     * Actualitza el TextView del cronòmetre principal
+     * @param elapsedTime - temps transcorregut en milisegons
+     * */
+    private void updateMainChronoTextView(long elapsedTime) {
+        long hours = elapsedTime / (1000 * 60 * 60);
+        long minutes = (elapsedTime % (1000 * 60 * 60)) / (1000 * 60);
+        long seconds = (elapsedTime % (1000 * 60)) / 1000;
+
+        //formata el temps en 00:00:00
+        String timeFormated = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        // Actualitza el TextView
+        mainCronoTextView.setText(timeFormated);
+    }
+    /**
+     * Reset del cronòmetre principal
+     * */
+    private void resetMainChrono(){
+        mainCronoTextView.setText("00:00:00");
+        startTimeMainChrono = 0;
     }
 
 }
