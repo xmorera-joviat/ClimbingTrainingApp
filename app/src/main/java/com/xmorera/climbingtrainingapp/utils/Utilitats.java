@@ -59,4 +59,6 @@ public class Utilitats {
         }
 
         return mitjana;
-    }}
+    }
+
+}

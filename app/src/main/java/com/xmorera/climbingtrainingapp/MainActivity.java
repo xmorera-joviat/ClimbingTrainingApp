@@ -38,8 +38,9 @@ import com.xmorera.climbingtrainingapp.climbingData.ClimbingDataAdapter;
 
 import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.resultats.Resultats;
+import com.xmorera.climbingtrainingapp.utils.BlinkHelper;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
-import com.xmorera.climbingtrainingapp.utils.Utilitats;
+//import com.xmorera.climbingtrainingapp.utils.Utilitats;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,11 +57,15 @@ import java.util.List;
  * */
 public class MainActivity extends AppCompatActivity  {
 
-    public static final int MAX_REST_CHRONO = 3599000; //temps màxim del crono parcial de descansos en milisegons (59':59")
+    //classe auxiliar per fer que un element del View faci pampallugues
+    private BlinkHelper blinkHelper;
+
+    //temps màxim del crono parcial de descansos en milisegons (59':59"), s'ha de configurar com una preferència
+    public static final int MAX_REST_CHRONO = 599000;
+
     // Elements de la interfície d'usuari
     private TextView dateTextView; //mostrar la data i mostrar la via seleccionada
     private Button diaAnterior, diaPosterior, btnAvui, btnChrono, btnResultats;
-    private LinearLayout dateLayout;
     private Spinner rocodromSpinner, descansosSpinner;
     private GridLayout zonesGrid;
     private LinearLayout entradaLayout, descansosLayout;
@@ -70,13 +75,14 @@ public class MainActivity extends AppCompatActivity  {
     private MenuItem menu_rocodroms;
 
     // Variables per gestionar la data
-    private Calendar calendar = Calendar.getInstance();
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private final Calendar calendar = Calendar.getInstance();
+    @SuppressLint("SimpleDateFormat")
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private String avui;
 
     // variables per a gestionar la selecció de zones i dificultats
     private HashMap<String, Integer> rocodromsHashMap;
-    private List<Button> botonsZona = new ArrayList<>();//llista per guardar els botons de zona que es generen en temps d'execució
+    private final List<Button> botonsZona = new ArrayList<>();//llista per guardar els botons de zona que es generen en temps d'execució
 
     // variables per gestionar les dades de l'escalaa
     private DatabaseHelper databaseHelper;
@@ -118,7 +124,6 @@ public class MainActivity extends AppCompatActivity  {
     private TextView restChronoTextViewTitle, restCronoTextView;
     private Handler restChronoHandler = new Handler();
     private Runnable restChronoRunnable;
-    //private long startTimeRestChrono = 0; //temps inicial en milisegons
     private boolean runningRestChrono = false; //estat del cronòmetre
 
     //booleana utilitzada per assegurar que no tanquem l'app per equivocació quan anem enrrere
@@ -157,8 +162,7 @@ public class MainActivity extends AppCompatActivity  {
         // Carregar les dades del dia actual
         carregarDadesDia();
 
-        chrono=false;
-
+        // Comportamet del botò enrrere
         setupBackPressHandler();
 
     }
@@ -212,7 +216,6 @@ public class MainActivity extends AppCompatActivity  {
      * Configura la interfície d'usuari mapejant els elements a variables.
      */
     private void configurarUI() {
-        dateLayout = findViewById(R.id.dateLayout);
         dateTextView = findViewById(R.id.dateTextView);
         diaAnterior = findViewById(R.id.diaAnterior);
         diaPosterior = findViewById(R.id.diaPosterior);
@@ -239,6 +242,11 @@ public class MainActivity extends AppCompatActivity  {
         // mapeig dels menús
         menu_rocodroms = findViewById(R.id.menu_rocodroms);
 
+        // instanciació del classe auxiliar per fer que un element del View faci pampallugues
+        blinkHelper = new BlinkHelper();
+
+        //inicialització del crono
+        chrono=false;
         //mapeig icones per l'activació del cronometre
         chrono30 = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30);
         chrono30_carbassa = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30_carbassa);
@@ -374,8 +382,7 @@ public class MainActivity extends AppCompatActivity  {
 
     /**
      * amaga o mostra el panell de dades introduïdes manualment
-     * @param 'View.GONE
-     * @param 'View.VISIBLE
+     * els valors introduits poden ser 'View.GONE o View.VISIBLE'
      * */
     private void visibilitatGraus(int visibilitat) {
         entradaLayout.setVisibility(visibilitat);
@@ -816,7 +823,8 @@ public class MainActivity extends AppCompatActivity  {
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
         viesDiaTextView.setText(String.valueOf(viesDia));
         metresDiaTextView.setText(String.valueOf(metresDia));
-        mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
+        //mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
+        mitjanaDiaTextView.setText(puntuacio.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
 
 
         // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
@@ -905,7 +913,7 @@ public class MainActivity extends AppCompatActivity  {
                 restChronoTextViewTitle.setVisibility(View.VISIBLE);
                 restCronoTextView.setVisibility(View.VISIBLE);
                 restCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.green));
-                stopBlinking(restCronoTextView);
+                blinkHelper.stopBlinking(restCronoTextView);
 
                 // defineix el runnable que actualitza el crono cada segon
                 restChronoRunnable = new Runnable() {
@@ -919,7 +927,7 @@ public class MainActivity extends AppCompatActivity  {
                                 updateRestChronoTextView(MAX_REST_CHRONO);
                                 //el posem de color vermell per indicar que ha passat el marge de temps i fa pampellugues
                                 restCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.red));
-                                startBlinking(restCronoTextView);
+                                blinkHelper.startBlinking(restCronoTextView);
 
                             }else {
                                 updateRestChronoTextView(restChronoElapsedTime);//actualitza el text del crono
@@ -962,47 +970,6 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
-    //////////////////////////////////////
-    ///
-    /// text que fa pampellugues
-    ///
-    //////////////////////////////////////
-    private Handler blinkHandler = new Handler();
-    private Runnable blinkRunnable;
-    private boolean isBlinking = false;
-
-    private void startBlinking(TextView textView) {
-        if (!isBlinking) {
-            isBlinking = true;
-
-            blinkRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (textView.getVisibility() == View.VISIBLE) {
-                        textView.setVisibility(View.INVISIBLE);
-                    } else {
-                       textView.setVisibility(View.VISIBLE);
-                    }
-                    // Reprograma el runnable per executar-se cada 500 mil·lisegons
-                    blinkHandler.postDelayed(this, 500);
-                }
-            };
-
-            // Inicia el pampallugueig
-            blinkHandler.post(blinkRunnable);
-        }
-
-    }
-
-    private void stopBlinking(TextView textView) {
-        if (isBlinking) {
-            isBlinking = false;
-            blinkHandler.removeCallbacks(blinkRunnable); // Atura el pampallugueig
-            textView.setVisibility(View.VISIBLE); // Assegura't que el TextView sigui visible
-        }
-    }
-
-    ///////////////////////////////////////////////////////////
 
     @Override
     protected void onDestroy() {
@@ -1015,6 +982,8 @@ public class MainActivity extends AppCompatActivity  {
         if (runningRestChrono) {
             stopRestChrono();
         }
+        // aturar elements que facin pampallugues
+        blinkHelper.cleanup();
     }
 
 }

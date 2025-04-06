@@ -97,4 +97,58 @@ public class Puntuacio {
         }
         return penalitzacio;
     }
+
+    // càlcul de la mitjana diaria de grau.
+    public String mitjanaGrau(Double mitjanaPuntsVies) {
+        
+        String mitjana = "---";
+        if (mitjanaPuntsVies >= getPunts("IV") && mitjanaPuntsVies < ((getPunts("IV") + getPunts("IV+")) / 2)) {
+            mitjana = "IV";
+        } else if (mitjanaPuntsVies >= ((getPunts("IV") + getPunts("IV+")) / 2) && mitjanaPuntsVies < ((getPunts("IV+") + getPunts("V")) / 2)){
+            mitjana = "IV+";
+        } else if (mitjanaPuntsVies >=((getPunts("IV+") + getPunts("V")) / 2) && mitjanaPuntsVies < ((getPunts("V") + getPunts("V+")) / 2)){
+            mitjana = "V";
+        } else if (mitjanaPuntsVies >=((getPunts("V") + getPunts("V+")) / 2) && mitjanaPuntsVies < ((getPunts("V+") + getPunts("6a")) / 2)){
+            mitjana = "V+";
+        } else if (mitjanaPuntsVies >=((getPunts("V+") + getPunts("6a")) / 2) && mitjanaPuntsVies < ((getPunts("6a") + getPunts("6a+")) / 2)){
+            mitjana = "6a";
+        } else if (mitjanaPuntsVies >=((getPunts("6a") + getPunts("6a+")) / 2) && mitjanaPuntsVies < ((getPunts("6a+") + getPunts("6b")) / 2)){
+            mitjana = "6a+";
+        } else if (mitjanaPuntsVies >=((getPunts("6a+") + getPunts("6b")) / 2) && mitjanaPuntsVies < ((getPunts("6b") + getPunts("6b+")) / 2)){
+            mitjana = "6b";
+        } else if (mitjanaPuntsVies >=((getPunts("6b") + getPunts("6b+")) / 2) && mitjanaPuntsVies < ((getPunts("6b+") + getPunts("6c")) / 2)){
+            mitjana = "6b+";
+        } else if (mitjanaPuntsVies >=((getPunts("6b+") + getPunts("6c")) / 2) && mitjanaPuntsVies < ((getPunts("6c") + getPunts("6c+")) / 2)){
+            mitjana = "6c";
+        } else if (mitjanaPuntsVies >=((getPunts("6c") + getPunts("6c+")) / 2) && mitjanaPuntsVies < ((getPunts("6c+") + getPunts("7a")) / 2)){
+            mitjana = "6c+";
+        } else if (mitjanaPuntsVies >=((getPunts("6c+") + getPunts("7a")) / 2) && mitjanaPuntsVies < ((getPunts("7a") + getPunts("7a+")) / 2)){
+            mitjana = "7a";
+        } else if (mitjanaPuntsVies >=((getPunts("7a") + getPunts("7a+")) / 2) && mitjanaPuntsVies < ((getPunts("7a+") + getPunts("7b")) / 2)){
+            mitjana = "7a+";
+        } else if (mitjanaPuntsVies >=((getPunts("7a+") + getPunts("7b")) / 2) && mitjanaPuntsVies < ((getPunts("7b") + getPunts("7b+")) / 2)){
+            mitjana = "7b";
+        } else if (mitjanaPuntsVies >=((getPunts("7b") + getPunts("7b+")) / 2) && mitjanaPuntsVies < ((getPunts("7b+") + getPunts("7c")) / 2)){
+            mitjana = "7b+";
+        } else if (mitjanaPuntsVies >=((getPunts("7b+") + getPunts("7c")) / 2) && mitjanaPuntsVies < ((getPunts("7c") + getPunts("7c+")) / 2)){
+            mitjana = "7c";
+        } else if (mitjanaPuntsVies >=((getPunts("7c") + getPunts("7c+")) / 2) && mitjanaPuntsVies < ((getPunts("7c+") + getPunts("8a")) / 2)){
+            mitjana = "7c+";
+        }  else if (mitjanaPuntsVies >=((getPunts("7c+") + getPunts("8a")) / 2) && mitjanaPuntsVies < ((getPunts("8a") + getPunts("8a+")) / 2)){
+            mitjana = "8a";
+        } else if (mitjanaPuntsVies >=((getPunts("8a") + getPunts("8a+")) / 2) && mitjanaPuntsVies < ((getPunts("8a+") + getPunts("8b")) / 2)){
+            mitjana = "8a+";
+        } else if (mitjanaPuntsVies >=((getPunts("8a+") + getPunts("8b")) / 2) && mitjanaPuntsVies < ((getPunts("8b") + getPunts("8b+")) / 2)){
+            mitjana = "8b";
+        } else if (mitjanaPuntsVies >=((getPunts("8b") + getPunts("8b+")) / 2) && mitjanaPuntsVies < ((getPunts("8b+") + getPunts("8c")) / 2)){
+            mitjana = "8b+";
+        } else if (mitjanaPuntsVies >=((getPunts("8b+") + getPunts("8c")) / 2) && mitjanaPuntsVies < ((getPunts("8c") + getPunts("8c+")) / 2)){
+            mitjana = "8c";
+        } else if (mitjanaPuntsVies >=((getPunts("8c") + getPunts("8c+")) / 2)){
+            mitjana = "8c+";
+        }
+
+        return mitjana;
+    }
+
 }
