@@ -40,7 +40,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.MPPointF;
 
 import com.xmorera.climbingtrainingapp.R;
-import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
+import com.xmorera.climbingtrainingapp.utils.Puntuacio;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
 

@@ -1,6 +1,4 @@
-package com.xmorera.climbingtrainingapp.climbingData;
-
-import android.util.Log;
+package com.xmorera.climbingtrainingapp.utils;
 
 import java.util.HashMap;
 import java.util.Map;

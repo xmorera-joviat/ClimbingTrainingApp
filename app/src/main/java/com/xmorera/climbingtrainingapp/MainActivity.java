@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -36,7 +35,7 @@ import com.xmorera.climbingtrainingapp.RocodromsZones.Rocodroms;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingData;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingDataAdapter;
 
-import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
+import com.xmorera.climbingtrainingapp.utils.Puntuacio;
 import com.xmorera.climbingtrainingapp.resultats.Resultats;
 import com.xmorera.climbingtrainingapp.utils.BlinkHelper;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
