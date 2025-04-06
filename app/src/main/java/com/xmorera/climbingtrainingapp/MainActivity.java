@@ -40,7 +40,6 @@ import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.resultats.Resultats;
 import com.xmorera.climbingtrainingapp.utils.BlinkHelper;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
-//import com.xmorera.climbingtrainingapp.utils.Utilitats;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -823,7 +822,6 @@ public class MainActivity extends AppCompatActivity  {
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
         viesDiaTextView.setText(String.valueOf(viesDia));
         metresDiaTextView.setText(String.valueOf(metresDia));
-        //mitjanaDiaTextView.setText(Utilitats.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
         mitjanaDiaTextView.setText(puntuacio.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
 
 

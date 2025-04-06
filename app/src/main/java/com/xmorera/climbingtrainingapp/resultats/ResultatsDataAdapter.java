@@ -13,15 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.xmorera.climbingtrainingapp.MainActivity;
 import com.xmorera.climbingtrainingapp.R;
-import com.xmorera.climbingtrainingapp.utils.Utilitats;
+import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 
 import java.util.List;
 
+/**
+ * Adapter per a mostrar una llista de resultats en un RecyclerView.
+ * Aquesta classe s'encarrega de crear i vincular les vistes per a cada element de la llista de resultats.
+ */
 public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdapter.ViewHolder> {
 
     private List<ResultatsData> resultatsDataList;
     private Context context;
 
+    /**
+     * Constructor de la classe ResultatsDataAdapter.
+     *
+     * @param context Context de l'activitat que utilitza aquest adapter.
+     * @param resultatsDataList Llista de dades de resultats a mostrar.
+     */
     public ResultatsDataAdapter(Context context, List<ResultatsData> resultatsDataList) {
         this.resultatsDataList = resultatsDataList;
         this.context = context;
@@ -36,12 +46,13 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
 
     @Override
     public void onBindViewHolder(@NonNull ResultatsDataAdapter.ViewHolder holder, int position) {
+        Puntuacio puntuacio = new Puntuacio();
         ResultatsData data = resultatsDataList.get(position);
         holder.dateTextView.setText(data.getDate());
         holder.viesTextView.setText(data.getVies());
         holder.puntuacioTextView.setText(data.getPuntuacio());
         holder.metresTextView.setText(data.getMetres());
-        holder.mitjanaTextView.setText(Utilitats.mitjanaGrau(data.getMitjana()));
+        holder.mitjanaTextView.setText(puntuacio.mitjanaGrau(data.getMitjana()));
 
         // Set an OnClickListener for the itemView
         holder.itemView.setOnClickListener(v -> {
@@ -62,6 +73,9 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         return resultatsDataList.size();
     }
 
+    /**
+     * Classe interna ViewHolder que manté les referències a les vistes per a cada element.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView dateTextView;
         TextView viesTextView;
@@ -69,6 +83,11 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         TextView metresTextView;
         TextView mitjanaTextView;
 
+        /**
+         * Constructor de la classe ViewHolder.
+         *
+         * @param itemView La vista de l'element que conté les referències a les vistes.
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.dateTextView);

@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,9 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.MarkerView;
@@ -46,7 +43,6 @@ import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.climbingData.Puntuacio;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
-import com.xmorera.climbingtrainingapp.utils.Utilitats;
 
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
