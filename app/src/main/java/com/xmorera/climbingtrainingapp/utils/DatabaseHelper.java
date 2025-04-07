@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "climbing_training.db";
-    private static final int DATABASE_VERSION = 7; // Incremented version
+    private static final int DATABASE_VERSION = 9; // Incremented version
     private static final int DATABASE_OLD_VERSION = DATABASE_VERSION+1;
 
     // Table names
@@ -17,6 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_ROCODROMS = "rocodroms";
     private static final String TABLE_ZONES = "zones";
     private static final String TABLE_RANKING = "ranking";
+    private static final String TABLE_SESSIONS = "sessions";
 
     // Columns for climbing_data
     private static final String COL_ID_CD = "ID_CD";
@@ -47,6 +48,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_VIES_RANKING = "VIES_RANKING";
     private static final String COL_METRES_RANKING = "METRES_RANKING";
     private static final String COL_MITJANA_RANKING = "MITJANA_RANKING"; //no es tenen en comte els intents, els descansos ni els escalfaments.
+
+    // Columnns for session
+    private static final String COL_ID_SESSION = "ID_SESSION";
+    private static final String COL_DATE_SESSION = "DATE_SESSION";
+    private static final String COL_NUM_SESSION = "NUM_SESSION";
+    private static final String COL_TEMPS_SESSION = "TEMPS_SESSION";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -90,12 +97,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_METRES_RANKING + " INTEGER, " +
                 COL_MITJANA_RANKING + " REAL)";
 
+        // Create session table
+        String createSessionTable = "CREATE TABLE " + TABLE_SESSIONS + " (" +
+                COL_ID_SESSION + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_DATE_SESSION + " TEXT, " +
+                COL_NUM_SESSION + " INTEGER, " +
+                COL_TEMPS_SESSION + " INTEGER)";
 
         // Execute the SQL statements to create the tables
         db.execSQL(createClimbingDataTable);
         db.execSQL(createRocodromsTable);
         db.execSQL(createZonesTable);
         db.execSQL(createRankingTable);
+        db.execSQL(createSessionTable);
 
         insertInitialDataRocodroms(db);
 
@@ -108,6 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROCODROMS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZONES);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_RANKING);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSIONS);
             onCreate(db);
 
         }
@@ -117,7 +132,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /////// CRUD CLIMBING_DATA /////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
     public boolean insertDataCD(String date, String dificultat, int zona, int ifIntent, int ifEscalfament, int descansos) {
         //canviem el format de la data abans d'introduir-la a SQLite
         String dateISO = DateConverter.convertCustomToISO(date);
@@ -213,8 +227,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * getUniqueDates
-     * @param startDate
-     * @param endDate
+     * @param startDate data inicial
+     * @param endDate data final
      * @return Cursor amb cada una de les dates que tenen dades entre les dates senyalades */
     public Cursor getUniqueDataCDDates(String startDate, String endDate){
         //canviem el format de la data abans d'introduir-la a SQLite
@@ -266,9 +280,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM "+TABLE_ROCODROMS, new String[]{});
     }
 
-    public Integer deleteRocodrom(int id){
+    public void deleteRocodrom(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_ROCODROMS, COL_ID_ROCO+" = ?", new String[]{String.valueOf(id)});
+        db.delete(TABLE_ROCODROMS, COL_ID_ROCO + " = ?", new String[]{String.valueOf(id)});
     }
 
     public boolean updateRocodrom(int id, String nomRocodrom, String nomRocodromReduit, String poblacio){
@@ -335,7 +349,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //////  CRUD RANKING  //////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public boolean insertRanking(String dateRanking, double puntsRanking, double puntsRankingGrau, int viesRanking, int viesRankingGrau, int metresRanking){
+    public boolean insertRanking(String dateRanking, double puntsRanking, double puntsRankingGrau,
+                                 int viesRanking, int viesRankingGrau, int metresRanking){
         if (puntsRanking == 0 || viesRanking == 0 || metresRanking == 0){
             return false;
         } else {
@@ -353,7 +368,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateRanking(int id, String dateRanking, double puntsRanking, double puntsRankingGrau, int viesRanking, int viesRankingGrau, int metresRanking) {
+    public boolean updateRanking(int id, String dateRanking, double puntsRanking, double puntsRankingGrau,
+                                 int viesRanking, int viesRankingGrau, int metresRanking) {
         String dateRankingISO = DateConverter.convertCustomToISO(dateRanking);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -437,7 +453,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_RANKING, COL_ID_RANKING+" = ?", new String[]{String.valueOf(id)});
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /////// CRUD SESSION ///////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * insertSession
+     * inserir el nombre de milisegons corresponents a una sessió d'entrenament
+     * @param dateSession data de la sessió
+     * @param tempsSession temps de la sessió donat en milisegons
+     * */
+    public boolean insertSession(String dateSession, int numSession, double tempsSession){
+        String dateSessionISO = DateConverter.convertCustomToISO(dateSession);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_DATE_SESSION, dateSessionISO);
+        contentValues.put(COL_NUM_SESSION, numSession);
+        contentValues.put(COL_TEMPS_SESSION, tempsSession);
+        long result = db.insert(TABLE_SESSIONS, null, contentValues);
+        db.close();
+        return result != -1;
+    }
+
+    public boolean updateSession(int id, String dateSession, int numSession, double tempsSession){
+        String dateSessionISO = DateConverter.convertCustomToISO(dateSession);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_DATE_SESSION, dateSessionISO);
+        contentValues.put(COL_NUM_SESSION, numSession);
+        contentValues.put(COL_TEMPS_SESSION, tempsSession);
+        int result = db.update(TABLE_SESSIONS, contentValues, COL_ID_SESSION+" = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return result > 0;
+    }
+
+    public Integer deleteSession(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_SESSIONS, COL_ID_SESSION+" = ?", new String[]{String.valueOf(id)});
+    }
+
+    public Cursor getSessionById(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+ TABLE_SESSIONS +" WHERE "+COL_ID_SESSION+" = ?", new String[]{String.valueOf(id)});
+    }
+
+    public Cursor getSessionByDate(String date){
+        String dateISO = DateConverter.convertCustomToISO(date);
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+ TABLE_SESSIONS +" WHERE "+COL_DATE_SESSION+" = ?", new String[]{dateISO});
+    }
+
+    public Cursor getAllSessions() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM "+ TABLE_SESSIONS +" ORDER BY "+COL_ID_SESSION+" DESC", new String[]{});
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //////  introducció de dades inicials  /////////////////////////////////////////////////////////

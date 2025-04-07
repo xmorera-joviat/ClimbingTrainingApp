@@ -452,6 +452,7 @@
             android:background="@android:color/darker_gray" />
 
         <LinearLayout
+            android:id="@+id/cronometreDiaLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -463,17 +464,17 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/mainChronoTextViewTitle"
+                    android:id="@+id/sessionChronoTextViewTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sessió:"
+                    android:text="Sessió:"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:gravity="center"
                     android:layout_gravity="center"/>
 
                 <TextView
-                    android:id="@+id/mainCronoTextView"
+                    android:id="@+id/sessionCronoTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="26sp"
@@ -484,14 +485,39 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/dayChronoTextViewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total dia:"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/dayCronoTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="26sp"
+                    android:gravity="left"
+                    android:text="--:--"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="/"
+                android:text="|"
                 android:textSize="36sp"
                 android:textStyle="bold"
                 android:gravity="center" />
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -527,13 +553,66 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/sessionsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/sessions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sessions: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/sessionsNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:gravity="left"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/sessionsTempsTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Temps total: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/sessionsCronoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:gravity="left"
+                android:text="--:--"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+
         <View
             android:id="@+id/separadorChrono"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
             android:background="@android:color/darker_gray" />
-
 
         <LinearLayout
             android:id="@+id/puntuacioMitjanaDiaLayout"
@@ -640,8 +719,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp" />
-
-
 
 
     </LinearLayout>

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="AnalysisUIOptions">
     <option name="ANALYZE_TEST_SOURCES" value="false" />
-    <option name="SCOPE_TYPE" value="3" />
     <option name="CUSTOM_SCOPE_NAME" value="All Places" />
   </component>
   <component name="AndroidLayouts">
@@ -77,12 +76,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.6.2.2&#10;&#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/BlinkHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/Utilitats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/Utilitats.java" afterDir="false" />
+    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.6.2.2.2&#10;&#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;---&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DatabaseHelper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +88,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\user\.android\avd\Pixel_8a.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\user\.android\avd\Pixel_6a_API_29.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -224,6 +219,7 @@
       <recent name="com.xmorera.climbingtrainingapp" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\EscolaJoviat\AndroidStudioProjects\ClimbingTrainingApp\app\src\main\java\com\xmorera\climbingtrainingapp\utils" />
       <recent name="D:\EscolaJoviat\AndroidStudioProjects\ClimbingTrainingApp\app\src\main\res\drawable" />
       <recent name="D:\EscolaJoviat\AndroidStudioProjects\ClimbingTrainingApp\app\src\main\res\values" />
     </key>
@@ -231,9 +227,9 @@
       <recent name="com.xmorera.climbingtrainingapp" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.xmorera.climbingtrainingapp.utils" />
       <recent name="com.xmorera.climbingtrainingapp.resultats" />
       <recent name="com.xmorera.climbingtrainingapp.climbingData" />
-      <recent name="com.xmorera.climbingtrainingapp.utils" />
     </key>
     <key name="android.template.1443294665">
       <recent name="com.xmorera.climbingtrainingapp.RocodromsZones" />
@@ -450,30 +446,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734782226824</updated>
-    </task>
-    <task id="LOCAL-00051" summary="versió 0.4.1.1&#10;&#10;---&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;- per fer:&#10;* visibilitat dels gràfics&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
-      <option name="closed" value="true" />
-      <created>1736446228785</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1736446228785</updated>
-    </task>
-    <task id="LOCAL-00052" summary="versió 0.4.1.1&#10;* visualitzar la data en fer clic a un registre del gràfic&#10;&#10;---&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
-      <option name="closed" value="true" />
-      <created>1736449342095</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1736449342095</updated>
-    </task>
-    <task id="LOCAL-00053" summary="versió 0.4.2&#10;* en fer click a la data d'un resultat veure el dia en la pàgina principal&#10;&#10;** controlar que no es puguin entrar dades per no provocar un error: per exemple tornant a l'activity de resultats o mostrant un dialog dient que no estas a la data actual (MainActivity onResume i onPause)&#10;&#10;---&#10;&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
-      <option name="closed" value="true" />
-      <created>1736458453215</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1736458453215</updated>
     </task>
     <task id="LOCAL-00054" summary="versió 0.4.2.1&#10;* en fer click a la data d'un resultat veure el dia en la pàgina principal&#10;* informar quan la data seleccionada no sigui la data actual&#10;&#10;&#10;---&#10;*mostrar la mitjana de grau en els resultats&#10;&#10;* Expotra/Importar&#10;* botó per obrir nova sessió&#10;&#10;* idiomes&#10;* configuració per diferents rocòdroms&#10;* possibilitat de gravar vídeos">
       <option name="closed" value="true" />
@@ -843,7 +815,31 @@
       <option name="project" value="LOCAL" />
       <updated>1743889921775</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="versió 0.6.2.2&#10;&#10;trasllat mètode de càlcul de mitjana a la classe Puntuació enlloc de Utilitats&#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1743966695962</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1743966695962</updated>
+    </task>
+    <task id="LOCAL-00101" summary="versió 0.6.2.2.0&#10;optimitzacions documentació javadoc &#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1743968074867</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1743968074867</updated>
+    </task>
+    <task id="LOCAL-00102" summary="versió 0.6.2.2.1&#10;trasllat classe Puntuacio a paquet utils&#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1743968293310</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1743968293310</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -886,9 +882,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="versió 0.5.0.5.2&#10;* revisar CRUDS&#10;&#10;---&#10;* revisar dades per entrar a la BD&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;&#10;&#10;-----&#10;* mostrar la població en el spinner&#10;&#10;* indicar si una via es neta o intent/descansos&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
-    <MESSAGE value="versió 0.5.0.5.4&#10;* entrar dades a la BD&#10;* mostrar nom reduit del roco a la zona&#10;* mostrar la població en el spinner&#10;&#10;---&#10;* indicar(color) si una via es neta o intent/descansos&#10;* mida puntuació via + gran&#10;&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
-    <MESSAGE value="versió 0.5.0.6&#10;* indicar(color) si una via es neta o intent/descansos&#10;* mida puntuació via + gran&#10;---&#10;* Mostrar resultats&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.0.7&#10;* Mostrar resultats&#10;&#10;---&#10;&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.1&#10;* creació de botons per accedir a la gestió de rocòdroms i zones&#10;&#10;---&#10;* Gestió de rocodroms i zones&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.1.0&#10;* error en el càlcul de punts de la activity resultats(solucionat)&#10;* actualització mètode de l'etiqueta del gràfic)&#10;&#10;---&#10;* nova taula per guardar els resultats diaris per als rànquings&#10;* en la gràfica modificar CustomMarkerView per mostrar el valor del punt seleccionat i controlar que si està a la dreta de la pantalla es mostri correctament&#10;* eliminar les preferències i el menú&#10;* gestió de fragments&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
@@ -911,7 +904,10 @@
     <MESSAGE value="versió 0.6.1.1&#10;&#10;* nou càlcul de la mitjana del grau diari *&#10;---&#10;&#10;* taula puntuació graus&#10;&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.6.2&#10;&#10;* cronometre de sessió i de descans (en procés)&#10;---&#10;* implementar crono de descans&#10;* afegir cronos a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.6.2.1&#10;&#10;* tancament de l'aplicació amb dos clics del botó enrere per evitar sortir accidentalment&#10;* cronometre de sessió i de descans (en procés)&#10;---&#10;* implementar crono de descans&#10;* afegir cronos a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
-    <option name="LAST_COMMIT_MESSAGE" value="versió 0.6.2.1&#10;&#10;* tancament de l'aplicació amb dos clics del botó enrere per evitar sortir accidentalment&#10;* cronometre de sessió i de descans (en procés)&#10;---&#10;* implementar crono de descans&#10;* afegir cronos a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.6.2.2&#10;&#10;trasllat mètode de càlcul de mitjana a la classe Puntuació enlloc de Utilitats&#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.6.2.2.0&#10;optimitzacions documentació javadoc &#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.6.2.2.1&#10;trasllat classe Puntuacio a paquet utils&#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <option name="LAST_COMMIT_MESSAGE" value="versió 0.6.2.2.1&#10;trasllat classe Puntuacio a paquet utils&#10;---&#10;&#10;* afegir crono a la base de dades (inserció, actualització i recuperació)&#10;&#10;* versió demo, limitada en temps o en nombre de ies&#10;* taula puntuació graus&#10;* apartat de ressenyes de vies en roca&#10;&#10;&#10;optimització organització i documentació del codi&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">

@@ -110,12 +110,19 @@ public class MainActivity extends AppCompatActivity  {
     Drawable chrono30;
     Drawable chrono30_carbassa;
 
-    private TextView mainChronoTextViewTitle, mainCronoTextView;
+    private LinearLayout cronometreDiaLayout;
+    private LinearLayout sessionsLayout;
+
+    private TextView sessionChronoTextViewTitle, sessionCronoTextView, dayChronoTextView;
+    private TextView sessionsNum, sessionsCronoTextView;
     private Handler mainChronoHandler = new Handler();
     private Runnable mainChronoRunnable;
-    private long startTimeMainChrono = 0; //temps inicial en milisegons
+    private long totalDayTimeMainChrono = 0; //temps inicial en milisegons
+    private long sessionTimeMainChrono = 0;
     private boolean runningMainChrono = false; //estat del cronòmetre
-    long mainChronoElapsedTime=0; //temps transcorregut en milisegons
+    private long mainDayChronoElapsedTime =0; //temps total transcorregut en milisegons
+    private long sessionChronoElapsedTime = 0; //temps de la sessió en milisegons
+    private int numSession = 0; //numero de sessión d'entrenament del dia
 
     // crono parcial (descans)
     private boolean allowRestChrono; //si la data és la del dia actual activaem el crono dels descansos
@@ -250,10 +257,17 @@ public class MainActivity extends AppCompatActivity  {
         chrono30_carbassa = ContextCompat.getDrawable(MainActivity.this, R.drawable.chrono30_carbassa);
 
         //cronometres
-        mainCronoTextView = findViewById(R.id.mainCronoTextView);
-        mainChronoTextViewTitle = findViewById(R.id.mainChronoTextViewTitle);
+        sessionCronoTextView = findViewById(R.id.sessionCronoTextView);
+        sessionChronoTextViewTitle = findViewById(R.id.sessionChronoTextViewTitle);
         restCronoTextView = findViewById(R.id.restCronoTextView);
         restChronoTextViewTitle = findViewById(R.id.restChronoTextViewTitle);
+        dayChronoTextView = findViewById(R.id.dayCronoTextView);
+        sessionsNum = findViewById(R.id.sessionsNum);
+        sessionsCronoTextView = findViewById(R.id.sessionsCronoTextView);
+
+        //Layouts dels cronos
+        cronometreDiaLayout = findViewById(R.id.cronometreDiaLayout);
+        sessionsLayout = findViewById(R.id.sessionsLayout);
     }
 
     /**
@@ -293,14 +307,13 @@ public class MainActivity extends AppCompatActivity  {
             if (chrono) {
                 startMainChrono();
                 btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30_carbassa, null, null);
-                mainChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
-                mainCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
+                sessionChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
+                sessionCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
             } else {
                 stopMainChrono();
                 btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30, null, null);
-                mainChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
-                mainCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
-
+                sessionChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
+                sessionCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
             }
         });
 
@@ -815,7 +828,6 @@ public class MainActivity extends AppCompatActivity  {
             }
         }
 
-
         //notifiquem a l'adaptador que hi ha hagut canvis i que ha de refrescar els valors
         climbingDataAdapter.notifyDataSetChanged();
         puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
@@ -823,8 +835,35 @@ public class MainActivity extends AppCompatActivity  {
         metresDiaTextView.setText(String.valueOf(metresDia));
         mitjanaDiaTextView.setText(puntuacio.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
 
+        /// ////////////////////////////////////////////////////////////////////////////////////////
+        // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color
+        // del botó per a informar i evitar entrades errònies
+        /// ////////////////////////////////////////////////////////////////////////////////////////
 
-        // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color del botó per a informar i evitar entrades errònies
+        // mostrem el nombre de sessions i temps d'entrenament de la jornada
+        int numSessions = 0;
+        long tempsEntrenamentUltimaSessio = 0;
+        long tempsEntrenamentTotal = 0;
+        Cursor cursorSessions = null;
+
+        try {
+            cursorSessions = databaseHelper.getSessionByDate(dateTextView.getText().toString());
+            if (cursorSessions != null){
+                while (cursorSessions.moveToNext()){
+                    numSessions++;
+                    tempsEntrenamentUltimaSessio= cursorSessions.getLong(cursorSessions.getColumnIndexOrThrow("TEMPS_SESSION"));
+                    tempsEntrenamentTotal += tempsEntrenamentUltimaSessio;
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            showError("Error al carregar dades de les sessions: " + e.getMessage());
+        } finally {
+            if (cursorSessions != null){
+                cursorSessions.close();
+            }
+        }
+
         if (dateTextView.getText().toString().equals(avui)) {
             try {
                 calendar.setTime(dateFormat.parse(avui));
@@ -834,13 +873,20 @@ public class MainActivity extends AppCompatActivity  {
             }
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
             btnChrono.setVisibility(View.VISIBLE);
+            cronometreDiaLayout.setVisibility(View.VISIBLE);
+            sessionsLayout.setVisibility(View.GONE);
             allowRestChrono = true;
+            //mostrem el nombre de sessions, el temps de l'última i el temps total del dia
+            updateSessionChronosTextViews(numSessions, tempsEntrenamentUltimaSessio, tempsEntrenamentTotal);
         } else {
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
             btnAvui.setVisibility(View.VISIBLE);
             btnChrono.setVisibility(View.GONE);
+            cronometreDiaLayout.setVisibility(View.GONE);
+            sessionsLayout.setVisibility(View.VISIBLE);
             allowRestChrono = false;
-
+            //carreguem les sessions del dia i el temps total del dia
+            updateSessionsDiaTextViews(numSessions, tempsEntrenamentTotal);
         }
     }
 
@@ -853,15 +899,18 @@ public class MainActivity extends AppCompatActivity  {
      * */
     private void startMainChrono() {
         if(!runningMainChrono){
-            startTimeMainChrono = System.currentTimeMillis()-mainChronoElapsedTime;//el crono continuarà sense resetejar-se
+            numSession += 1;
+            totalDayTimeMainChrono = System.currentTimeMillis()- mainDayChronoElapsedTime;//el crono continuarà sense resetejar-se, comptabilitzant el total diari
+            sessionTimeMainChrono = System.currentTimeMillis();//el crono es reseteja per comptabilitzar la sessió actual
             runningMainChrono = true;
             // defineix el runnable que actualitza el crono cada segon
             mainChronoRunnable = new Runnable() {
                 @Override
                 public void run() {
                     if (runningMainChrono) {
-                        mainChronoElapsedTime = System.currentTimeMillis() - startTimeMainChrono;
-                        updateMainChronoTextView(mainChronoElapsedTime);//actualitza el text del crono
+                        mainDayChronoElapsedTime = System.currentTimeMillis() - totalDayTimeMainChrono;
+                        sessionChronoElapsedTime = System.currentTimeMillis() - sessionTimeMainChrono;
+                        updateSessionChronosTextViews(numSession, sessionChronoElapsedTime, mainDayChronoElapsedTime);//actualitza el text del crono
                         mainChronoHandler.postDelayed(this, 1000);
                     }
                 }
@@ -880,22 +929,52 @@ public class MainActivity extends AppCompatActivity  {
             mainChronoHandler.removeCallbacks(mainChronoRunnable);//atura el crono
             //si parem el crono principal també pararem el crono de descansos
             stopRestChrono();
+            // guardem el temps de la sessió actual i el nombre de sessió
+            insertSession(numSession, sessionChronoElapsedTime);
         }
     }
 
+    private void insertSession(int numSessio, long elapsedSessionTime) {
+        databaseHelper.insertSession(dateTextView.getText().toString(), numSessio, elapsedSessionTime);
+    }
+
     /**
-     * Actualitza el TextView del cronòmetre principal
-     * @param elapsedTime - temps transcorregut en milisegons
+     * Actualitza el TextView del cronòmetre de sessió
+     * @param elapsedSessionTime - temps transcorregut en milisegons
      * */
-    private void updateMainChronoTextView(long elapsedTime) {
-        long hours = elapsedTime / (1000 * 60 * 60);
-        long minutes = (elapsedTime % (1000 * 60 * 60)) / (1000 * 60);
-        long seconds = (elapsedTime % (1000 * 60)) / 1000;
+    private void updateSessionChronosTextViews(int numSessio, long elapsedSessionTime, long elapsedTotalTime) {
+        //crono de sessió
+        long hoursS = elapsedSessionTime / (1000 * 60 * 60);
+        long minutesS = (elapsedSessionTime % (1000 * 60 * 60)) / (1000 * 60);
+        long secondsS = (elapsedSessionTime % (1000 * 60)) / 1000;
 
         //formata el temps en 00:00:00
-        String timeFormated = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-        // Actualitza el TextView
-        mainCronoTextView.setText(timeFormated);
+        String timeSessionFormated = String.format("%02d:%02d:%02d", hoursS, minutesS, secondsS);
+        // Actualitza els TextView
+        sessionChronoTextViewTitle.setText("Sessio: "+numSessio);
+        sessionCronoTextView.setText(timeSessionFormated);
+
+        //crono total diari
+        long hoursT = elapsedTotalTime / (1000 * 60 * 60);
+        long minutesT = (elapsedTotalTime % (1000 * 60 * 60)) / (1000 * 60);
+        String timeTotalFormated = String.format("%02d:%02d", hoursT, minutesT);
+        dayChronoTextView.setText(timeTotalFormated);
+    }
+
+    /**
+     * Actualitza el TextView del cronòmetre de sessió
+     * @param elapsedTotalTime - temps transcorregut en milisegons
+     * */
+    private void  updateSessionsDiaTextViews(int numSessio, long elapsedTotalTime) {
+        //crono de sessió
+        long hoursS = elapsedTotalTime / (1000 * 60 * 60);
+        long minutesS = (elapsedTotalTime % (1000 * 60 * 60)) / (1000 * 60);
+
+        //formata el temps en 00:00
+        String timeSessionFormated = String.format("%02d:%02d", hoursS, minutesS);
+        // Actualitza els TextView
+        sessionsNum.setText(String.valueOf(numSessio));
+        sessionsCronoTextView.setText(timeSessionFormated);
     }
 
     /**
