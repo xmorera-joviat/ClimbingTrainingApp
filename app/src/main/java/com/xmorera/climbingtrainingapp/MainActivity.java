@@ -52,7 +52,9 @@ import java.util.List;
  * a les vies realitzades en funció de la seva dificultat i llargada
  *
  * @author Xavier Morera
- * */
+ * @version 0.6
+ *
+ */
 public class MainActivity extends AppCompatActivity  {
 
     //classe auxiliar per fer que un element del View faci pampallugues
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity  {
     private HashMap<String, Integer> rocodromsHashMap;
     private final List<Button> botonsZona = new ArrayList<>();//llista per guardar els botons de zona que es generen en temps d'execució
 
-    // variables per gestionar les dades de l'escalaa
+    // variables per gestionar les dades de l'escalada
     private DatabaseHelper databaseHelper;
     private ClimbingDataAdapter climbingDataAdapter;
     private List<ClimbingData> climbingDataList;
@@ -96,8 +98,13 @@ public class MainActivity extends AppCompatActivity  {
     double puntuacioGrauDia; // s'utilitza per a calcular la mitjana de grau de la sessió
 
     //variables per a entrar les dades a la base de dades
-    private int idZona, alturaZona, esCorda, ifIntent, ifEscalfament, descansos, rocodromZona;
-    private String nomZona, dificultat;
+    private int idZona;
+    private int esCorda;
+    private int ifIntent;
+    private int ifEscalfament;
+    private int descansos;
+    private int rocodromZona;
+    private String dificultat;
 
     // elements per mostrar els resultat diaris
     private TextView viesDiaTextView, metresDiaTextView, mitjanaDiaTextView, puntuacioDiaTextView;
@@ -115,7 +122,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private TextView sessionChronoTextViewTitle, sessionCronoTextView, dayChronoTextView;
     private TextView sessionsNum, sessionsCronoTextView;
-    private Handler mainChronoHandler = new Handler();
+    private final Handler mainChronoHandler = new Handler();
     private Runnable mainChronoRunnable;
     private long totalDayTimeMainChrono = 0; //temps inicial en milisegons
     private long sessionTimeMainChrono = 0;
@@ -127,7 +134,7 @@ public class MainActivity extends AppCompatActivity  {
     // crono parcial (descans)
     private boolean allowRestChrono; //si la data és la del dia actual activaem el crono dels descansos
     private TextView restChronoTextViewTitle, restCronoTextView;
-    private Handler restChronoHandler = new Handler();
+    private final Handler restChronoHandler = new Handler();
     private Runnable restChronoRunnable;
     private boolean runningRestChrono = false; //estat del cronòmetre
 
@@ -394,6 +401,7 @@ public class MainActivity extends AppCompatActivity  {
     /**
      * amaga o mostra el panell de dades introduïdes manualment
      * els valors introduits poden ser 'View.GONE o View.VISIBLE'
+     * @param visibilitat que representa l'element quevolem mostrar o amagar
      * */
     private void visibilitatGraus(int visibilitat) {
         entradaLayout.setVisibility(visibilitat);
@@ -761,8 +769,8 @@ public class MainActivity extends AppCompatActivity  {
                     int ifIntent = cursor.getInt(cursor.getColumnIndexOrThrow("IFINTENT"));
                     int ifEscalfament = cursor.getInt(cursor.getColumnIndexOrThrow("IFESCALFAMENT"));
                     int descansos = cursor.getInt(cursor.getColumnIndexOrThrow("DESCANSOS"));
-                    nomZona = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ZONA"));
-                    alturaZona = cursor.getInt(cursor.getColumnIndexOrThrow("ALTURA_ZONA"));
+                    String nomZona = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ZONA"));
+                    int alturaZona = cursor.getInt(cursor.getColumnIndexOrThrow("ALTURA_ZONA"));
                     String nomCurtRocodrom = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ROCO_REDUIT"));
 
                     nomZona = nomZona + " (" + nomCurtRocodrom + ")";
@@ -878,6 +886,11 @@ public class MainActivity extends AppCompatActivity  {
             allowRestChrono = true;
             //mostrem el nombre de sessions, el temps de l'última i el temps total del dia
             updateSessionChronosTextViews(numSessions, tempsEntrenamentUltimaSessio, tempsEntrenamentTotal);
+
+            //fem les següents assignacions per poder re-empendre les sessions del dia actual si hem sortit del programa
+            numSession=numSessions;
+            mainDayChronoElapsedTime=tempsEntrenamentTotal;
+
         } else {
             dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
             btnAvui.setVisibility(View.VISIBLE);
