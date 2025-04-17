@@ -1,6 +1,7 @@
 package com.xmorera.climbingtrainingapp;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity  {
     Drawable chrono30;
     Drawable chrono30_carbassa;
 
+    private LinearLayout rocodromLayout;
     private LinearLayout cronometreDiaLayout;
     private LinearLayout sessionsLayout;
 
@@ -145,7 +147,15 @@ public class MainActivity extends AppCompatActivity  {
     //booleana utilitzada per assegurar que no tanquem l'app per equivocació quan anem enrrere
     private boolean doubleBackToExitPressedOnce = false;
 
+    /// /* /////////////////////////////////////////////////////////////////////////////////////////
+    /// versió demo ////////////////////////////////////////////////////////////////////////////////
+    /// definició de constants /////////////////////////////////////////////////////////////////////
+    private static final int DEMO_DURATION_DAYS = 30;
+    private static final String PREFS_DEMO = "DemoPrefs";
+    private static final String KEY_START_DATE ="startDate";
+    long startDateMillis=0;
 
+    /// *///////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * onCreate
@@ -162,6 +172,8 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+
 
         // Configuració de la interfície d'usuari
         configurarUI();
@@ -181,7 +193,53 @@ public class MainActivity extends AppCompatActivity  {
         // Comportamet del botò enrrere
         setupBackPressHandler();
 
+        /// /* /////////////////////////////////////////////////////////////////////////////////////
+        /// versió demo ////////////////////////////////////////////////////////////////////////////
+        /// Comprovar si s'ha iniciat la demo //////////////////////////////////////////////////////
+        SharedPreferences prefsDemo = getSharedPreferences(PREFS_DEMO, MODE_PRIVATE);
+        startDateMillis = prefsDemo.getLong(KEY_START_DATE, 0);
+
+        if (startDateMillis == 0) {
+            //iniciar la demo ara
+            startDateMillis = System.currentTimeMillis();
+            prefsDemo.edit().putLong(KEY_START_DATE, startDateMillis).apply();
+        }
+        if(isDemoExpired(startDateMillis)) {
+            // notificar
+            showDemoExpiredDialog();
+        }
+
+        /// */ /////////////////////////////////////////////////////////////////////////////////////
+
     }
+
+    /// /* /////////////////////////////////////////////////////////////////////////////////////////
+    private boolean isDemoExpired(long startDateMillis) {
+        long currentTimeMillis = System.currentTimeMillis();
+        long demoEndTimeMillis = startDateMillis + (DEMO_DURATION_DAYS * 24 * 60 * 60 * 1000L); // 30 days in milliseconds
+        return currentTimeMillis > demoEndTimeMillis;
+    }
+    /// */ /////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /// *///////////////////////////////////////////////////////////////////////////////////////////
+    private void showDemoExpiredDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Demo Expired")
+                .setMessage("Your demo period has expired. You can no longer enter new data. Please upgrade to the full version to continue using the app.")
+                .setPositiveButton("OK", (dialog, which) -> {
+                    // Redirect to upgrade page or perform an action
+                    // For example, you can start a new activity or open a URL
+                   // Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://your-upgrade-url.com"));
+                   // startActivity(intent);
+                })
+                //.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setCancelable(false) // Prevents the dialog from being dismissed by tapping outside
+                .show();
+    }
+    /// /* /////////////////////////////////////////////////////////////////////////////////////////
+
+
 
     /**
      * setupBackPressHandler
@@ -249,8 +307,10 @@ public class MainActivity extends AppCompatActivity  {
         puntuacioDiaTextView = findViewById(R.id.puntuacioDiaTextView);
         chkIntent = findViewById(R.id.chkIntent);
         chkEscalfament = findViewById(R.id.chkEscalfament);
+        rocodromLayout = findViewById(R.id.rocodromLayout);
 
         // Configuració de la visibilitat dels layouts
+        rocodromLayout.setVisibility(View.VISIBLE);
         entradaLayout.setVisibility(View.GONE);
         descansosLayout.setVisibility(View.GONE);
 
@@ -754,6 +814,17 @@ public class MainActivity extends AppCompatActivity  {
         introduirDadesRankingDadesDia();
         actualitzarUIDadesDia();
         gestionarDataActualDadesDia();
+        /// */ /////////////////////////////////////////////////////////////////////////////////////
+        /// si la demo ha caducat mostrar el missatge informatiu i desactivar l'entrada de dades
+        // comprovar si la demo ha expirat
+        if(isDemoExpired(startDateMillis)) {
+            // restringir l'entrada de dades
+            entradaLayout.setVisibility(View.GONE);
+            btnChrono.setVisibility(View.GONE);
+            rocodromLayout.setVisibility(View.GONE);
+        } else {
+            rocodromLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -769,7 +840,7 @@ public class MainActivity extends AppCompatActivity  {
         int numSessions = (int) dadesSessionsDia.get("sessions");
         long tempsEntrenamentUltimaSessio = (long) dadesSessionsDia.get("tempsUltimaSessio");
         long tempsEntrenamentTotal = (long) dadesSessionsDia.get("tempsTotalDia");
-
+        numSessio = numSessions;
         if (dateTextView.getText().toString().equals(avui)) {
             try {
                 calendar.setTime(dateFormat.parse(avui));
@@ -1036,8 +1107,8 @@ public class MainActivity extends AppCompatActivity  {
                                 blinkHelper.startBlinking(restCronoTextView);
 
                             }//else {
-                              //  updateRestChronoTextView(restChronoElapsedTime);//actualitza el text del crono
-                              //  restChronoHandler.postDelayed(this, 1000);
+                            //  updateRestChronoTextView(restChronoElapsedTime);//actualitza el text del crono
+                            //  restChronoHandler.postDelayed(this, 1000);
                             //}
                         }
                     }
