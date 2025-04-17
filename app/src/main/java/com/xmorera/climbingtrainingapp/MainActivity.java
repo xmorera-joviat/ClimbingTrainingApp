@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity  {
     /// /* /////////////////////////////////////////////////////////////////////////////////////////
     /// versió demo ////////////////////////////////////////////////////////////////////////////////
     /// definició de constants /////////////////////////////////////////////////////////////////////
-    private static final int DEMO_DURATION_DAYS = 30;
+    private int demoDurationDays = 30;
     private static final String PREFS_DEMO = "DemoPrefs";
     private static final String KEY_START_DATE ="startDate";
     long startDateMillis=0;
@@ -198,6 +199,16 @@ public class MainActivity extends AppCompatActivity  {
         /// Comprovar si s'ha iniciat la demo //////////////////////////////////////////////////////
         SharedPreferences prefsDemo = getSharedPreferences(PREFS_DEMO, MODE_PRIVATE);
         startDateMillis = prefsDemo.getLong(KEY_START_DATE, 0);
+        //recuperar els dies de demo
+        /// ////////////////////////////////////////////////////////////////////////////////////////
+        /// per incrementar els dies de demo modificar la BBDD en viu des de l'app Inspection
+        ///  fins que no s'implementi un mètode d'autenticació d'usuaris
+        /// ////////////////////////////////////////////////////////////////////////////////////////
+        Cursor cursor = databaseHelper.getDemoById(1);
+        if (cursor != null && cursor.moveToFirst()) {
+            demoDurationDays = cursor.getInt(cursor.getColumnIndexOrThrow("DAYS_DEMO"));
+        }
+        cursor.close();
 
         if (startDateMillis == 0) {
             //iniciar la demo ara
@@ -216,7 +227,7 @@ public class MainActivity extends AppCompatActivity  {
     /// /* /////////////////////////////////////////////////////////////////////////////////////////
     private boolean isDemoExpired(long startDateMillis) {
         long currentTimeMillis = System.currentTimeMillis();
-        long demoEndTimeMillis = startDateMillis + (DEMO_DURATION_DAYS * 24 * 60 * 60 * 1000L); // 30 days in milliseconds
+        long demoEndTimeMillis = startDateMillis + (demoDurationDays * 24 * 60 * 60 * 1000L); // 30 days in milliseconds
         return currentTimeMillis > demoEndTimeMillis;
     }
     /// */ /////////////////////////////////////////////////////////////////////////////////////////
@@ -230,8 +241,8 @@ public class MainActivity extends AppCompatActivity  {
                 .setPositiveButton("OK", (dialog, which) -> {
                     // Redirect to upgrade page or perform an action
                     // For example, you can start a new activity or open a URL
-                   // Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://your-upgrade-url.com"));
-                   // startActivity(intent);
+                    // Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://your-upgrade-url.com"));
+                    // startActivity(intent);
                 })
                 //.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                 .setCancelable(false) // Prevents the dialog from being dismissed by tapping outside
@@ -838,9 +849,13 @@ public class MainActivity extends AppCompatActivity  {
         chronoSessions.getSessions(dateTextView.getText().toString());
         Map<String, Object> dadesSessionsDia = chronoSessions.getDadesSessionsDia();
         int numSessions = (int) dadesSessionsDia.get("sessions");
+    Log.d("numSessions", String.valueOf(numSessions));
         long tempsEntrenamentUltimaSessio = (long) dadesSessionsDia.get("tempsUltimaSessio");
         long tempsEntrenamentTotal = (long) dadesSessionsDia.get("tempsTotalDia");
-        numSessio = numSessions;
+    Log.d("numSessions", String.valueOf(numSessio));
+
+        //numSessio = numSessions;
+
         if (dateTextView.getText().toString().equals(avui)) {
             try {
                 calendar.setTime(dateFormat.parse(avui));
@@ -1050,7 +1065,7 @@ public class MainActivity extends AppCompatActivity  {
         //formata el temps en 00:00:00
         String timeSessionFormated = String.format("%02d:%02d:%02d", hoursS, minutesS, secondsS);
         // Actualitza els TextView
-        sessionChronoTextViewTitle.setText("Sessio: "+numSessio);
+        sessionChronoTextViewTitle.setText("Sessio: "+ numSessio);
         sessionCronoTextView.setText(timeSessionFormated);
 
         //crono total diari

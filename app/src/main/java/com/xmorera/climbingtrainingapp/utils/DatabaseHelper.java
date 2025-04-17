@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "climbing_training.db";
-    private static final int DATABASE_VERSION = 9; // Incremented version
+    private static final int DATABASE_VERSION = 10; // Incremented version
     private static final int DATABASE_OLD_VERSION = DATABASE_VERSION+1;
 
     // Table names
@@ -18,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_ZONES = "zones";
     private static final String TABLE_RANKING = "ranking";
     private static final String TABLE_SESSIONS = "sessions";
+    private static final String TABLE_APP_DEMO = "app_demo";
 
     // Columns for climbing_data
     private static final String COL_ID_CD = "ID_CD";
@@ -54,6 +55,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_DATE_SESSION = "DATE_SESSION";
     private static final String COL_NUM_SESSION = "NUM_SESSION";
     private static final String COL_TEMPS_SESSION = "TEMPS_SESSION";
+
+    // Columnns for demo
+    private static final String COL_ID_DEMO = "ID_DEMO";
+    private static final String COL_DAYS_DEMO = "DAYS_DEMO";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -104,12 +109,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_NUM_SESSION + " INTEGER, " +
                 COL_TEMPS_SESSION + " INTEGER)";
 
+        // Create demo table
+        String createDemoTable = "CREATE TABLE " + TABLE_APP_DEMO + " (" +
+                COL_ID_DEMO + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_DAYS_DEMO + " INTEGER DEFAULT 30)";
+
         // Execute the SQL statements to create the tables
         db.execSQL(createClimbingDataTable);
         db.execSQL(createRocodromsTable);
         db.execSQL(createZonesTable);
         db.execSQL(createRankingTable);
         db.execSQL(createSessionTable);
+        db.execSQL(createDemoTable);
+
 
         insertInitialDataRocodroms(db);
 
@@ -123,6 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZONES);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_RANKING);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSIONS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_DEMO);
             onCreate(db);
 
         }
@@ -509,9 +522,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////CRUD DEMO ///////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public long addDemoDays(int days){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_DAYS_DEMO, days);
+        long id = db.insert(TABLE_APP_DEMO, null, values);
+        db.close();
+        return id;
+    }
+
+    public Cursor getDemoById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_APP_DEMO + " WHERE " + COL_ID_DEMO + " = ?", new String[]{String.valueOf(id)});
+    }
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     //////  introducció de dades inicials  /////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private void insertInitialDataRocodroms(SQLiteDatabase db) {
+        // Inserir el nombre de dies de demo
+        ContentValues diesDemo = new ContentValues();
+        diesDemo.put(COL_DAYS_DEMO, 30);
+        db.insert(TABLE_APP_DEMO, null, diesDemo);
+
         // gravetat zero
         ContentValues gravetatZero = new ContentValues();
         gravetatZero.put(COL_NOM_ROCO, "Gravetat Zero");
