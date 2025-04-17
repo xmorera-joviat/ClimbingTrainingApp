@@ -35,6 +35,7 @@ import com.xmorera.climbingtrainingapp.RocodromsZones.Rocodroms;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingData;
 import com.xmorera.climbingtrainingapp.climbingData.ClimbingDataAdapter;
 
+import com.xmorera.climbingtrainingapp.utils.ChronoSessions;
 import com.xmorera.climbingtrainingapp.utils.Puntuacio;
 import com.xmorera.climbingtrainingapp.resultats.Resultats;
 import com.xmorera.climbingtrainingapp.utils.BlinkHelper;
@@ -46,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 /**
  * Classe principal de l'aplicació Climbing Training App.
  * l'objectiu d'aquesta aplicació es registrar l'entrenament en rocòdrom donant una puntuació
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity  {
     private BlinkHelper blinkHelper;
 
     //temps màxim del crono parcial de descansos en milisegons (59':59"), s'ha de configurar com una preferència
-    public static final int MAX_REST_CHRONO = 599000;
+    public static final int MAX_REST_CHRONO = 3599000;
 
     // Elements de la interfície d'usuari
     private TextView dateTextView; //mostrar la data i mostrar la via seleccionada
@@ -99,11 +102,11 @@ public class MainActivity extends AppCompatActivity  {
 
     //variables per a entrar les dades a la base de dades
     private int idZona;
-    private int esCorda;
+    //private int esCorda;
     private int ifIntent;
     private int ifEscalfament;
     private int descansos;
-    private int rocodromZona;
+    //private int rocodromZona;
     private String dificultat;
 
     // elements per mostrar els resultat diaris
@@ -124,12 +127,13 @@ public class MainActivity extends AppCompatActivity  {
     private TextView sessionsNum, sessionsCronoTextView;
     private final Handler mainChronoHandler = new Handler();
     private Runnable mainChronoRunnable;
-    private long totalDayTimeMainChrono = 0; //temps inicial en milisegons
-    private long sessionTimeMainChrono = 0;
+
     private boolean runningMainChrono = false; //estat del cronòmetre
-    private long mainDayChronoElapsedTime =0; //temps total transcorregut en milisegons
-    private long sessionChronoElapsedTime = 0; //temps de la sessió en milisegons
-    private int numSession = 0; //numero de sessión d'entrenament del dia
+
+    private ChronoSessions chronoSessions;
+    private int numSessio;
+    private long mainDayChronoElapsedTime;
+    private long sessionChronoElapsedTime;
 
     // crono parcial (descans)
     private boolean allowRestChrono; //si la data és la del dia actual activaem el crono dels descansos
@@ -223,7 +227,6 @@ public class MainActivity extends AppCompatActivity  {
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
-
     /**
      * Configura la interfície d'usuari mapejant els elements a variables.
      */
@@ -313,14 +316,8 @@ public class MainActivity extends AppCompatActivity  {
             chrono = !chrono;
             if (chrono) {
                 startMainChrono();
-                btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30_carbassa, null, null);
-                sessionChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
-                sessionCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
             } else {
                 stopMainChrono();
-                btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30, null, null);
-                sessionChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
-                sessionCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
             }
         });
 
@@ -395,6 +392,8 @@ public class MainActivity extends AppCompatActivity  {
         climbingDataAdapter = new ClimbingDataAdapter(this, climbingDataList);
         recyclerView.setAdapter(climbingDataAdapter);
         databaseHelper = new DatabaseHelper(this);
+        //instanciar dades del cronometre
+        chronoSessions = new ChronoSessions(databaseHelper);
         puntuacio = new Puntuacio();
     }
 
@@ -668,7 +667,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * seDificultatListener
+     * setDificultatListener
      * listener dels botons de dificultat en la seleccio de via manual
      * quan es clica un botó de dificultat de la via insereix el seu text a la TextView de la via
      * */
@@ -731,6 +730,9 @@ public class MainActivity extends AppCompatActivity  {
         resetBotonsZona();
     }
 
+    /**
+     * resetBotonsZona
+     * */
     private void resetBotonsZona() {
         for (Button button : botonsZona) {
             //selecció del color de fons del botó del tema
@@ -742,21 +744,105 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * loadDayData
+     * carregarDadesDia
      *
      * carrega les dades de la base de dades a la llista climbingDataList i notifica a l'adaptador
      */
     public void carregarDadesDia(){
+        inicialitzarVariablesDadesDia();
+        carregarDadesViesDadesDia();
+        introduirDadesRankingDadesDia();
+        actualitzarUIDadesDia();
+        gestionarDataActualDadesDia();
+    }
 
-        viesDia = 0;
-        viesGrauDia = 0;
-        metresDia = 0.0;
-        puntuacioDia = 0.0;
-        puntuacioGrauDia = 0.0;
-        climbingDataList.clear();
+    /**
+     * gestionarDataActualDadesDia
+     * controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color
+     * del botó per a informar i evitar entrades errònies
+     */
+    private void gestionarDataActualDadesDia() {
 
-        Cursor cursor = null;
+        //recuperem les dades de les sessions del dia.
+        chronoSessions.getSessions(dateTextView.getText().toString());
+        Map<String, Object> dadesSessionsDia = chronoSessions.getDadesSessionsDia();
+        int numSessions = (int) dadesSessionsDia.get("sessions");
+        long tempsEntrenamentUltimaSessio = (long) dadesSessionsDia.get("tempsUltimaSessio");
+        long tempsEntrenamentTotal = (long) dadesSessionsDia.get("tempsTotalDia");
+
+        if (dateTextView.getText().toString().equals(avui)) {
+            try {
+                calendar.setTime(dateFormat.parse(avui));
+            } catch (ParseException e){
+                e.printStackTrace();
+                showError("Error al processar la data: " + e.getMessage());
+            }
+            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
+            btnChrono.setVisibility(View.VISIBLE);
+            cronometreDiaLayout.setVisibility(View.VISIBLE);
+            sessionsLayout.setVisibility(View.GONE);
+            allowRestChrono = true;
+
+
+            //mostrem el nombre de sessions, el temps de l'última i el temps total del dia
+            updateSessionChronosTextViews(numSessions, tempsEntrenamentUltimaSessio, tempsEntrenamentTotal);
+
+            //fem les següents assignacions per poder re-empendre les sessions del dia actual si hem sortit del programa
+
+
+            mainDayChronoElapsedTime=tempsEntrenamentTotal;
+
+        } else {
+            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
+            btnAvui.setVisibility(View.VISIBLE);
+            btnChrono.setVisibility(View.GONE);
+            cronometreDiaLayout.setVisibility(View.GONE);
+            sessionsLayout.setVisibility(View.VISIBLE);
+            allowRestChrono = false;
+            //carreguem les sessions del dia i el temps total del dia
+            updateSessionsDiaTextViews(numSessions, tempsEntrenamentTotal);
+        }
+    }
+
+    private void actualitzarUIDadesDia() {
+        //notifiquem a l'adaptador que hi ha hagut canvis i que ha de refrescar els valors
+        climbingDataAdapter.notifyDataSetChanged();
+        puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
+        viesDiaTextView.setText(String.valueOf(viesDia));
+        metresDiaTextView.setText(String.valueOf(metresDia));
+        mitjanaDiaTextView.setText(puntuacio.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
+    }
+
+    private void introduirDadesRankingDadesDia() {
+        //introduir les dades al ranking
+        //primer busquem si hi ha dades per aquest dia
         Cursor cursor2 = null;
+        try{
+            cursor2 = databaseHelper.getRankingByDate(dateTextView.getText().toString());
+            if (cursor2 != null && cursor2.moveToFirst()) {
+                //si hi ha dades actualitzem
+                int idRanking = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_RANKING"));
+                if(viesDia!=0) {
+                    databaseHelper.updateRanking(idRanking, dateTextView.getText().toString(), puntuacioDia, puntuacioGrauDia, viesDia, (int) viesGrauDia, (int) metresDia);
+                } else {
+                    databaseHelper.deleteRanking(idRanking);
+                }
+            } else {
+                //si no hi ha dades les afegim
+                databaseHelper.insertRanking(dateTextView.getText().toString(), puntuacioDia, puntuacioGrauDia, viesDia, viesGrauDia, (int) metresDia);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            showError("Error al carregar dades del ranking: " + e.getMessage());
+        } finally {
+            if (cursor2 != null){
+                cursor2.close();
+            }
+        }
+    }
+
+    private void carregarDadesViesDadesDia() {
+        Cursor cursor = null;
 
         try {
             cursor = databaseHelper.getJoinDayDataCD(dateTextView.getText().toString());
@@ -810,98 +896,20 @@ public class MainActivity extends AppCompatActivity  {
                 cursor.close();
             }
         }
-
-        //introduir les dades al ranking
-        //primer busquem si hi ha dades per aquest dia
-        try{
-            cursor2 = databaseHelper.getRankingByDate(dateTextView.getText().toString());
-            if (cursor2 != null && cursor2.moveToFirst()) {
-                //si hi ha dades actualitzem
-                int idRanking = cursor2.getInt(cursor2.getColumnIndexOrThrow("ID_RANKING"));
-                if(viesDia!=0) {
-                    databaseHelper.updateRanking(idRanking, dateTextView.getText().toString(), puntuacioDia, puntuacioGrauDia, viesDia, (int) viesGrauDia, (int) metresDia);
-                } else {
-                    databaseHelper.deleteRanking(idRanking);
-                }
-            } else {
-                //si no hi ha dades les afegim
-                databaseHelper.insertRanking(dateTextView.getText().toString(), puntuacioDia, puntuacioGrauDia, viesDia, viesGrauDia, (int) metresDia);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            showError("Error al carregar dades del ranking: " + e.getMessage());
-        } finally {
-            if (cursor2 != null){
-                cursor2.close();
-            }
-        }
-
-        //notifiquem a l'adaptador que hi ha hagut canvis i que ha de refrescar els valors
-        climbingDataAdapter.notifyDataSetChanged();
-        puntuacioDiaTextView.setText(String.format("%.1f", puntuacioDia).replace(".", ","));
-        viesDiaTextView.setText(String.valueOf(viesDia));
-        metresDiaTextView.setText(String.valueOf(metresDia));
-        mitjanaDiaTextView.setText(puntuacio.mitjanaGrau(puntuacioGrauDia/ viesGrauDia));
-
-        /// ////////////////////////////////////////////////////////////////////////////////////////
-        // controlem si la data que es mostra és l'actual. En cas que no ho sigui canviem el color
-        // del botó per a informar i evitar entrades errònies
-        /// ////////////////////////////////////////////////////////////////////////////////////////
-
-        // mostrem el nombre de sessions i temps d'entrenament de la jornada
-        int numSessions = 0;
-        long tempsEntrenamentUltimaSessio = 0;
-        long tempsEntrenamentTotal = 0;
-        Cursor cursorSessions = null;
-
-        try {
-            cursorSessions = databaseHelper.getSessionByDate(dateTextView.getText().toString());
-            if (cursorSessions != null){
-                while (cursorSessions.moveToNext()){
-                    numSessions++;
-                    tempsEntrenamentUltimaSessio= cursorSessions.getLong(cursorSessions.getColumnIndexOrThrow("TEMPS_SESSION"));
-                    tempsEntrenamentTotal += tempsEntrenamentUltimaSessio;
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            showError("Error al carregar dades de les sessions: " + e.getMessage());
-        } finally {
-            if (cursorSessions != null){
-                cursorSessions.close();
-            }
-        }
-
-        if (dateTextView.getText().toString().equals(avui)) {
-            try {
-                calendar.setTime(dateFormat.parse(avui));
-            } catch (ParseException e){
-                e.printStackTrace();
-                showError("Error al processar la data: " + e.getMessage());
-            }
-            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.orange));
-            btnChrono.setVisibility(View.VISIBLE);
-            cronometreDiaLayout.setVisibility(View.VISIBLE);
-            sessionsLayout.setVisibility(View.GONE);
-            allowRestChrono = true;
-            //mostrem el nombre de sessions, el temps de l'última i el temps total del dia
-            updateSessionChronosTextViews(numSessions, tempsEntrenamentUltimaSessio, tempsEntrenamentTotal);
-
-            //fem les següents assignacions per poder re-empendre les sessions del dia actual si hem sortit del programa
-            numSession=numSessions;
-            mainDayChronoElapsedTime=tempsEntrenamentTotal;
-
-        } else {
-            dateTextView.setTextColor(ContextCompat.getColor(this, R.color.gray));
-            btnAvui.setVisibility(View.VISIBLE);
-            btnChrono.setVisibility(View.GONE);
-            cronometreDiaLayout.setVisibility(View.GONE);
-            sessionsLayout.setVisibility(View.VISIBLE);
-            allowRestChrono = false;
-            //carreguem les sessions del dia i el temps total del dia
-            updateSessionsDiaTextViews(numSessions, tempsEntrenamentTotal);
-        }
     }
+
+    /**
+     * inicialitzarVariablesDadesDia
+     * */
+    private void inicialitzarVariablesDadesDia() {
+        viesDia = 0;
+        viesGrauDia = 0;
+        metresDia = 0.0;
+        puntuacioDia = 0.0;
+        puntuacioGrauDia = 0.0;
+        climbingDataList.clear();
+    }
+
 
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -911,19 +919,22 @@ public class MainActivity extends AppCompatActivity  {
      * Inicia el cronòmetre principal i actualitza el TextView cada segon
      * */
     private void startMainChrono() {
+        btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30_carbassa, null, null);
+        sessionChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
+        sessionCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.orange));
         if(!runningMainChrono){
-            numSession += 1;
-            totalDayTimeMainChrono = System.currentTimeMillis()- mainDayChronoElapsedTime;//el crono continuarà sense resetejar-se, comptabilitzant el total diari
-            sessionTimeMainChrono = System.currentTimeMillis();//el crono es reseteja per comptabilitzar la sessió actual
+            numSessio += 1;
+            long totalDayTimeMainChronoInicial = System.currentTimeMillis()- mainDayChronoElapsedTime;//el crono continuarà sense resetejar-se, comptabilitzant el total diari
+            long sessionTimeMainChronoInicial = System.currentTimeMillis();//el crono es reseteja per comptabilitzar la sessió actual
             runningMainChrono = true;
             // defineix el runnable que actualitza el crono cada segon
             mainChronoRunnable = new Runnable() {
                 @Override
                 public void run() {
                     if (runningMainChrono) {
-                        mainDayChronoElapsedTime = System.currentTimeMillis() - totalDayTimeMainChrono;
-                        sessionChronoElapsedTime = System.currentTimeMillis() - sessionTimeMainChrono;
-                        updateSessionChronosTextViews(numSession, sessionChronoElapsedTime, mainDayChronoElapsedTime);//actualitza el text del crono
+                        mainDayChronoElapsedTime = System.currentTimeMillis() - totalDayTimeMainChronoInicial;
+                        sessionChronoElapsedTime = System.currentTimeMillis() - sessionTimeMainChronoInicial;
+                        updateSessionChronosTextViews(numSessio, sessionChronoElapsedTime, mainDayChronoElapsedTime);//actualitza el text del crono
                         mainChronoHandler.postDelayed(this, 1000);
                     }
                 }
@@ -937,13 +948,17 @@ public class MainActivity extends AppCompatActivity  {
      * Atura el cronòmetre principal
      * */
     private void stopMainChrono(){
+        btnChrono.setCompoundDrawablesWithIntrinsicBounds(null, chrono30, null, null);
+        sessionChronoTextViewTitle.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
+        sessionCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
+
         if(runningMainChrono){
             runningMainChrono = false;
             mainChronoHandler.removeCallbacks(mainChronoRunnable);//atura el crono
             //si parem el crono principal també pararem el crono de descansos
             stopRestChrono();
             // guardem el temps de la sessió actual i el nombre de sessió
-            insertSession(numSession, sessionChronoElapsedTime);
+            insertSession(numSessio, sessionChronoElapsedTime);
         }
     }
 
@@ -1010,18 +1025,20 @@ public class MainActivity extends AppCompatActivity  {
                     public void run() {
                         if (runningRestChrono) {
                             long restChronoElapsedTime = System.currentTimeMillis() - startTimeRestChrono;
-                            //Aturar el crono al cap de 59minuts i 59 segons
+                            updateRestChronoTextView(restChronoElapsedTime);//actualitza el text del crono
+                            restChronoHandler.postDelayed(this, 1000);
+                            //destacar el crono al cap del temps marcat com a límit
                             if (restChronoElapsedTime >= MAX_REST_CHRONO) {
-                                stopRestChrono();
-                                updateRestChronoTextView(MAX_REST_CHRONO);
+                                //stopRestChrono();
+                                //updateRestChronoTextView(MAX_REST_CHRONO);
                                 //el posem de color vermell per indicar que ha passat el marge de temps i fa pampellugues
                                 restCronoTextView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.red));
                                 blinkHelper.startBlinking(restCronoTextView);
 
-                            }else {
-                                updateRestChronoTextView(restChronoElapsedTime);//actualitza el text del crono
-                                restChronoHandler.postDelayed(this, 1000);
-                            }
+                            }//else {
+                              //  updateRestChronoTextView(restChronoElapsedTime);//actualitza el text del crono
+                              //  restChronoHandler.postDelayed(this, 1000);
+                            //}
                         }
                     }
                 };
