@@ -73,6 +73,12 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btnExportarCSV"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Exportar"/>
+
         </LinearLayout>
 
 

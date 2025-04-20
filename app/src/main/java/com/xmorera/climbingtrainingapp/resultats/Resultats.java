@@ -1,13 +1,20 @@
 package com.xmorera.climbingtrainingapp.resultats;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -24,6 +33,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,6 +60,7 @@ import com.xmorera.climbingtrainingapp.utils.DateConverter;
 
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
 
+    private static final int PERMISSION_REQUEST_STORAGE = 1;
     private Button btnSetmanal;
     private Button btnMensual;
     private Button btnTrimestral;
@@ -86,6 +100,8 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
     Puntuacio puntuacio;
 
     private LineChart chartView;
+
+    private Button btnExportarCSV;
 
 
     @SuppressLint("MissingInflatedId")
@@ -183,6 +199,11 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
                 markerView.setVisibility(View.GONE);
             }
         });
+
+
+        btnExportarCSV = findViewById(R.id.btnExportarCSV);
+        btnExportarCSV.setOnClickListener(v -> exportToCSV(v));
+
 
     }
 
@@ -483,6 +504,72 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
             default:
                 resetTextColorBtnPeriodes();
                 break;
+        }
+    }
+
+///  ///////////////////////////////////////////////////////////////////////////////////////////////
+    //exportació de dades a un fitxer csv
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+// Afegeix aquest mètode a la teva classe Resultats
+
+    public void exportToCSV(View view) {
+        // Verifica si hi ha dades per exportar
+        if (resultatsDataList.isEmpty()) {
+            Toast.makeText(this, "No hi ha dades per exportar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        // Crea el fitxer CSV
+        createCSVFile();
+    }
+
+
+    @SuppressLint("Range")
+    private void createCSVFile() {
+        // Crea un nom de fitxer amb la data actual
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String fileName = "climbing_results_" + sdf.format(new Date()) + ".csv";
+
+        // Defineix les metadades del fitxer
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Downloads.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Downloads.MIME_TYPE, "text/csv");
+        values.put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+        // Inserta el fitxer a MediaStore
+        Uri uri = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+        }
+
+        if (uri != null) {
+            try (OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
+                if (outputStream != null) {
+                    // Escribe l'header
+                    outputStream.write("Data;Vies;Metres;Punts;Mitjana\n".getBytes());
+
+                    // Escribe les dades
+                    for (ResultatsData result : resultatsDataList) {
+                        String line = String.format("%s;%s;%s;%s;%s\n",
+                                result.getDate(),
+                                result.getVies(),
+                                result.getMetres(),
+                                result.getPuntuacio(),
+                                result.getMitjana());
+                        outputStream.write(line.getBytes());
+                    }
+
+                    Toast.makeText(this, "Fitxer exportat correctament a " + uri.toString(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Error: No s'ha pogut obtenir l'stream de sortida", Toast.LENGTH_SHORT).show();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Error al crear el fitxer: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Error: No s'ha pogut crear el fitxer", Toast.LENGTH_SHORT).show();
         }
     }
 
