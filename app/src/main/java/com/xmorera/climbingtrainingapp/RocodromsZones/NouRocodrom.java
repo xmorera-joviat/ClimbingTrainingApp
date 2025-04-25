@@ -16,6 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.xmorera.climbingtrainingapp.R;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 
+/**
+ * Activitat per a afegir un nou rocodrom a la base de dades.
+ * Aquesta activitat permet introduir les dades d'un nou rocodrom i guardar-les.
+ * També ofereix l'opció de crear zones per al rocodrom després de guardar-lo.
+ */
 public class NouRocodrom extends AppCompatActivity {
     private Button btnGuardar;
     private Button btnGuardarCrearZones;
@@ -27,6 +32,12 @@ public class NouRocodrom extends AppCompatActivity {
 
     DatabaseHelper db;
 
+    /**
+     * Mètode que s'executa en crear l'activitat.
+     * Inicialitza els components de la interfície i configura els listeners dels botons.
+     *
+     * @param savedInstanceState Estat guardat de l'activitat.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +82,12 @@ public class NouRocodrom extends AppCompatActivity {
 
     }
 
+    /**
+     * Mètode per a inserir un nou rocodrom a la base de dades.
+     * Realitza comprovacions per assegurar-se que tots els camps estan plens i que el rocodrom no existeix.
+     *
+     * @return true si el rocodrom s'ha inserit correctament, false en cas contrari.
+     */
     public boolean insertRocoDatabase(){
 
         if (editTextNom.getText().toString().isEmpty() || editTextComCurt.getText().toString().isEmpty() || editTextPoblacio.getText().toString().isEmpty()) {

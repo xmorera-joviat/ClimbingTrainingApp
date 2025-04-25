@@ -2,7 +2,7 @@
 <project version="4">
   <component name="AnalysisUIOptions">
     <option name="ANALYZE_TEST_SOURCES" value="false" />
-    <option name="CUSTOM_SCOPE_NAME" value="All Places" />
+    <option name="CUSTOM_SCOPE_NAME" value="Project Files" />
   </component>
   <component name="AndroidLayouts">
     <shared>
@@ -76,11 +76,21 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.8.1&#10;* nombre de dies demo a la bbdd, per tant es modificable en viu amb el codi font i AndroidStudio. (solució temporal per al desenvolupament)&#10;&#10;&#10;* afegir firebase per autentificar usuaris registrats i desabilitar mode demo&#10;&#10;&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
-      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
+    <list default="true" id="f7f07c55-4ad5-4242-9e3b-5d24734162f5" name="Changes" comment="versió 0.8.2&#10;* exportació de dades a fitxer CSV al directori Downloads&#10;* nombre de dies demo a la bbdd, per tant es modificable en viu amb el codi font i AndroidStudio. (solució temporal per al desenvolupament)&#10;&#10;&#10;* afegir firebase per autentificar usuaris registrats i desabilitar mode demo&#10;&#10;&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/RocodromsZones/NouRocodrom.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/RocodromsZones/NouRocodrom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/RocodromsZones/Rocodroms.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/RocodromsZones/Rocodroms.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/climbingData/ClimbingDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/climbingData/ClimbingDataAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/GraficaZoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/GraficaZoom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/Resultats.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/Resultats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_resultats.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_resultats.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/ResultatsDataAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/ResultatsDataAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/resultats/ScoresFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/ChronoSessions.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/ChronoSessions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DateConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/DateConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/Puntuacio.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/xmorera/climbingtrainingapp/utils/Puntuacio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -449,14 +459,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734782226824</updated>
-    </task>
-    <task id="LOCAL-00060" summary="versió 0.4.5&#10;* substitució de SharedPreferences de puntuació per una classe nova, ja que la puntuació, tot i que arbitrària és igual per a tots els rocos.&#10;* color (vies, metres, punts)&#10;&#10;---&#10;* estandaritzar les penalitzacions (intent, descansos)&#10;* canviar l'ordre de selecció de vies. generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;* revisar penalització de metres en corda&#10;* selecció de rocodrom&#10;* configuració per diferents rocòdroms&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
-      <option name="closed" value="true" />
-      <created>1736673530122</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1736673530123</updated>
     </task>
     <task id="LOCAL-00061" summary="versió 0.5.0&#10;* redisseny activity_main&#10;* ampliació de la base de dades &quot;rocodroms&quot; i &quot;zones&quot;&#10;* actualització Puntuacio.java i penalitzacions&#10;&#10;---&#10;* canviar l'ordre de selecció de vies. generar botons de zona depenent del rocòdrom.&#10;* Seleccionar el nombre de reposos en zona de corda (per defecte &quot;neta&quot;)&#10;* selecció de rocodrom&#10;* configuració per diferents rocòdroms&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
       <option name="closed" value="true" />
@@ -842,7 +844,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744894679458</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="versió 0.8.2&#10;* exportació de dades a fitxer CSV al directori Downloads&#10;* nombre de dies demo a la bbdd, per tant es modificable en viu amb el codi font i AndroidStudio. (solució temporal per al desenvolupament)&#10;&#10;&#10;* afegir firebase per autentificar usuaris registrats i desabilitar mode demo&#10;&#10;&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos">
+      <option name="closed" value="true" />
+      <created>1745172988067</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1745172988068</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -885,7 +895,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="versió 0.5.3.1&#10;* layout del fragment per mostar els rànquings&#10;---&#10;* Mostrar el ranking (en un fragment)&#10;* eliminar els càlculs de les puntuacions diàries i consultar directament la taula&#10;* en inserir una via (botons de grau) mirar si hi ha creat un registre per anotar les puntacions diàries. Si no existeix crear-lo. Si existeix recalcular les puntuacions i actualitzar-lo.&#10;* en esborrar un registre del dia comprovar que no sigui l'últim. es aquest cas esborrar també el registre diari. Si no és l'últim recalcular el dia i actualitzar.&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.3.2&#10;* Re-escriptura mètode loadDayData per actualutzar la taula ranking&#10;* re-escriptura Resultats.java per recollir les dades del la taula ranking&#10;&#10;---&#10;* als resultats afegir uns botons per ordenar els resultats del recyclerview segons la columna asc i desc&#10;* Mostrar el ranking (en un fragment)--&gt; eliminar i mostrar en una activity amb més informació&#10;&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.3.3.1&#10;* solucionat! &lt;-- no comptabilitza els intents ni descansos &#10;&#10;---&#10;* als resultats afegir uns botons per ordenar els resultats del recyclerview segons la columna asc i desc&#10;&#10;&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.5.3.4&#10;*  botons per ordenar els resultats del recyclerview segons la columna asc i desc&#10;&#10;---&#10;&#10;&#10;&#10;---&#10;* Gestió de rocodroms i zones&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
@@ -910,19 +919,20 @@
     <MESSAGE value="versió 0.8.0&#10;* arreglat bug del nombre de sessions&#10;* versió demo, limitada en en nombre de ies&#10;&#10;&#10;------&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.8.1&#10;* nombre de dies demo a la bbdd, per tant es modificable en viu amb el codi font i AndroidStudio. (solució temporal per al desenvolupament)&#10;&#10;-------------&#10;* encara hi ha un error si en la primera sessió del dia es canvia de dia i es torna a l'actual&#10;&#10;* afegir firebase per autentificar usuaris registrats i desabilitar mode demo&#10;&#10;&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
     <MESSAGE value="versió 0.8.1&#10;* nombre de dies demo a la bbdd, per tant es modificable en viu amb el codi font i AndroidStudio. (solució temporal per al desenvolupament)&#10;&#10;&#10;* afegir firebase per autentificar usuaris registrats i desabilitar mode demo&#10;&#10;&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
-    <option name="LAST_COMMIT_MESSAGE" value="versió 0.8.1&#10;* nombre de dies demo a la bbdd, per tant es modificable en viu amb el codi font i AndroidStudio. (solució temporal per al desenvolupament)&#10;&#10;&#10;* afegir firebase per autentificar usuaris registrats i desabilitar mode demo&#10;&#10;&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <MESSAGE value="versió 0.8.2&#10;* exportació de dades a fitxer CSV al directori Downloads&#10;* nombre de dies demo a la bbdd, per tant es modificable en viu amb el codi font i AndroidStudio. (solució temporal per al desenvolupament)&#10;&#10;&#10;* afegir firebase per autentificar usuaris registrats i desabilitar mode demo&#10;&#10;&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
+    <option name="LAST_COMMIT_MESSAGE" value="versió 0.8.2&#10;* exportació de dades a fitxer CSV al directori Downloads&#10;* nombre de dies demo a la bbdd, per tant es modificable en viu amb el codi font i AndroidStudio. (solució temporal per al desenvolupament)&#10;&#10;&#10;* afegir firebase per autentificar usuaris registrats i desabilitar mode demo&#10;&#10;&#10;* assignar les vies a una sessió&#10;* eliminar sessions?&#10;* estadístiques&#10;&#10;* testeig, optimització i documentació&#10;&#10;---&#10;* durada del temps de descans SharedPreferences&#10;&#10;* taula puntuació graus&#10;&#10;----&#10;&#10;* estadístiques i rècords (puntuació,vies, metres, mitjana...)&#10;&#10;* Expotar/Importar&#10;&#10;* idiomes&#10;* documentació i optimitzacions&#10;* possibilitat de gravar vídeos" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">
       <map>
         <entry key="com.xmorera.climbingtrainingapp">
           <value>
-            <CheckInfo lastCheckTimestamp="1745171702152" />
+            <CheckInfo lastCheckTimestamp="1745402155423" />
           </value>
         </entry>
         <entry key="com.xmorera.climbingtrainingapp.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1745171702151" />
+            <CheckInfo lastCheckTimestamp="1745402155424" />
           </value>
         </entry>
       </map>

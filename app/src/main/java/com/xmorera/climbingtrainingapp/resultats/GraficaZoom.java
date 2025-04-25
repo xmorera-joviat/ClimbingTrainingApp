@@ -32,11 +32,22 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.MPPointF;
 
+/**
+ * Classe GraficaZoom que gestiona la visualització d'una gràfica de resultats.
+ * Aquesta classe s'encarrega de mostrar les dades de classificació en un gràfic
+ * utilitzant la biblioteca MPAndroidChart.
+ */
 public class GraficaZoom extends AppCompatActivity {
     private List<ResultatsData> resultatsDataList;
     private DatabaseHelper databaseHelper;
     private LineChart chartView;
 
+    /**
+     * Mètode que s'executa quan es crea l'activitat.
+     * Inicialitza la vista, configura el sistema de finestra i realitza la consulta de dades.
+     *
+     * @param savedInstanceState Estat de la instància anterior
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +84,10 @@ public class GraficaZoom extends AppCompatActivity {
 
     }
 
+    /**
+     * Realitza la consulta a la base de dades per obtenir els resultats entre dues dates.
+     * Mostra un missatge si no hi ha dades disponibles.
+     */
     private void performQuey() {
         Intent intent = getIntent();
         String startDate = intent.getStringExtra("dataInicial");
@@ -113,6 +128,10 @@ public class GraficaZoom extends AppCompatActivity {
         }
     }
 
+    /**
+     * Genera la gràfica a partir de les dades obtingudes.
+     * Crea les entrades per a les vies, metres i puntuació.
+     */
     private void generateChart() {
         // Prepare data for the chart
         ArrayList<Entry> routesEntries = new ArrayList<>();
@@ -169,8 +188,8 @@ public class GraficaZoom extends AppCompatActivity {
     }
 
     /**
-     * CustomMarkerView
-     * classe auxiliar per a visualitzar la data d'un node en fer-ne click
+     * Classe interna CustomMarkerView que gestiona la visualització d'un marcador personalitzat
+     * al fer clic en un node de la gràfica.
      */
     public class CustomMarkerView extends MarkerView {
 

@@ -19,11 +19,22 @@ import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 
 import java.util.List;
 
+/**
+ * Adapter per a mostrar una llista de dades d'escalada en un RecyclerView.
+ * Aquesta classe gestiona la visualització de les dades d'escalada i permet
+ * la seva eliminació mitjançant un diàleg de confirmació.
+ */
 public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapter.ViewHolder> {
 
     private List<ClimbingData> climbingDataList;
     private Context context;
 
+    /**
+     * Constructor per inicialitzar l'adapter amb el context i la llista de dades d'escalada.
+     *
+     * @param context Context de l'activitat o fragment que utilitza aquest adapter.
+     * @param climbingDataList Llista de dades d'escalada a mostrar.
+     */
     public ClimbingDataAdapter(Context context, List<ClimbingData> climbingDataList){
         this.climbingDataList = climbingDataList;
         this.context = context;
@@ -66,6 +77,9 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
         return climbingDataList.size();
     }
 
+    /**
+     * Classe ViewHolder per mantenir les referències a les vistes de cada item.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //TextView idTextView;
         TextView dateTextView;
@@ -75,9 +89,15 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
         TextView puntuacioTextView;
         Button btnEsborrarVia;
 
+        /**
+         * Constructor per inicialitzar el ViewHolder amb les vistes corresponents.
+         *
+         * @param itemView Vista de l'item.
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             //idTextView = itemView.findViewById(R.id.idTextView);
+
             dateTextView = itemView.findViewById(R.id.dateTextView);
             dificultatTextView = itemView.findViewById(R.id.dificultatTextView);
             zonaTextView = itemView.findViewById(R.id.zonaTextView);
@@ -87,6 +107,12 @@ public class ClimbingDataAdapter extends RecyclerView.Adapter<ClimbingDataAdapte
         }
     }
 
+    /**
+     * Mostra un diàleg de confirmació per esborrar un item.
+     *
+     * @param id ID de l'item a esborrar.
+     * @param position Posició de l'item a la llista.
+     */
     public void showDeleteConfirmationDialog(int id, int position){
         // Create a new AlertDialog.Builder instance
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {

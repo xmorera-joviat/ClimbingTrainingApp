@@ -1,12 +1,10 @@
 package com.xmorera.climbingtrainingapp.resultats;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -23,9 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,8 +29,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -57,17 +51,22 @@ import com.xmorera.climbingtrainingapp.utils.Puntuacio;
 import com.xmorera.climbingtrainingapp.utils.DatabaseHelper;
 import com.xmorera.climbingtrainingapp.utils.DateConverter;
 
-
+/**
+ * Activitat per mostrar i gestionar resultats d'entrenament d'escalada
+ * Inclou funcionalitats de:
+ * - Filtre per períodes de temps
+ * - Ordenació de resultats
+ * - Visualització gràfica
+ * - Exportació a CSV
+ */
 public class Resultats extends AppCompatActivity implements View.OnClickListener  {
 
-    private static final int PERMISSION_REQUEST_STORAGE = 1;
     private Button btnSetmanal;
     private Button btnMensual;
     private Button btnTrimestral;
     private Button btnSemestral;
     private Button btnAnual;
     private Button btnTotal;
-
 
     private LinearLayout layoutAltres;
 
@@ -204,11 +203,14 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         btnExportarCSV = findViewById(R.id.btnExportarCSV);
         btnExportarCSV.setOnClickListener(v -> exportToCSV(v));
 
-
     }
 
-
-
+    /**
+     * Mètode que s'executa quan es fa clic en un botó de període de temps.
+     * Actualitza les dates inicial i final segons el període seleccionat i realitza la consulta.
+     *
+     * @param view El botó que ha estat clicat.
+     */
     @Override
     public void onClick(View view) {
 
@@ -238,17 +240,33 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         performQuery();
     }
 
+    /**
+     * Actualitza la data d'un EditText amb un nombre de dies a restar.
+     *
+     * @param dateEditText El EditText a actualitzar.
+     * @param daysToSubstract El nombre de dies a restar.
+     */
     private void updateDate(EditText dateEditText, int daysToSubstract) {
         calendar.add(Calendar.DAY_OF_MONTH, daysToSubstract);
         updateDateTextView(dateEditText);
     }
 
+    /**
+     * Actualitza el text d'un EditText amb la data actual del Calendar.
+     *
+     * @param dateEditText El EditText a actualitzar.
+     */
     private void updateDateTextView(EditText dateEditText) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = dateFormat.format(calendar.getTime());
         dateEditText.setText(formattedDate); // Actualitza el TextView corresponent
     }
 
+    /**
+     * Mostra un diàleg de selecció de data per a un EditText.
+     *
+     * @param dateEditText El EditText per al qual es mostra el diàleg.
+     */
     private void showDatePicker(EditText dateEditText) {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -265,7 +283,10 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         datePickerDialog.show();
     }
 
-
+    /**
+     * Realitza una consulta a la base de dades per obtenir els resultats entre dues dates.
+     * Actualitza el RecyclerView i el gràfic amb els resultats obtinguts.
+     */
     private void performQuery() {
         String startDate = startDateEditText.getText().toString();
         String endDate = endDateEditText.getText().toString();
@@ -314,6 +335,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         }
     }
 
+    /**
+     * Genera el gràfic amb els resultats obtinguts.
+     */
     private void generateChart() {
         // Prepare data for the chart
         ArrayList<Entry> routesEntries = new ArrayList<>();
@@ -369,7 +393,6 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         chartView.invalidate(); // Refresh the chart
     }
     /**
-     * CustomMarkerView
      * classe auxiliar per a visualitzar la data d'un node en fer-ne click
      */
     public class CustomMarkerView extends MarkerView {
@@ -458,11 +481,19 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         resultatsDataAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Verifica si el tema actual és fosc.
+     *
+     * @return true si el tema és fosc, false altrament.
+     */
     private boolean isDarkTheme(){
         int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
     }
 
+    /**
+     * Reinicia el color del text dels botons de períodes.
+     */
     private void resetTextColorBtnPeriodes(){
         int textColor;
 
@@ -480,6 +511,11 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         btnTotal.setTextColor(textColor);
     }
 
+    /**
+     * Actualitza el color del text dels botons de períodes segons l'offset de la data inicial.
+     *
+     * @param initialDateOffset L'offset de la data inicial.
+     */
     private void updateTextColorBtnPeriodes(int initialDateOffset){
         resetTextColorBtnPeriodes();
         switch (initialDateOffset){
@@ -507,11 +543,11 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         }
     }
 
-///  ///////////////////////////////////////////////////////////////////////////////////////////////
-    //exportació de dades a un fitxer csv
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-// Afegeix aquest mètode a la teva classe Resultats
-
+    /**
+     * Exporta els resultats a un fitxer CSV.
+     *
+     * @param view El botó que ha estat clicat per iniciar l'exportació.
+     */
     public void exportToCSV(View view) {
         // Verifica si hi ha dades per exportar
         if (resultatsDataList.isEmpty()) {
@@ -524,7 +560,9 @@ public class Resultats extends AppCompatActivity implements View.OnClickListener
         createCSVFile();
     }
 
-
+    /**
+     * Crea un fitxer CSV amb els resultats i l'emmagatzema a la carpeta de descàrregues.
+     */
     @SuppressLint("Range")
     private void createCSVFile() {
         // Crea un nom de fitxer amb la data actual

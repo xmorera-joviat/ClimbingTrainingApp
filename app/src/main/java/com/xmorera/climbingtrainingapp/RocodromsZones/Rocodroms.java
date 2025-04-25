@@ -28,6 +28,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Activitat per a gestionar rocodroms i les seves zones.
+ * Aquesta activitat permet afegir, modificar i eliminar zones d'un rocodrom seleccionat.
+ * També ofereix la possibilitat d'afegir nous rocodroms i eliminar rocodroms existents.
+ */
 public class Rocodroms extends AppCompatActivity {
 
     private Spinner rocodromSpinner;
@@ -45,6 +50,12 @@ public class Rocodroms extends AppCompatActivity {
     private EditText editTextZoneName, editTextZoneHeight;
     private CheckBox checkBoxEsCord;
 
+    /**
+     * Mètode que s'executa en crear l'activitat.
+     * Inicialitza els components de la interfície i configura els listeners dels botons.
+     *
+     * @param savedInstanceState Estat guardat de l'activitat.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +69,9 @@ public class Rocodroms extends AppCompatActivity {
         loadSpinner(idRocoFromMain);
     }
 
+    /**
+     * Inicialitza les vistes de la interfície d'usuari.
+     */
     private void initializeViews() {
         rocodromSpinner = findViewById(R.id.spinner_rocodroms);
         databaseHelper = new DatabaseHelper(this);
@@ -74,6 +88,9 @@ public class Rocodroms extends AppCompatActivity {
         checkBoxEsCord = findViewById(R.id.checkBoxEsCord);
     }
 
+    /**
+     * Configura els listeners dels botons i altres components de la interfície.
+     */
     private void setupListeners() {
         btnAfegirZona.setOnClickListener(view -> {
             if (editTextZoneName.getText().toString().isEmpty() || editTextZoneHeight.getText().toString().isEmpty()) {
@@ -131,6 +148,12 @@ public class Rocodroms extends AppCompatActivity {
         });
     }
 
+    /**
+     * Mostra un diàleg d'alerta amb un títol i un missatge.
+     *
+     * @param title   Títol del diàleg.
+     * @param message Missatge del diàleg.
+     */
     private void showAlert(String title, String message) {
         new AlertDialog.Builder(Rocodroms.this)
                 .setTitle(title)
@@ -139,6 +162,9 @@ public class Rocodroms extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Afegeix una nova zona a la base de dades.
+     */
     private void addZone() {
         String nomZona = editTextZoneName.getText().toString();
         int alturaZona = Integer.parseInt(editTextZoneHeight.getText().toString());
@@ -154,6 +180,9 @@ public class Rocodroms extends AppCompatActivity {
         }
     }
 
+    /**
+     * Neteja els camps d'entrada per a la nova zona.
+     */
     private void clearZoneInputFields() {
         editTextZoneName.setText("");
         editTextZoneHeight.setText("");
@@ -166,6 +195,11 @@ public class Rocodroms extends AppCompatActivity {
         loadSpinner(idRocoSeleccionat);
     }
 
+    /**
+     * Carrega els rocodroms disponibles en un Spinner.
+     *
+     * @param idRoco ID del rocodrom seleccionat.
+     */
     private void loadSpinner(int idRoco) {
         rocodromsHashMap = new HashMap<>();
         Cursor cursor = databaseHelper.getAllRocodroms();
@@ -193,6 +227,9 @@ public class Rocodroms extends AppCompatActivity {
         }
     }
 
+    /**
+     * Carrega les zones associades al rocodrom seleccionat.
+     */
     private void loadZonesForSelectedRocodrom() {
         Cursor cursor2 = databaseHelper.getZonesByRocodrom(idRocoSeleccionat);
         zonesGrid.removeAllViews();
@@ -210,6 +247,11 @@ public class Rocodroms extends AppCompatActivity {
         }
     }
 
+    /**
+     * Crea un botó per a cada zona i l'afegeix a la interf ície d'usuari.
+     *
+     * @param cursor Cursor que conté la informació de la zona.
+     */
     private void createZoneButton(Cursor cursor) {
         idZona = cursor.getInt(cursor.getColumnIndexOrThrow("ID_ZONA"));
         nomZona = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ZONA"));
@@ -225,6 +267,11 @@ public class Rocodroms extends AppCompatActivity {
         zonesGrid.addView(btnZona);
     }
 
+    /**
+     * Crea un paquet amb la informació de la zona per a ser utilitzada en el diàleg d'opcions.
+     *
+     * @return Un paquet amb la informació de la zona.
+     */
     private Bundle createZoneBundle() {
         Bundle infoBoto = new Bundle();
         infoBoto.putInt("idZona", idZona);
@@ -235,6 +282,11 @@ public class Rocodroms extends AppCompatActivity {
         return infoBoto;
     }
 
+    /**
+     * Mostra un diàleg d'opcions per modificar o eliminar una zona.
+     *
+     * @param view Vista del botó que va activar el diàleg.
+     */
     private void showZoneOptionsDialog(View view) {
         Bundle infoBoto = (Bundle) view.getTag();
         idZona = infoBoto.getInt("idZona");
@@ -256,6 +308,9 @@ public class Rocodroms extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Modifica la informació d'una zona seleccionada.
+     */
     private void modifyZone() {
         editTextZoneName.setText(nomZona);
         editTextZoneHeight.setText(String.valueOf(alturaZona));
@@ -265,6 +320,9 @@ public class Rocodroms extends AppCompatActivity {
         btnAfegirZona.setVisibility(View.GONE);
     }
 
+    /**
+     * Elimina una zona seleccionada després de confirmar la seva eliminació.
+     */
     private void deleteZone() {
         new AlertDialog.Builder(Rocodroms.this)
                 .setTitle("Confirm Deletion")
@@ -292,6 +350,9 @@ public class Rocodroms extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Reinicia els camps d'entrada per a la nova zona.
+     */
     private void resetIntroZones() {
         editTextZoneName.setText("");
         editTextZoneHeight.setText("");

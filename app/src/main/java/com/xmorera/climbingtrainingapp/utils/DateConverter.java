@@ -9,9 +9,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * DateConverter
- * Classe per convertir dates entre formats
- *  */
+ * Classe `DateConverter` per convertir dates entre formats.
+ * Aquesta classe proporciona mètodes per convertir dates entre formats personalitzats i ISO,
+ * així com per calcular la diferència en dies entre dues dates.
+ */
 public class DateConverter {
     private static final String CUSTOM_DATE_FORMAT = "dd/MM/yyyy";
     private static final String ISO_DATE_FORMAT = "yyyy-MM-dd";
@@ -55,6 +56,13 @@ public class DateConverter {
         return result;
     }
 
+    /**
+     * Calcula el nombre de dies entre dues dates en format dd/MM/yyyy.
+     *
+     * @param date1 La primera data en format dd/MM/yyyy (personalitzat).
+     * @param date2 La segona data en format dd/MM/yyyy (personalitzat).
+     * @return El nombre de dies entre les dues dates o 0 si hi ha un error de conversió.
+     */
     public static int getDaysBetweenDates(String date1, String date2) {
         // Convert the custom date format to ISO format
         date1 = convertCustomToISO(date1);

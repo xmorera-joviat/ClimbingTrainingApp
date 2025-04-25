@@ -47,7 +47,6 @@ public class ChronoSessions {
     }
 
     /**
-     * Mètode `fetchChronoSession`:
      * Recupera les dades de les sessions per a una data específica des de la base de dades
      * i les emmagatzema en la memòria cau.
      *
@@ -76,18 +75,24 @@ public class ChronoSessions {
             }
         }
 
-        // Cache the results
+        // Emmagatzema els resultats en la memòria cau
         dadesSessionsDia.put("sessions", sessions);
         dadesSessionsDia.put("tempsUltimaSessio", tempsUltimaSessio);
         dadesSessionsDia.put("tempsTotalDia", tempsTotalDia);
     }
 
+    /**
+     * Mètode `getDadesSessionsDia`:
+     * Retorna una còpia de les dades de sessions emmagatzemades en la memòria cau.
+     *
+     * @return Un `Map` amb les dades de sessions.
+     */
     public Map<String, Object> getDadesSessionsDia() {
         return new HashMap<>(dadesSessionsDia);
     }
 
     /**
-     * Mètode `getSessio`:
+     * Mètode `getSessions`:
      * Retorna el nombre de sessions per a una data específica.
      *
      * @param data La data per a la qual es vol obtenir el nombre de sessions.
@@ -98,11 +103,25 @@ public class ChronoSessions {
         return (int) dadesSessionsDia.get("sessions");
     }
 
+    /**
+     * Mètode `getTempsUltimaSessio`:
+     * Retorna el temps de la última sessió per a una data específica.
+     *
+     * @param data La data per a la qual es vol obtenir el temps de la última sessió.
+     * @return El temps de la última sessió en mil·lisegons.
+     */
     public long getTempsUltimaSessio(String data) {
         recuperaDadesSessions(data);
         return (long) dadesSessionsDia.get("tempsUltimaSessio");
     }
 
+    /**
+     * Mètode `getTempsTotalDia`:
+     * Retorna el temps total de totes les sessions per a una data específica.
+     *
+     * @param data La data per a la qual es vol obtenir el temps total del dia.
+     * * @return El temps total del dia en mil·lisegons.
+     */
     public long getTempsTotalDia(String data) {
         recuperaDadesSessions(data);
         return (long) dadesSessionsDia.get("tempsTotalDia");

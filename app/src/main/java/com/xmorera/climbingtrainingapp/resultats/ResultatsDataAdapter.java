@@ -36,6 +36,13 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         this.context = context;
     }
 
+    /**
+     * Crea una nova vista per a un element de la llista.
+     *
+     * @param parent El grup de vista al qual s'afegeix la nova vista.
+     * @param viewType Tipus de vista de l'element.
+     * @return Un nou ViewHolder que conté la vista inflada.
+     */
     @NonNull
     @Override
     public ResultatsDataAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,6 +50,12 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         return new ViewHolder(view);
     }
 
+    /**
+     * Vincula les dades a la vista per a un element específic de la llista.
+     *
+     * @param holder El ViewHolder que conté les vistes a vincular.
+     * @param position La posició de l'element a la llista.
+     */
     @Override
     public void onBindViewHolder(@NonNull ResultatsDataAdapter.ViewHolder holder, int position) {
         Puntuacio puntuacio = new Puntuacio();
@@ -67,6 +80,11 @@ public class ResultatsDataAdapter extends RecyclerView.Adapter<ResultatsDataAdap
         });
     }
 
+    /**
+     * Retorna el nombre d'elements a la llista.
+     *
+     * @return Nombre d'elements a la llista de resultats.
+     */
     @Override
     public int getItemCount() {
         return resultatsDataList.size();

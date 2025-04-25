@@ -57,7 +57,7 @@ import java.util.Map;
  * a les vies realitzades en funció de la seva dificultat i llargada
  *
  * @author Xavier Morera
- * @version 0.6
+ * @version 0.8
  *
  */
 public class MainActivity extends AppCompatActivity  {
@@ -849,10 +849,10 @@ public class MainActivity extends AppCompatActivity  {
         chronoSessions.getSessions(dateTextView.getText().toString());
         Map<String, Object> dadesSessionsDia = chronoSessions.getDadesSessionsDia();
         int numSessions = (int) dadesSessionsDia.get("sessions");
-    Log.d("numSessions", String.valueOf(numSessions));
+        Log.d("numSessions", String.valueOf(numSessions));
         long tempsEntrenamentUltimaSessio = (long) dadesSessionsDia.get("tempsUltimaSessio");
         long tempsEntrenamentTotal = (long) dadesSessionsDia.get("tempsTotalDia");
-    Log.d("numSessions", String.valueOf(numSessio));
+        Log.d("numSessions", String.valueOf(numSessio));
 
         //numSessio = numSessions;
 
@@ -927,6 +927,11 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
+    /**
+     * Carrega les dades de les vies d'escalada per a un dia específic.
+     * Aquesta funció recupera les dades de la base de dades i calcula
+     * les puntuacions i mètriques associades a les vies escalades.
+     */
     private void carregarDadesViesDadesDia() {
         Cursor cursor = null;
 
@@ -945,12 +950,16 @@ public class MainActivity extends AppCompatActivity  {
                     int alturaZona = cursor.getInt(cursor.getColumnIndexOrThrow("ALTURA_ZONA"));
                     String nomCurtRocodrom = cursor.getString(cursor.getColumnIndexOrThrow("NOM_ROCO_REDUIT"));
 
+                    // Combinem el nom de la zona amb el nom curt del rocòdrom
                     nomZona = nomZona + " (" + nomCurtRocodrom + ")";
+
+                    // Calculem els punts de la via
                     double puntsVia = puntuacio.getPunts(dificultat);
                     double puntsGrau = puntsVia;
                     double metresVia = alturaZona; //convertim el metres a double per si hi ha penalitzacions
                     int viaGrau = 1;
 
+                    // Apliquem penalitzacions segons el tipus d'intent
                     if (ifIntent == 1) { //en el cas d'un inent apliquem el coeficient de dificultat i contem la mitat de metres de la zona
                         puntsVia /= puntuacio.getIfIntent();// veure Puntuacio.java
                         metresVia *= puntuacio.getPenalitzacioMetres();
@@ -962,11 +971,15 @@ public class MainActivity extends AppCompatActivity  {
                         ifIntent = 1; // si hi ha descansos ho indicarem al tag intent/descansos de l'item
                         viaGrau = 0;
                     }
+                    // Si és un escalfament, no comptabilitzem punts
                     if (ifEscalfament == 1){
                         puntsGrau = 0; //en aquest cas tampoc es comptabilitzen els punts per a calcular la mitjana de grau de la sessió
                         viaGrau = 0;
                     }
+                    // Afegim les dades de l'escalada a la llista
                     climbingDataList.add(new ClimbingData(id_cd, date, dificultat, nomZona, ifIntent, ifEscalfament, String.format("%.1f", puntsVia)));
+
+                    // Actualitzem les mètriques totals
                     viesDia += 1;
                     viesGrauDia += viaGrau;
                     metresDia += metresVia;
@@ -1043,11 +1056,13 @@ public class MainActivity extends AppCompatActivity  {
             mainChronoHandler.removeCallbacks(mainChronoRunnable);//atura el crono
             //si parem el crono principal també pararem el crono de descansos
             stopRestChrono();
-            // guardem el temps de la sessió actual i el nombre de sessió
+            // guardem el nombre de sessió i el temps de la sessió actual
             insertSession(numSessio, sessionChronoElapsedTime);
         }
     }
-
+    /**
+     * guardar la sessió i el temps a la BBDD
+     * */
     private void insertSession(int numSessio, long elapsedSessionTime) {
         databaseHelper.insertSession(dateTextView.getText().toString(), numSessio, elapsedSessionTime);
     }
@@ -1132,7 +1147,6 @@ public class MainActivity extends AppCompatActivity  {
                 restChronoHandler.post(restChronoRunnable);
             }
         }
-
     }
 
     /**
@@ -1161,7 +1175,6 @@ public class MainActivity extends AppCompatActivity  {
 
         }
     }
-
 
     @Override
     protected void onDestroy() {

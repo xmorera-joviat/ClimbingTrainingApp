@@ -7,7 +7,7 @@
     <option name="OPTION_DOCUMENT_TAG_USE" value="true" />
     <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
     <option name="OPTION_DOCUMENT_TAG_VERSION" value="true" />
-    <option name="OPTION_INCLUDE_LIBS" value="true" />
+    <option name="OTHER_OPTIONS" value="-encoding UTF-8 -docencoding UTF-8 -charset UTF-8 -bootclasspath &quot;%ANDROID_HOME%\platforms\ android- 34\ android. jar&quot; " />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="jbr-21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
